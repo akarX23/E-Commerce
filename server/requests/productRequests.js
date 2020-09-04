@@ -5,15 +5,19 @@ module.exports = function (app) {
   ///POST///
 
   app.post("/api/product/add", auth, (req, res) => {
-    const product = new Product({ ...req.body, ownerId: req.user._id });
-
-    Product.populate(product, { path: "ownerId" }, (err, product) => {
-      if (err || !product) return res.status(400).json({ err, post: false });
+    const product = new Product({
+      ...req.body,
+      owner: {
+        _id: req.user._id,
+        role: req.user.role,
+        email: req.user.email,
+        name: req.user.name,
+        lastname: req.user.lastname,
+      },
     });
 
     product.save((err, product) => {
       if (err || !product) return res.status(400).json({ err, post: false });
-      console.log(product);
       return res.status(200).json({ post: true, productId: product._id });
     });
   });
@@ -48,7 +52,7 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/api/product/product-list", auth, (req, res) => {
+  app.get("/api/product/product-list", (req, res) => {
     Product.find({}, (err, products) => {
       if (err) return res.status(400).json({ list: false, err });
       if (products.length === 0)

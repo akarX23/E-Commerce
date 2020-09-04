@@ -1,0 +1,9 @@
+.submit {
+  outline: none !important;
+  border: none !important;
+  color: whitesmoke;
+}
+
+.submit:hover {
+  color: black;
+}

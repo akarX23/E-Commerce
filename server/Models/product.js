@@ -18,11 +18,7 @@ const productSchema = mongoose.Schema(
       required: true,
     },
     tags: [String],
-    ownerId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+    owner: {},
     userReview: [
       {
         id: String,

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { auth } from "../actions/Actions_user";
+import { auth } from "../actions/user_actions";
 import { bindActionCreators } from "redux";
-import AuthRevoked from "../Components/authrevoked";
+import AuthRevoked from "../Components/AuthRevoked/authrevoked";
 
-const Auth = (ComposedClass, authUser, authAdmin) => {
+export default function (ComposedClass, authUser, authAdmin) {
   class AuthenticationCheck extends Component {
     state = {
       loading: true,
@@ -46,6 +46,4 @@ const Auth = (ComposedClass, authUser, authAdmin) => {
   });
 
   return connect(mapStateToProps, mapDispatchToProps)(AuthenticationCheck);
-};
-
-export default Auth;
+}

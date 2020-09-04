@@ -1,0 +1,43 @@
+.input {
+  flex-grow: 1;
+  outline: none !important;
+  border: none !important;
+  padding: 2px;
+}
+
+.input-with-icons {
+  border-left: 1px solid rgba(199, 188, 188, 0.637);
+}
+
+.passVisibleIcon-enter-active {
+  animation: slideInRight;
+  animation-duration: 0.2s;
+}
+.passVisibleIcon-exit-active {
+  animation: slideOutRight;
+  animation-duration: 0.2s;
+}
+
+.passInVisibleIcon-enter-active {
+  animation: slideInLeft;
+  animation-duration: 0.2s;
+}
+.passInVisibleIcon-exit-active {
+  animation: slideOutLeft;
+  animation-duration: 0.2s;
+}
+
+.error-icon-enter,
+.validated-icon-enter {
+  opacity: 0;
+}
+
+.error-icon-enter-active,
+.validated-icon-enter-active {
+  opacity: 1;
+  transition: all ease-in 0.3s;
+}
+.error-icon-exit-active,
+.validated-icon-exit-active {
+  opacity: 0;
+}

@@ -9,6 +9,8 @@ import reducers from "./reducers";
 import Routes from "./routes";
 
 import "./styles/main.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "rsuite/dist/styles/rsuite-default.css";
 
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(
   createStore

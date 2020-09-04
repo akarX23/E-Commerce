@@ -1,0 +1,20 @@
+.modal-enter {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.modal-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: all ease-out 0.3s;
+}
+
+.modal-exit-active {
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all ease-in 0.3s;
+}
+
+.modal-body {
+  max-height: 550px;
+}

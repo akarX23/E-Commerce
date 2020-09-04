@@ -1,0 +1,56 @@
+.brand {
+  background-image: linear-gradient(to right, black, black, white, #00adb5);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+
+.menu-bar {
+  transform: rotate(0deg);
+  transition: all 0.7s;
+}
+
+.menu-bar:hover {
+  transform: rotate(180deg);
+  transition: all 0.7s;
+}
+
+header {
+  background: linear-gradient(#222831, #121212);
+}
+
+.user:hover > .drop-user-icon {
+  animation: wobble 1s linear infinite;
+}
+
+.logout {
+  outline: none !important;
+  border: none !important;
+}
+
+.logout:hover {
+  color: black;
+}
+
+.form-toggle {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.navlink {
+  text-decoration: none;
+}
+
+@keyframes wobble {
+  0% {
+    transform: translateY(0%);
+  }
+  50% {
+    transform: translateY(20%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}

@@ -3,15 +3,16 @@ import { Switch, Route } from "react-router-dom";
 
 //HOC
 import Layout from "./hoc/layout";
+import Auth from "./hoc/auth";
 
 //COMPONENTS
-import Home from "./Containers/home";
+import Home from "./Containers/Home/home";
 
 const Routes = () => {
   return (
     <Layout>
       <Switch>
-        <Route path="/" exact component={Home} />
+        <Route path="/" component={Auth(Home)} />
       </Switch>
     </Layout>
   );
