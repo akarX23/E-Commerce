@@ -10,6 +10,7 @@ import { Rate } from "rsuite";
 import Chip from "@material-ui/core/Chip";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import "./productCard.css";
 
@@ -21,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     borderRadius: "10px",
+    border: "none !important",
     "&:hover": {
       cursor: "pointer",
     },
@@ -56,6 +58,14 @@ const useStyles = makeStyles((theme) => ({
       color: "black",
     },
   },
+  tooltip: {
+    backgroundColor: "black",
+    maxWidth: "250px",
+    fontSize: "14px",
+  },
+  arrowTooltip: {
+    color: "black",
+  },
 }));
 
 const ProductCard = ({
@@ -73,14 +83,14 @@ const ProductCard = ({
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
 
   return (
-    <div className="w-auto card-container h-auto rounded-lg overflow-hidden hover:scale-105 transition-all transform duration-500 ease-in-out">
+    <>
       <Card
         className={classes.root}
         component="a"
         elevation={5}
         href={`/product?id=${_id}`}
       >
-        <div className="block text-white">
+        <div className="block card-container w-auto card-container h-auto rounded-lg overflow-hidden hover:scale-105 transition-all transform duration-500 ease-in-out text-white">
           <Carousel
             interval={3000}
             controls={false}
@@ -106,11 +116,24 @@ const ProductCard = ({
                 {owner.name + " " + owner.lastname}
               </span>
             </p>
-            <div className="text-lg text-darktheme-300 font-bold">{title}</div>
+            <Tooltip
+              title={title}
+              classes={{
+                tooltip: classes.tooltip,
+                arrow: classes.arrowTooltip,
+              }}
+              arrow
+              placement="top-start"
+              interactive
+            >
+              <div className="text-lg truncate text-darktheme-300 font-bold">
+                {title}
+              </div>
+            </Tooltip>
             <div className="block">
               <Rate
                 allowHalf
-                defaultValue={parseInt(rating)}
+                value={parseFloat(rating)}
                 readOnly
                 color="yellow"
                 size="xs"
@@ -150,21 +173,11 @@ const ProductCard = ({
                   classes={{ root: classes.tags }}
                 />
               ))}
-              {tags.map((tag, i) => (
-                <Chip
-                  label={"#" + tag}
-                  key={i}
-                  variant="outlined"
-                  size={matches ? "small" : "medium"}
-                  clickable
-                  classes={{ root: classes.tags }}
-                />
-              ))}
             </div>
           </CardActions>
         </div>
       </Card>
-    </div>
+    </>
   );
 };
 

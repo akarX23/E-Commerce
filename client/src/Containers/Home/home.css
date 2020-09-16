@@ -1,0 +1,7 @@
+.searchBarPushDown {
+  transform: translateY(100%);
+}
+
+.searchBarPushUp {
+  transform: translateY(0%);
+}

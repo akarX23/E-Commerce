@@ -32,6 +32,8 @@ const productSchema = mongoose.Schema(
   { timestamps: true }
 );
 
+productSchema.index({ name: "text", tags: "text" });
+
 productSchema.methods.addOrUpdateReview = function (data, cb) {
   let product = this;
   let found = false;
@@ -61,6 +63,50 @@ productSchema.methods.addOrUpdateReview = function (data, cb) {
     if (err) return cb(err);
     return cb(null, product);
   });
+};
+
+productSchema.statics.searchFilter = function (
+  { searchArray, sortby, rating, priceRange, limit, skip, order },
+  cb
+) {
+  const regex = searchArray.map((searchItem) => {
+    searchItem =
+      searchItem[0] === "#"
+        ? searchItem.substring(1, searchItem.length)
+        : searchItem;
+    return new RegExp(searchItem, "i");
+  });
+
+  let query = null;
+  let sortParam = "";
+  let products = this;
+
+  if (regex.length > 0)
+    query = products.find({
+      $or: [{ tags: { $in: [...regex] } }, { title: { $in: [...regex] } }],
+    });
+  else query = products.find();
+
+  if (sortby === 0) sortParam = "updatedAt";
+  else if (sortby === 1) sortParam = "rating";
+  else if (sortby === 2) sortParam = "updatedAt";
+  else if (sortby === 3) sortParam = "price";
+  else if (sortby === 4) sortParam = "rating";
+
+  query
+    .where("rating")
+    .gte(rating[0])
+    .lte(rating[1])
+    .where("price")
+    .gte(priceRange[0])
+    .lte(priceRange[1])
+    .limit(limit)
+    .skip(skip)
+    .sort({ [sortParam]: order })
+    .exec((err, products) => {
+      if (err) return cb(err);
+      return cb(null, products);
+    });
 };
 
 //Export the model

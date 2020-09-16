@@ -315,9 +315,9 @@ const SidenavItems = ({ isAuth, role, ...rest }) => {
   ];
 
   const getListItems = () => {
-    if (isAuth === false) return unAuthList;
-    else if (isAuth && role === 0) return authList;
+    if (isAuth && role === 0) return authList;
     else if (isAuth && role === 1) return authAdminList;
+    else return unAuthList;
   };
 
   const listItems = getListItems();

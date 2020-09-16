@@ -18,7 +18,8 @@
     "nodemailer": "^6.4.11",
     "nodemon": "^2.0.4",
     "react-fontawesome": "^1.7.1",
-    "react-moment": "^0.9.7"
+    "react-moment": "^0.9.7",
+    "react-scrollmagic": "^2.2.0"
   },
   "devDependencies": {},
   "scripts": {

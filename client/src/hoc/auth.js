@@ -31,7 +31,12 @@ export default function (ComposedClass, authUser, authAdmin) {
     render() {
       if (this.state.loading) return <div className="loader"></div>;
       if (this.state.authRevoke) return <AuthRevoked />;
-      return <ComposedClass user={this.props.user.user} />;
+      return (
+        <ComposedClass
+          user={this.props.user.user}
+          history={this.props.history}
+        />
+      );
     }
   }
 

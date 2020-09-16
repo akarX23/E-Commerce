@@ -9,17 +9,20 @@ module.exports = function (app) {
     User.findOne({ email: req.body.email }, (err, user) => {
       if (err)
         return res.status(200).json({
+          isAuth: false,
           success: false,
           errorMessage: "Something went wrong. Please try again",
           err,
         });
       if (user && user.validated === true)
         return res.status(200).json({
+          isAuth: false,
           success: false,
           verified: true,
         });
       else if (user && user.validated === false)
         return res.status(200).json({
+          isAuth: false,
           success: false,
           verified: false,
         });
@@ -37,6 +40,7 @@ module.exports = function (app) {
           user.sendConfirmationEmail(user._id, user.token, (err) => {
             if (err)
               return res.status(200).json({
+                isAuth: false,
                 success: false,
                 err,
               });
@@ -55,12 +59,14 @@ module.exports = function (app) {
       if (err) return res.status(400).send(err);
       if (!user)
         return res.status(200).json({
+          isAuth: false,
           success: false,
           emailNotFound: true,
           errorMessage: "Auth failed, email not found!",
         });
       if (user.validated === false)
         return res.status(200).json({
+          isAuth: false,
           success: false,
           verified: false,
         });
@@ -68,6 +74,7 @@ module.exports = function (app) {
         if (err) return res.status(400).send(err);
         if (!isMatch)
           return res.status(200).json({
+            isAuth: false,
             success: false,
             mismatch: true,
             errorMessage: "Password does not match!",

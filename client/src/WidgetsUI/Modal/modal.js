@@ -6,7 +6,6 @@ const Modal = (props) => {
   return (
     <>
       <div className={`backdrop ${props.showModal ? "" : "hidden"} z-30`}></div>
-
       <CSSTransition
         in={props.showModal}
         timeout={300}
@@ -14,7 +13,7 @@ const Modal = (props) => {
         unmountOnExit
       >
         <div
-          className="fixed z-30 inset-0 flex items-center justify-center"
+          className="fixed z-40 inset-0 flex items-center justify-center"
           onClick={() => props.hideModal()}
         >
           <div

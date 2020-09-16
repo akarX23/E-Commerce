@@ -31,6 +31,8 @@ const styles = (theme) => ({
   },
 });
 
+var prevScrollPos = 0;
+
 class Header extends Component {
   state = {
     showNav: false,
@@ -49,10 +51,37 @@ class Header extends Component {
       { text: "My Profile", divide: true, link: "myprofile" },
       { text: "Delete User", link: "user/delete" },
     ],
+    showHeader: true,
   };
 
+  componentWillMount() {
+    this.header = React.createRef();
+  }
+
+  componentDidMount() {
+    window.addEventListener("scroll", () => {
+      var currentScrollPos = window.pageYOffset;
+
+      if (currentScrollPos > prevScrollPos && this.state.showHeader === true)
+        this.setState({ showHeader: false });
+      else if (
+        (currentScrollPos < prevScrollPos || currentScrollPos === 0) &&
+        this.state.showHeader === false
+      )
+        this.setState({ showHeader: true });
+      prevScrollPos = currentScrollPos;
+    });
+  }
+
   toggleAuthHandler = (authHandler) => {
-    this.setState({ [authHandler]: !this.state[authHandler] });
+    this.state[authHandler] === true
+      ? (document.body.style.overflow = "auto")
+      : (document.body.style.overflow = "hidden");
+
+    this.setState({
+      [authHandler]: !this.state[authHandler],
+      showAlert: false,
+    });
   };
 
   openMenu = (event) => {
@@ -81,12 +110,12 @@ class Header extends Component {
   rednerNavLinks = (links) => {
     return links.map((link, i) => {
       return (
-        <Link to={link[1]} key={i}>
+        <a href={link[1]} key={i}>
           <div className="flex navlink scale-100 items-center font-bold rounded-lg bg-darktheme-800 uppercase text-xs font-serif transition-all duration-200 ease-in-out hover:-translate-y-1 transform hover:scale-110 hover:bg-darktheme-700 hover:px-8 tracking-wider px-2 py-1 mx-2 text-gray-300 hover:text-darktheme-100 box-border">
             {link[2]}
             {link[0]}
           </div>
-        </Link>
+        </a>
       );
     });
   };
@@ -151,7 +180,7 @@ class Header extends Component {
                 {option.text}
               </MenuItem>
               {option.divide ? (
-                <div className="w-full border my-2 border-gray-800"></div>
+                <div className="w-full border-t my-2 border-gray-800"></div>
               ) : null}
             </div>
           ))}
@@ -176,7 +205,7 @@ class Header extends Component {
   renderLogIn = () => {
     return (
       <div className="flex flex-grow justify-evenly">
-        <div className="mdmax:hidden border border-l-0 border-gray-500"></div>
+        <div className="mdmax:hidden border-l border-gray-500"></div>
         <button
           onClick={() => this.toggleAuthHandler("showLogIn")}
           className="text-gray-200 logout flex items-center p-2 rounded-md tracking-wider font-light font-serif bg-darktheme-800 hover:bg-darktheme-400 transition-all duration-500 hover:text-black box-border"
@@ -273,6 +302,7 @@ class Header extends Component {
         authenticationDetails.isAuth === true &&
         this.state.showLogIn === true
       ) {
+        this.toggleAuthHandler("showLogIn");
         this.setState({ showLogIn: false, showAlert: false });
       } else if (
         authenticationDetails.isAuth === false &&
@@ -301,7 +331,11 @@ class Header extends Component {
   render() {
     return (
       <>
-        <header className="w-full fixed flex justify-around items-center z-30">
+        <header
+          className={`w-full fixed flex h-auto justify-around items-center z-30 transition-all ease-in duration-300 ${
+            this.state.showHeader === false ? "headerHide" : "headerShow"
+          }`}
+        >
           {this.icon}
           <SideNav
             showNav={this.state.showNav}
@@ -310,13 +344,13 @@ class Header extends Component {
               this.toggleAuthHandler(authHandler)
             }
           />
-          <Link
-            to="/"
+          <a
+            href="/"
             className="brand text-4xl text-darktheme-500 font-extrabold font-sans transition duration-200 ease-out transform hover:scale-125"
           >
             B2mE
-          </Link>
-          <div className={`md:flex items-center hidden`}>
+          </a>
+          <div className={`flex items-center mdmax:hidden`}>
             {this.rednerNavLinks([
               [
                 "Home",
@@ -400,9 +434,7 @@ class Header extends Component {
         <Modal
           title="Log In"
           showModal={this.state.showLogIn}
-          hideModal={() =>
-            this.setState({ showLogIn: false, showAlert: false })
-          }
+          hideModal={() => this.toggleAuthHandler("showLogIn")}
         >
           <LogInForm
             login={(data) => {
@@ -415,9 +447,9 @@ class Header extends Component {
         <Modal
           title="Sign Up"
           showModal={this.state.showSignUp}
-          hideModal={() =>
-            this.setState({ showSignUp: false, showAlert: false })
-          }
+          hideModal={() => {
+            this.toggleAuthHandler("showSignUp");
+          }}
         >
           <SignUpForm
             signup={(data) => {

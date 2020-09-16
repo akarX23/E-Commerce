@@ -39,10 +39,23 @@ module.exports = function (app) {
     });
   });
 
+  app.post("/api/product/product-list", (req, res) => {
+    Product.searchFilter(req.body, (err, products) => {
+      if (err) return res.status(400).json({ list: false, err });
+
+      const list = products.length === 0 ? false : true;
+
+      return res.status(200).json({
+        list,
+        products,
+      });
+    });
+  });
+
   ///GET///
 
-  app.get("/api/product/user-product-list", auth, (req, res) => {
-    Product.find({ ownerId: req.user._id }, (err, products) => {
+  app.get("/api/product/all", (req, res) => {
+    Product.find({}, (err, products) => {
       if (err) return res.status(400).json({ list: false, err });
       if (products.length === 0)
         return res
@@ -52,8 +65,8 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/api/product/product-list", (req, res) => {
-    Product.find({}, (err, products) => {
+  app.get("/api/product/user-product-list", auth, (req, res) => {
+    Product.find({ ownerId: req.user._id }, (err, products) => {
       if (err) return res.status(400).json({ list: false, err });
       if (products.length === 0)
         return res
