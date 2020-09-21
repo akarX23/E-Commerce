@@ -25,16 +25,28 @@ module.exports = function (app) {
   app.post("/api/product/review", auth, (req, res) => {
     let id = req.query.id;
     Product.findById(id, (err, product) => {
-      if (err) return res.status(400).json({ reviewAdded: false, err });
+      if (err) return res.status(200).json({ reviewAdded: false, err });
       if (!product)
         return res
-          .status(400)
+          .status(200)
           .json({ reviewAdded: false, errorMessage: "Product not found" });
 
-      req.body.id = req.user._id.toString();
-      product.addOrUpdateReview(req.body, (err, product) => {
+      product.addOrUpdateReview(req.body, req.user, (err, product) => {
         if (err) return res.status(400).json({ reviewAdded: false, err });
         return res.status(200).json({ reviewAdded: true, product });
+      });
+    });
+  });
+
+  app.post("/api/product/reviewUpdateLikes", auth, (req, res) => {
+    console.log("here");
+    let id = req.query.id;
+    Product.findById(id, (err, product) => {
+      if (err) return res.status(200).json({ updateLikes: false, err });
+
+      product.updateLikes(req.body, req.user._id.toString(), (err, product) => {
+        if (err) return res.status(200).json({ updateLikes: false, err });
+        return res.status(200).json({ updateLikes: true, product });
       });
     });
   });
@@ -80,7 +92,7 @@ module.exports = function (app) {
     let id = req.query.id;
 
     Product.findById(id, (err, product) => {
-      if (err) return res.status(400).json({ found: false, err });
+      if (err) return res.status(200).json({ found: false, err });
       if (!product)
         return res
           .status(200)
@@ -131,6 +143,19 @@ module.exports = function (app) {
         return res
           .status(200)
           .json({ delete: false, errorMessage: "You are not authorised!" });
+    });
+  });
+
+  app.delete("/api/product/deleteReview", auth, (req, res) => {
+    let id = req.query.id;
+    Product.findById(id, (err, product) => {
+      if (err) return res.status(200).send({ deleted: false, err });
+
+      product.deleteReview(req.user._id, (err, product) => {
+        if (err) return res.status(200).send({ deleted: false, err });
+
+        return res.status(200).send({ deleted: true, product });
+      });
     });
   });
 };

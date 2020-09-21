@@ -85,6 +85,7 @@ module.exports = function (app) {
           res.cookie("auth", user.token);
           return res.status(200).json({
             isAuth: true,
+            id: user._id,
             role: user.role,
             email: user.email,
             name: user.name,

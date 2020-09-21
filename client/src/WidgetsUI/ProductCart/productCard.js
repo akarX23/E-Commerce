@@ -88,7 +88,7 @@ const ProductCard = ({
         className={classes.root}
         component="a"
         elevation={5}
-        href={`/product?id=${_id}`}
+        href={`/product/${_id}`}
       >
         <div className="block card-container w-auto card-container h-auto rounded-lg overflow-hidden hover:scale-105 transition-all transform duration-500 ease-in-out text-white">
           <Carousel

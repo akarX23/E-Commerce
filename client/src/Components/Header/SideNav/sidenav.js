@@ -8,6 +8,8 @@ import Divider from "@material-ui/core/Divider";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { Link } from "react-router-dom";
 import SidenavItems from "./sidenavItems";
+import { purple } from "@material-ui/core/colors";
+import Avatar from "@material-ui/core/Avatar";
 
 const useStyles = makeStyles((theme) => ({
   divider: {
@@ -16,6 +18,15 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     background: "#202428",
     color: "white",
+  },
+  avatar: {
+    color: theme.palette.getContrastText(purple[500]),
+    backgroundColor: purple[500],
+    width: "50px",
+    height: "50px",
+    fontSize: "25px",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
 }));
 
@@ -27,13 +38,9 @@ const SideNav = (props) => {
       return (
         <>
           <div className="w-full p-3 box-border py-4 mx-auto">
-            <div className="rounded-full overflow-hidden w-16 h-16 mx-auto">
-              <img
-                src={user}
-                className="object-contain object-center"
-                alt="user"
-              />
-            </div>
+            <Avatar classes={{ root: classes.avatar }} src={null}>
+              {props.auth.user.name[0]}
+            </Avatar>
             <div className="p-2 box-border w-full text-center">
               <Typography gutterBottom className="text-white">
                 <span className="text-xl">

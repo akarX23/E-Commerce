@@ -13,7 +13,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import cimage1 from "../../assets/cmiage1.jpg";
 import cimage2 from "../../assets/cmiage2.jpg";
 import cimage3 from "../../assets/cmiage3.jpg";
-import Search from "./Search/search";
+import Search from "../../WidgetsUI/Search/search";
 import Loading from "../../WidgetsUI/Loading/loading";
 import ItemLoading from "../../WidgetsUI/Loading/itemLoading";
 import "./home.css";
@@ -23,7 +23,7 @@ import ScrollMagic from "scrollmagic";
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import Filter from "../../WidgetsUI/Filter/filter";
-import NoProducts from "../../WidgetsUI/NoProducts/noProducts";
+import PageNotFound from "../../WidgetsUI/PageNotFound/pageNotFound";
 
 const styles = (theme) => ({
   textField: {
@@ -392,7 +392,7 @@ class Home extends Component {
           this.props.products.list.products.length > 0 ? (
             <ItemLoading allLoaded={!this.props.products.list.list} />
           ) : this.props.products.list.list === false ? (
-            <NoProducts />
+            <PageNotFound message="No Products matched your search!" />
           ) : null
         ) : null}
         <Filter

@@ -21,10 +21,15 @@ const productSchema = mongoose.Schema(
     owner: {},
     userReview: [
       {
-        id: String,
+        userInfo: {},
         rating: Number,
         comment: String,
         _id: false,
+        updatedAt: { type: Date, default: Date.now },
+        likes: { type: Number, default: 0 },
+        dislikes: { type: Number, default: 0 },
+        usersLiked: [String],
+        usersDisliked: [String],
       },
     ],
     quantity: { type: Number, default: 1 },
@@ -32,32 +37,95 @@ const productSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-productSchema.index({ name: "text", tags: "text" });
-
-productSchema.methods.addOrUpdateReview = function (data, cb) {
+productSchema.methods.addOrUpdateReview = function (data, user, cb) {
   let product = this;
   let found = false;
 
   for (const review of product.userReview) {
-    if (review.id === data.id) {
+    if (`${review.userInfo.id}`.localeCompare(user._id) === 0) {
       product.totalRating -= review.rating;
       review.rating = data.rating;
       review.comment = data.comment;
       product.totalRating += review.rating;
+      review.updatedAt = Date.now();
       found = true;
       break;
     }
   }
 
   if (!found) {
+    const userInfo = { id: user._id, name: user.name, lastname: user.lastname };
     product.userReview.unshift({
-      id: data.id,
+      userInfo: userInfo,
       rating: data.rating,
       comment: data.comment,
+      updatedAt: Date.now(),
     });
     product.totalRating += data.rating;
   }
   product.rating = product.totalRating / (product.userReview.length + 1);
+
+  product.save((err, product) => {
+    if (err) return cb(err);
+    return cb(null, product);
+  });
+};
+
+productSchema.methods.deleteReview = function (userId, cb) {
+  let product = this;
+
+  product.userReview = product.userReview.filter((review) => {
+    if (review.userInfo.id.toString().localeCompare(userId) === 0) {
+      product.totalRating -= review.rating;
+      return false;
+    }
+    return true;
+  });
+
+  product.rating = product.totalRating / (product.userReview.length + 1);
+
+  product.save((err, product) => {
+    if (err) return cb(err);
+    return cb(null, product);
+  });
+};
+
+productSchema.methods.updateLikes = function (
+  { liked, disliked, ownerId },
+  userId,
+  cb
+) {
+  let product = this;
+
+  for (const review of product.userReview) {
+    if (`${review.userInfo.id}`.localeCompare(ownerId) === 0) {
+      if (liked === false)
+        review.usersLiked = review.usersLiked.filter((id) => {
+          return userId.localeCompare(id) !== 0;
+        });
+      else {
+        review.usersLiked.push(userId);
+        review.usersLiked = new Set(review.usersLiked);
+        review.usersLiked = [...review.usersLiked];
+      }
+
+      if (disliked === false)
+        review.usersDisliked = review.usersDisliked.filter((id) => {
+          return userId.localeCompare(id) !== 0;
+        });
+      else {
+        review.usersDisliked.push(userId);
+        review.usersDisliked = new Set(review.usersDisliked);
+        review.usersDisliked = [...review.usersDisliked];
+      }
+
+      review.likes = review.usersLiked.length;
+      review.dislikes = review.usersDisliked.length;
+      break;
+    }
+  }
+
+  console.log("Product after liking: " + product);
 
   product.save((err, product) => {
     if (err) return cb(err);

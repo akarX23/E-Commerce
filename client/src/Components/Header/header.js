@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import "./header.css";
-import user from "../../assets/user_img.png";
 import { logout, login, signUp } from "../../actions/user_actions";
 import { bindActionCreators } from "redux";
 import Modal from "../../WidgetsUI/Modal/modal";
@@ -15,6 +14,8 @@ import SideNav from "./SideNav/sidenav";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
+import { purple } from "@material-ui/core/colors";
+import Avatar from "@material-ui/core/Avatar";
 
 const styles = (theme) => ({
   menu: {
@@ -27,6 +28,19 @@ const styles = (theme) => ({
     borderRadius: "5px",
     "&:hover": {
       backgroundColor: "#202428",
+    },
+  },
+  avatar: {
+    color: theme.palette.getContrastText(purple[500]),
+    backgroundColor: purple[500],
+    width: "30px",
+    height: "30px",
+
+    transition: "all 0.5s ease-in",
+    [theme.breakpoints.down("xs")]: {
+      width: "27px !important",
+      height: "27px !important",
+      fontSize: "14px",
     },
   },
 });
@@ -48,8 +62,8 @@ class Header extends Component {
     },
     loading: false,
     options: [
-      { text: "My Profile", divide: true, link: "myprofile" },
-      { text: "Delete User", link: "user/delete" },
+      { text: "My Profile", divide: true, link: "/myprofile" },
+      { text: "Delete User", link: "/user/delete" },
     ],
     showHeader: true,
   };
@@ -127,24 +141,21 @@ class Header extends Component {
         <Link to="/user/cart">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="fill-current text-gray-200 mb:w-6 mb:h-6 w-4 h-4 cursor-pointer transition-all hover:text-yellow-500 duration-300"
+            className="fill-current text-gray-200 mb:w-6 mb:h-6 w-6 h-6 cursor-pointer transition-all hover:text-yellow-500 duration-300"
             viewBox="0 0 20 20"
           >
             <path d="M4 2h16l-3 9H4a1 1 0 1 0 0 2h13v2H4a3 3 0 0 1 0-6h.33L3 5 2 2H0V0h3a1 1 0 0 1 1 1v1zm1 18a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm10 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
           </svg>
         </Link>
-
         <div
           className="flex items-center relative cursor-pointer user"
           onClick={(event) => this.openMenu(event)}
         >
-          <div className="rounded-full overflow-hidden mb:w-6 mb:h-6 w-4 h-4 transition-all duration-500 user-icon">
-            <img
-              src={user}
-              className="object-contain object-center"
-              alt="user"
-            />
-          </div>
+          {this.props.auth.user ? (
+            <Avatar classes={{ root: classes.avatar }} src={null}>
+              {this.props.auth.user.name[0]}
+            </Avatar>
+          ) : null}
           <svg
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -354,7 +365,7 @@ class Header extends Component {
             {this.rednerNavLinks([
               [
                 "Home",
-                "home",
+                "/",
                 <svg
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -365,7 +376,7 @@ class Header extends Component {
               ],
               [
                 "About Us",
-                "about",
+                "/about",
                 <svg
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -380,7 +391,7 @@ class Header extends Component {
               ],
               [
                 "Contact Us",
-                "contact",
+                "/contact",
                 <svg
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -414,8 +425,9 @@ class Header extends Component {
           <button
             className="rounded-md logout text-xl font-serif text-center font-bold text-white bg-darktheme-900 transition-all hover:bg-red-500 duration-500"
             onClick={() => {
-              this.setState({ loading: true, showLogout: false });
+              this.setState({ loading: true });
               this.props.logout();
+              this.toggleAuthHandler("showLogout");
             }}
           >
             <div className="hover:text-black py-2 px-4 transition-all duration-500">
