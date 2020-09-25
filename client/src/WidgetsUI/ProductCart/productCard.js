@@ -73,11 +73,11 @@ const ProductCard = ({
   price,
   rating,
   tags,
+  imageURLs,
   _id,
   owner,
   userReview,
 }) => {
-  const images = [cimage1, cimage2, cimage3];
   const classes = useStyles();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
@@ -97,11 +97,11 @@ const ProductCard = ({
             indicators={false}
             pause={false}
           >
-            {images.map((image, i) => {
+            {imageURLs.map((imagesrc, i) => {
               return (
                 <Carousel.Item key={i}>
                   <img
-                    src={image}
+                    src={imagesrc}
                     className="object-cover object-center d-block w-100 h-56"
                     alt="carousel"
                   />

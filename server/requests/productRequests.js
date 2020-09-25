@@ -1,5 +1,6 @@
 const Product = require("../Models/product");
 const { auth } = require("../Middlewares/auth");
+const config = require("../config/config").get(process.env.NODE_ENV);
 
 module.exports = function (app) {
   ///POST///
@@ -17,8 +18,8 @@ module.exports = function (app) {
     });
 
     product.save((err, product) => {
-      if (err || !product) return res.status(400).json({ err, post: false });
-      return res.status(200).json({ post: true, productId: product._id });
+      if (err || !product) return res.status(400).json({ err, added: false });
+      return res.status(200).json({ added: true, product });
     });
   });
 

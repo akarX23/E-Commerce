@@ -33,6 +33,7 @@ const productSchema = mongoose.Schema(
       },
     ],
     quantity: { type: Number, default: 1 },
+    imageURLs: [String],
   },
   { timestamps: true }
 );

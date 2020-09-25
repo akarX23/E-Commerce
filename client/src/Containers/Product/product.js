@@ -370,11 +370,11 @@ class Product extends Component {
                           this.setState({ activeIndex: selectedIndex })
                         }
                       >
-                        {this.state.images.map((image, i) => {
+                        {details.imageURLs.map((imagesrc, i) => {
                           return (
                             <Carousel.Item key={i}>
                               <img
-                                src={image}
+                                src={imagesrc}
                                 className={`object-cover object-center w-full ${classes.productCaraousel}`}
                                 alt="carousel"
                               />
@@ -401,7 +401,7 @@ class Product extends Component {
                           this.state.images.length <= 6 ? "justify-center" : ""
                         } overflow-x-auto overflow-y-hidden transition-all duration-200 ease-in-out`}
                       >
-                        {this.state.images.map((image, i) => (
+                        {details.imageURLs.map((imagesrc, i) => (
                           <div
                             className={`mx-3 my-3 flex-shrink-0 flex-grow-0 rounded-lg transition-all duration-200 ease-in-out transform hover:scale-125 ${classes.caraouselSelector}`}
                             key={i}
@@ -410,7 +410,7 @@ class Product extends Component {
                             }
                           >
                             <img
-                              src={image}
+                              src={imagesrc}
                               className={`object-cover object-center w-full h-full`}
                               alt="carousel"
                             />

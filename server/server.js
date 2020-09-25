@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const config = require("./config/config").get(process.env.NODE_ENV);
+const cors = require("cors");
 
 //IMPLEMENTATIONS
 mongoose.Promise = global.Promise;
@@ -23,6 +24,7 @@ mongoose.connect(
 //MIDDLEWARES
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors());
 
 //REQUESTS
 require("./requests/userRequests")(app);

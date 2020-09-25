@@ -5,6 +5,8 @@ const config = {
     USER: process.env.USER,
     PASS: process.env.PASS,
     URL: process.env.URL,
+    CLOUD_URL: process.env.CLOUD_URL,
+    PRESET: process.env.PRESET,
   },
   default: {
     SECRET: "ONLINESHOPSECRET",
@@ -12,6 +14,8 @@ const config = {
     USER: "b2mecommercewebsite@gmail.com",
     PASS: "oabtqmpoalqlqxra",
     URL: "localhost:3000",
+    CLOUD_URL: "https://api.cloudinary.com/v1_1/dyhrqpsrs/image/upload",
+    PRESET: "qelivzfz",
   },
 };
 

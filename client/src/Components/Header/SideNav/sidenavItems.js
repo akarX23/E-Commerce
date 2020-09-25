@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
@@ -358,6 +358,7 @@ const SidenavItems = ({ isAuth, role, ...rest }) => {
                 listitem.authorized === null
               )
                 return element(listitem, index);
+              return null;
             })}
           </List>
           {index <= item.length ? (

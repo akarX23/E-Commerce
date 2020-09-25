@@ -4,8 +4,12 @@ import {
   POST_REVIEW,
   DELETE_REVIEW,
   UPDATE_LIKES,
+  ADD_PRODUCT,
 } from "../ACTION_TYPES";
 import axios from "axios";
+
+const PRESET = "b2meImages";
+const CLOUD_URL = "https://api.cloudinary.com/v1_1/b2me/image/upload";
 
 export async function productList(
   searchArray = [],
@@ -99,6 +103,45 @@ export async function updateLikes(liked, disliked, ownerId, id) {
 
   return {
     type: UPDATE_LIKES,
+    payload: request,
+  };
+}
+
+async function uploadImages(imageSource) {
+  let imageUrl = [];
+
+  const cloudinaryImages = async () => {
+    const promises = imageSource.map(async (source) => {
+      let data = new FormData();
+      data.append("file", source);
+      data.append("upload_preset", PRESET);
+      await axios
+        .post(CLOUD_URL, data)
+        .then(
+          (response) => (imageUrl = [...imageUrl, response.data.secure_url])
+        );
+    });
+    await Promise.all(promises);
+  };
+
+  await cloudinaryImages();
+
+  return imageUrl;
+}
+
+export async function addProduct(productDetails, productImages) {
+  let imageURLs = await uploadImages(productImages);
+
+  productDetails = { ...productDetails, imageURLs };
+
+  const request = await axios
+    .post("/api/product/add", { ...productDetails })
+    .then((response) => {
+      return response.data;
+    });
+
+  return {
+    type: ADD_PRODUCT,
     payload: request,
   };
 }

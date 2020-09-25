@@ -8,12 +8,20 @@ import Auth from "./hoc/auth";
 //COMPONENTS
 import Home from "./Containers/Home/home";
 import Product from "./Containers/Product/product";
+import Test from "./Containers/Test/test";
+import AddProduct from "./Containers/AddProduct/addproduct";
 
 const Routes = () => {
   return (
     <Layout>
       <Switch>
+        <Route
+          path="/user/addproduct"
+          exact
+          component={Auth(AddProduct, true, false)}
+        />
         <Route path="/product/:id" exact component={Auth(Product)} />
+        <Route path="/test" exact component={Test} />
         <Route path="/" component={Auth(Home)} />
       </Switch>
     </Layout>

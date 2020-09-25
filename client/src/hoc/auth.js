@@ -19,12 +19,15 @@ export default function (ComposedClass, authUser, authAdmin) {
     componentWillReceiveProps(nextProps) {
       this.setState({ loading: false });
 
-      if (!nextProps.user.user.isAuth) {
-        if (authAdmin || authUser) this.props.history.push("/login");
+      if (
+        !nextProps.user.user.isAuth &&
+        (authAdmin === true || authUser === true)
+      ) {
+        this.props.history.push("/");
       } else {
-        if (authAdmin && nextProps.user.user.role === 0)
+        if (authAdmin === true && nextProps.user.user.role === 0)
           this.setState({ authRevoke: true });
-        if (authAdmin === false && authUser === false)
+        else if (authAdmin === false && authUser === false)
           this.props.history.push("/user");
       }
     }

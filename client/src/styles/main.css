@@ -581,9 +581,9 @@ video {
   width: 100%;
 }
 
-@media (min-width: 375px) {
+@media (min-width: 420px) {
   .container {
-    max-width: 375px;
+    max-width: 420px;
   }
 }
 
@@ -9723,7 +9723,7 @@ a {
 }
 
 .max-w-screen-mb {
-  max-width: 375px;
+  max-width: 420px;
 }
 
 .max-w-screen-sm {
@@ -17400,14 +17400,14 @@ a {
   animation: bounce 1s infinite;
 }
 
-@media (min-width: 375px) {
+@media (min-width: 420px) {
   .mb\:container {
     width: 100%;
   }
 
-  @media (min-width: 375px) {
+  @media (min-width: 420px) {
     .mb\:container {
-      max-width: 375px;
+      max-width: 420px;
     }
   }
 
@@ -26256,7 +26256,7 @@ a {
   }
 
   .mb\:max-w-screen-mb {
-    max-width: 375px;
+    max-width: 420px;
   }
 
   .mb\:max-w-screen-sm {
@@ -33885,9 +33885,9 @@ a {
     width: 100%;
   }
 
-  @media (min-width: 375px) {
+  @media (min-width: 420px) {
     .sm\:container {
-      max-width: 375px;
+      max-width: 420px;
     }
   }
 
@@ -42736,7 +42736,7 @@ a {
   }
 
   .sm\:max-w-screen-mb {
-    max-width: 375px;
+    max-width: 420px;
   }
 
   .sm\:max-w-screen-sm {
@@ -50365,9 +50365,9 @@ a {
     width: 100%;
   }
 
-  @media (min-width: 375px) {
+  @media (min-width: 420px) {
     .md\:container {
-      max-width: 375px;
+      max-width: 420px;
     }
   }
 
@@ -59216,7 +59216,7 @@ a {
   }
 
   .md\:max-w-screen-mb {
-    max-width: 375px;
+    max-width: 420px;
   }
 
   .md\:max-w-screen-sm {
@@ -66845,9 +66845,9 @@ a {
     width: 100%;
   }
 
-  @media (min-width: 375px) {
+  @media (min-width: 420px) {
     .lg\:container {
-      max-width: 375px;
+      max-width: 420px;
     }
   }
 
@@ -75696,7 +75696,7 @@ a {
   }
 
   .lg\:max-w-screen-mb {
-    max-width: 375px;
+    max-width: 420px;
   }
 
   .lg\:max-w-screen-sm {
@@ -83325,9 +83325,9 @@ a {
     width: 100%;
   }
 
-  @media (min-width: 375px) {
+  @media (min-width: 420px) {
     .xl\:container {
-      max-width: 375px;
+      max-width: 420px;
     }
   }
 
@@ -92176,7 +92176,7 @@ a {
   }
 
   .xl\:max-w-screen-mb {
-    max-width: 375px;
+    max-width: 420px;
   }
 
   .xl\:max-w-screen-sm {
@@ -99805,9 +99805,9 @@ a {
     width: 100%;
   }
 
-  @media (min-width: 375px) {
+  @media (min-width: 420px) {
     .mdmax\:container {
-      max-width: 375px;
+      max-width: 420px;
     }
   }
 
@@ -108656,7 +108656,7 @@ a {
   }
 
   .mdmax\:max-w-screen-mb {
-    max-width: 375px;
+    max-width: 420px;
   }
 
   .mdmax\:max-w-screen-sm {
@@ -116285,9 +116285,9 @@ a {
     width: 100%;
   }
 
-  @media (min-width: 375px) {
+  @media (min-width: 420px) {
     .mbmax\:container {
-      max-width: 375px;
+      max-width: 420px;
     }
   }
 
@@ -125136,7 +125136,7 @@ a {
   }
 
   .mbmax\:max-w-screen-mb {
-    max-width: 375px;
+    max-width: 420px;
   }
 
   .mbmax\:max-w-screen-sm {

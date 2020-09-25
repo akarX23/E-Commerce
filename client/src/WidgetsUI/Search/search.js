@@ -19,7 +19,7 @@ const Search = React.forwardRef((props, ref) => {
   }, []);
 
   const handleBlur = () => {
-    if (inputValue != "") {
+    if (inputValue !== "") {
       setinputValue("");
       props.handleValueChange([...props.value, inputValue]);
     }

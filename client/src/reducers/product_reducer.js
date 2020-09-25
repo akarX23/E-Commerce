@@ -4,6 +4,7 @@ import {
   POST_REVIEW,
   DELETE_REVIEW,
   UPDATE_LIKES,
+  ADD_PRODUCT,
 } from "../ACTION_TYPES";
 
 export default (state = {}, { type, payload }) => {
@@ -18,6 +19,8 @@ export default (state = {}, { type, payload }) => {
       return { ...state, review: payload };
     case UPDATE_LIKES:
       return { ...state, review: payload };
+    case ADD_PRODUCT:
+      return { ...state, productAdd: payload };
     default:
       return state;
   }
