@@ -31,19 +31,21 @@ const useStyles = makeStyles((theme) => ({
   },
   tooltip: {
     maxWidth: "170px",
-    marginTop: "70px",
   },
 }));
 
-const UploadImageCard = ({
-  file: { name, size, type },
-  image,
-  deleteImage,
-  readonly,
-}) => {
+const UploadImageCard = ({ file, image, deleteImage, readonly }) => {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down(400));
+  let name = null,
+    type = null,
+    size = null;
+  if (file) {
+    name = file.name;
+    type = file.type;
+    size = file.size;
+  }
 
   const [hover, setHover] = useState(false);
   const [touched, setTouched] = useState(false);
@@ -107,32 +109,34 @@ const UploadImageCard = ({
               alt="product_image_review"
             />
           </div>
-          <CardContent className={classes.cardContent}>
-            <Tooltip
-              open={tooltip}
-              title={name}
-              placement="top"
-              classes={{ tooltip: classes.tooltip }}
-            >
-              <div className="two-lines-truncate h-10 font-medium">
-                {name.substring(0, name.lastIndexOf("."))}
-              </div>
-            </Tooltip>
-            <div className="border-b border-darktheme-600 w-full my-2"></div>
-            <div className="font-sans w-full flex justify-between text-xsm text-darktheme-400">
-              <div className="flex items-center">
-                <PhotoSizeSelectActualIcon
-                  style={{ fontSize: "0.8rem", marginRight: "5px" }}
-                />
-                <div className="uppercase font-semibold">
-                  {type.substring(type.indexOf("/") + 1, type.length)}
+          {file && (
+            <CardContent className={classes.cardContent}>
+              <Tooltip
+                open={tooltip}
+                title={name}
+                placement="top"
+                classes={{ tooltip: classes.tooltip }}
+              >
+                <div className="two-lines-truncate h-10 font-medium">
+                  {name.substring(0, name.lastIndexOf("."))}
+                </div>
+              </Tooltip>
+              <div className="border-b border-darktheme-600 w-full my-2"></div>
+              <div className="font-sans w-full flex justify-between text-xsm text-darktheme-400">
+                <div className="flex items-center">
+                  <PhotoSizeSelectActualIcon
+                    style={{ fontSize: "0.8rem", marginRight: "5px" }}
+                  />
+                  <div className="uppercase font-semibold">
+                    {type.substring(type.indexOf("/") + 1, type.length)}
+                  </div>
+                </div>
+                <div className="font-italic font-semibold">
+                  {getReadableFileSizeString(size)}
                 </div>
               </div>
-              <div className="font-italic font-semibold">
-                {getReadableFileSizeString(size)}
-              </div>
-            </div>
-          </CardContent>
+            </CardContent>
+          )}
 
           <div
             className={`absolute flex justify-center items-center inset-0 transition-all duration-200 ease-in bg-black ${
@@ -141,7 +145,9 @@ const UploadImageCard = ({
                 : "bg-opacity-0 opacity-0"
             }`}
           >
-            <DeleteIcon style={{ fontSize: 60, color: "white" }} />
+            <DeleteIcon
+              style={{ fontSize: 60, color: "white", marginTop: "-40px" }}
+            />
           </div>
         </>
       </Card>

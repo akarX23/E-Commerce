@@ -1,4 +1,4 @@
-const confirmMail = (token, url, name) => {
+const confirmMail = (id, token, url, name) => {
   return `<!DOCTYPE html>
       <html lang="en">
       <head>
@@ -35,19 +35,19 @@ const confirmMail = (token, url, name) => {
                 background: green;
                 color: white;
                 transition: all 0.4s ease-in;
-                border-radius: 5px;
+                border-radius: 5px;                
+                cursor: pointer;
             }
 
             button:hover {
                 background: #2f855a;
-                cursor: pointer;
             }
           </style>
       </head>
       <body>
           <h1>Thank you ${name} for registering with B2ME!</h1>
           <h3>Click the button below to to verify your email!</h3>
-          <a href="http://${url}/user/confirm?token=${token}}"><button>Verify</button></a>
+          <a href="http://${url}/user/confirm/${id}/${token}"><button>Verify</button></a>
       </body>
       </html>`;
 };

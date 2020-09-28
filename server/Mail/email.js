@@ -5,7 +5,7 @@ const config = require("../config/config").get(process.env.NODE_ENV);
 const { Test } = require("./views/test.js");
 const { confirmMail } = require("./views/confirmMail.js");
 
-const getEmailData = (token, to, name, template) => {
+const getEmailData = (id, token, to, name, template) => {
   let data = null;
 
   switch (template) {
@@ -22,7 +22,7 @@ const getEmailData = (token, to, name, template) => {
         from: "B2ME <b2meecommercewebsite@gmail.com>",
         to,
         subject: "Verification of email almost done!",
-        html: confirmMail(token, config.URL, name),
+        html: confirmMail(id, token, config.URL, name),
       };
       break;
     default:
@@ -31,7 +31,7 @@ const getEmailData = (token, to, name, template) => {
   return data;
 };
 
-const sendEmail = (token, to, name, type, cb) => {
+const sendEmail = (id, token, to, name, type, cb) => {
   const smtpTransport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -40,7 +40,7 @@ const sendEmail = (token, to, name, type, cb) => {
     },
   });
 
-  const mail = getEmailData(token, to, name, type);
+  const mail = getEmailData(id, token, to, name, type);
 
   smtpTransport.sendMail(mail, (err) => {
     if (err) {

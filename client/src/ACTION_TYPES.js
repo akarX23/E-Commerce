@@ -3,6 +3,10 @@ export const USER_AUTH = "user_auth";
 export const LOGOUT = "logout";
 export const SIGNUP = "signup";
 export const LOGIN = "login";
+export const VERIFY_EMAIL = "verify_email";
+export const RESEND_EMAIL = "resend_email";
+export const UPDATE_USER = "update_user";
+export const CLEAR_VERIFY = "clear_verify";
 
 //PRODUCT ACTION TYPES
 export const PRODUCT_LIST = "product_list";

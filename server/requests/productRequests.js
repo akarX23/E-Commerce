@@ -40,7 +40,6 @@ module.exports = function (app) {
   });
 
   app.post("/api/product/reviewUpdateLikes", auth, (req, res) => {
-    console.log("here");
     let id = req.query.id;
     Product.findById(id, (err, product) => {
       if (err) return res.status(200).json({ updateLikes: false, err });

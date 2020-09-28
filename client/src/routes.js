@@ -10,11 +10,17 @@ import Home from "./Containers/Home/home";
 import Product from "./Containers/Product/product";
 import Test from "./Containers/Test/test";
 import AddProduct from "./Containers/AddProduct/addproduct";
+import EmailConfirmation from "./Containers/EmailConfirmation/emailconfirmation";
 
 const Routes = () => {
   return (
     <Layout>
       <Switch>
+        <Route
+          path="/user/confirm/:id/:token"
+          exact
+          component={Auth(EmailConfirmation)}
+        />
         <Route
           path="/user/addproduct"
           exact

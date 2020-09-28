@@ -90,6 +90,7 @@ module.exports = function (app) {
             email: user.email,
             name: user.name,
             lastname: user.lastname,
+            image: user.imageURL,
           });
         });
       });
@@ -107,11 +108,11 @@ module.exports = function (app) {
     const email = req.body.email;
 
     User.findOne({ email: email }, (err, user) => {
-      if (err || user === null)
-        return res.status(200).json({ linksent: false });
-
+      if (err) return res.status(200).json({ linksent: false });
+      if (user === null)
+        return res.status(200).json({ linksent: false, userFound: false });
       if (user.validated === true)
-        return res.status(200).json({ verified: true });
+        return res.status(200).json({ linkVerified: true, linksent: false });
       user.generateAuthToken((err, user) => {
         if (err) return res.status(200).json({ linksent: false });
 
@@ -136,6 +137,7 @@ module.exports = function (app) {
       email: req.user.email,
       name: req.user.name,
       lastname: req.user.lastname,
+      image: req.user.imageURL,
     });
   });
 
@@ -184,6 +186,8 @@ module.exports = function (app) {
 
   app.get("/api/user/confirmemail", (req, res) => {
     let token = req.query.token;
+    let id = req.query.id;
+
     Token.findOne({ token: token }, (err, token) => {
       if (err)
         return res.status(200).json({
@@ -191,7 +195,7 @@ module.exports = function (app) {
           err,
         });
 
-      User.findByToken(req.query.token, (err, user) => {
+      User.findById(id, (err, user) => {
         if (err || user === null)
           return res.status(200).json({
             verified: false,
@@ -203,15 +207,27 @@ module.exports = function (app) {
             expired: true,
           });
         else if (user.validated === true)
-          return res.status(200).json({ verified: true });
+          return res.status(200).json({ verified: true, new: false });
+
         user.confirmEmail((err, user) => {
           if (err || user === null)
             return res.status(200).json({
               verified: false,
               err,
             });
+          res.cookie("auth", user.token);
           return res.status(200).json({
-            verified: true,
+            changeAuth: true,
+            verification: { verified: true, new: true },
+            user: {
+              isAuth: true,
+              id: user._id,
+              role: user.role,
+              email: user.email,
+              name: user.name,
+              lastname: user.lastname,
+              image: user.imageURL,
+            },
           });
         });
       });
@@ -225,10 +241,20 @@ module.exports = function (app) {
       req.user._id,
       req.body,
       { new: true },
-      (err, doc) => {
-        if (err) return res.status(400).json({ update: false, err });
-        if (!doc)
-          return res.json({ update: false, errorMessage: "User not found" });
+      (err, user) => {
+        if (err || !user) return res.status(200).json({ update: false, err });
+        return res.status(200).json({
+          update: true,
+          user: {
+            isAuth: true,
+            id: user._id,
+            role: user.role,
+            email: user.email,
+            name: user.name,
+            lastname: user.lastname,
+            image: user.imageURL,
+          },
+        });
       }
     );
   });

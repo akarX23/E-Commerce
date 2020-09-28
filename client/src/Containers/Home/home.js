@@ -216,7 +216,7 @@ class Home extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.products.list) {
-      if (first === false) {
+      if (first === false && nextProps.products.list.products) {
         var tags = [];
         nextProps.products.list.products.forEach((product) => {
           options.push(product.title);
@@ -377,7 +377,7 @@ class Home extends Component {
             </div>
           </div>
         ) : null}
-        {this.props.products.list ? (
+        {this.props.products.list && this.props.products.list.products ? (
           <div className="mx-auto gap-20 grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 w-3/4 sm:w-4/5 md:w-5/6">
             {this.props.products.list.products.map((product, i) => (
               <Fade bottom key={i} duration={300}>
@@ -388,7 +388,7 @@ class Home extends Component {
         ) : null}
         {this.state.loading === true ? <Loading /> : null}
         <div ref={this.itemLoading}></div>
-        {this.props.products.list ? (
+        {this.props.products.list && this.props.products.list.products ? (
           this.props.products.list.products.length > 0 ? (
             <ItemLoading allLoaded={!this.props.products.list.list} />
           ) : this.props.products.list.list === false ? (

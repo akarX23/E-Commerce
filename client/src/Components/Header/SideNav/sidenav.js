@@ -37,7 +37,10 @@ const SideNav = (props) => {
       return (
         <>
           <div className="w-full p-3 box-border py-4 mx-auto">
-            <Avatar classes={{ root: classes.avatar }} src={null}>
+            <Avatar
+              classes={{ root: classes.avatar }}
+              src={props.auth.user.image}
+            >
               {props.auth.user.name[0]}
             </Avatar>
             <div className="p-2 box-border w-full text-center">

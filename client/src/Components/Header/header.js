@@ -152,7 +152,10 @@ class Header extends Component {
           onClick={(event) => this.openMenu(event)}
         >
           {this.props.auth.user ? (
-            <Avatar classes={{ root: classes.avatar }} src={null}>
+            <Avatar
+              classes={{ root: classes.avatar }}
+              src={this.props.auth.user.image}
+            >
               {this.props.auth.user.name[0]}
             </Avatar>
           ) : null}

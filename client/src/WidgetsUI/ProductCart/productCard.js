@@ -14,10 +14,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 
 import "./productCard.css";
 
-import cimage1 from "../../assets/cmiage1.jpg";
-import cimage2 from "../../assets/cmiage2.jpg";
-import cimage3 from "../../assets/cmiage3.jpg";
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",

@@ -349,6 +349,36 @@ class Product extends Component {
     this.props.updateLikes(liked, disliked, ownerId, this.props.queries.id);
   };
 
+  renderUserReview = (review) => {
+    let liked = review.usersLiked.includes(this.props.user.user.id);
+    let disliked = review.usersDisliked.includes(this.props.user.user.id);
+    return (
+      <>
+        <Fade left duration={400}>
+          <Comment
+            {...this.state.myReview}
+            liked={liked}
+            disliked={disliked}
+            likes={review.usersLiked.length}
+            dislikes={review.usersDisliked.length}
+            sendCommentLikeRequest={(action) =>
+              this.sendCommentLikeRequest(
+                liked,
+                disliked,
+                action,
+                review.userInfo.id
+              )
+            }
+            userComment={true}
+            openReviewEdit={() => this.toggleRatingDialogue()}
+            openReviewDelete={() => this.toggleDeleteDialogue()}
+          />
+          <div className="border-b border-darktheme-700 mt-3 w-11/12 mx-auto"></div>
+        </Fade>
+      </>
+    );
+  };
+
   render() {
     const { classes } = this.props;
     const mobile = this.props.width === "xs";
@@ -543,19 +573,20 @@ class Product extends Component {
                       Rate this product
                     </Button>
                   </div>
-                  {this.state.myReview.rating ? (
-                    <>
-                      <Fade left duration={400}>
-                        <Comment
-                          {...this.state.myReview}
-                          userComment={true}
-                          openReviewEdit={() => this.toggleRatingDialogue()}
-                          openReviewDelete={() => this.toggleDeleteDialogue()}
-                        />
-                        <div className="border-b border-darktheme-700 mt-3 w-11/12 mx-auto"></div>
-                      </Fade>
-                    </>
-                  ) : null}
+                  {this.state.myReview.rating
+                    ? this.renderUserReview(this.state.myReview)
+                    : // <>
+                      //   <Fade left duration={400}>
+                      //     <Comment
+                      //       {...this.state.myReview}
+                      //       userComment={true}
+                      //       openReviewEdit={() => this.toggleRatingDialogue()}
+                      //       openReviewDelete={() => this.toggleDeleteDialogue()}
+                      //     />
+                      //     <div className="border-b border-darktheme-700 mt-3 w-11/12 mx-auto"></div>
+                      //   </Fade>
+                      // </>
+                      null}
                   {this.state.reviewList.length === 0 ? (
                     <div className="text-2xl text-darktheme-200 mx-auto pt-4">
                       This product has not been reviewed yet

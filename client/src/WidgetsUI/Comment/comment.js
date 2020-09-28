@@ -97,36 +97,35 @@ const Comment = ({
               DELETE
             </Button>
           </div>
-        ) : (
-          <div className="flex mt-2 w-2/5 justify-between">
-            <div className="flex items-center mr-2">
-              <IconButton
-                classes={{
-                  root: `${classes.likeControls} ${
-                    liked === true ? classes.filledLikedControls : ""
-                  }`,
-                }}
-                onClick={() => sendCommentLikeRequest("liked")}
-              >
-                <ThumbUpAltRoundedIcon fontSize="small" />
-              </IconButton>
-              <div className="text-darktheme-300 text-sm">{likes}</div>
-            </div>
-            <div className="flex items-center">
-              <IconButton
-                classes={{
-                  root: `${classes.likeControls} ${
-                    disliked === true ? classes.filledLikedControls : ""
-                  }`,
-                }}
-                onClick={() => sendCommentLikeRequest("disliked")}
-              >
-                <ThumbDownAltRoundedIcon fontSize="small" />
-              </IconButton>
-              <div className="text-darktheme-300 text-sm">{dislikes}</div>
-            </div>
+        ) : null}
+        <div className="flex mt-2 w-2/5 justify-between">
+          <div className="flex items-center mr-2">
+            <IconButton
+              classes={{
+                root: `${classes.likeControls} ${
+                  liked === true ? classes.filledLikedControls : ""
+                }`,
+              }}
+              onClick={() => sendCommentLikeRequest("liked")}
+            >
+              <ThumbUpAltRoundedIcon fontSize="small" />
+            </IconButton>
+            <div className="text-darktheme-300 text-sm">{likes}</div>
           </div>
-        )}
+          <div className="flex items-center">
+            <IconButton
+              classes={{
+                root: `${classes.likeControls} ${
+                  disliked === true ? classes.filledLikedControls : ""
+                }`,
+              }}
+              onClick={() => sendCommentLikeRequest("disliked")}
+            >
+              <ThumbDownAltRoundedIcon fontSize="small" />
+            </IconButton>
+            <div className="text-darktheme-300 text-sm">{dislikes}</div>
+          </div>
+        </div>
       </div>
     </div>
   );

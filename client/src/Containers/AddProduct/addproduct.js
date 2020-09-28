@@ -17,6 +17,7 @@ import Alert from "@material-ui/lab/Alert";
 import ProductDetailsAdd from "./productDetailsAdd";
 import ImageAdd from "./imageAdd";
 import ConfirmProduct from "./confirmProduct";
+import Confirmed from "./confirmed";
 import Loading from "../../WidgetsUI/Loading/loading";
 
 const styles = (theme) => ({
@@ -71,7 +72,7 @@ const stepIconStyles = makeStyles((theme) => ({
 
 class AddProduct extends Component {
   state = {
-    activeStep: 1,
+    activeStep: 0,
     productDetails: {
       description: "",
       price: "",
@@ -132,7 +133,7 @@ class AddProduct extends Component {
   };
 
   confirmDetails = () => {
-    this.setState({ loading: true, activeStep: this.state.activeStep + 1 });
+    this.setState({ loading: true });
     document.body.style.overflow = "hidden";
     this.props.addProduct(this.state.productDetails, this.state.images);
   };
@@ -144,15 +145,12 @@ class AddProduct extends Component {
           loading: false,
           alertMessage: "Something went wrong.",
           severity: "error",
-          activeStep: this.state.activeStep - 1,
         });
       else {
         this.setState({
           loading: false,
-          alertMessage: "Product successfully added. Redirecting you...",
-          severity: "success",
+          activeStep: this.state.activeStep + 1,
         });
-        setTimeout(() => nextProps.history.push("/user/myproducts"), 3000);
       }
       document.body.style.overflow = "auto";
     }
@@ -186,7 +184,7 @@ class AddProduct extends Component {
             }
           />
         );
-      default:
+      case 2:
         return (
           <ConfirmProduct
             productDetails={this.state.productDetails}
@@ -198,6 +196,10 @@ class AddProduct extends Component {
             confirmDetails={() => this.confirmDetails()}
           />
         );
+      case 3:
+        return <Confirmed />;
+      default:
+        return "Unknown Step";
     }
   };
 

@@ -126,8 +126,6 @@ productSchema.methods.updateLikes = function (
     }
   }
 
-  console.log("Product after liking: " + product);
-
   product.save((err, product) => {
     if (err) return cb(err);
     return cb(null, product);

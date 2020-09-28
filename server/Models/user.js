@@ -58,6 +58,7 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  imageURL: { type: String, default: "" },
 });
 
 userSchema.pre("save", function (next) {
@@ -129,13 +130,14 @@ userSchema.methods.confirmEmail = function (cb) {
 userSchema.methods.sendConfirmationEmail = function (id, token, cb) {
   let user = this;
 
-  const newtoken = new Token({ user_id: id, token: token });
+  const newtoken = new Token({ token: token });
   newtoken.save((err) => {
     if (err) return cb(err);
   });
 
   sendEmail(
-    user.token,
+    id,
+    token,
     user.email,
     `${user.name} ${user.lastname}`,
     "confirmEmail",

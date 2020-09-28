@@ -68,7 +68,6 @@ const ImageAdd = ({ imageData, fileData, stepChange }) => {
 
   const getFileData = (newFiles) => {
     let imagePreviews = [];
-    console.table(newFiles);
     newFiles = newFiles.filter((file, i) => {
       if (types.includes(file.type) === false) {
         setError("Invalid file type discarded.");
@@ -82,14 +81,13 @@ const ImageAdd = ({ imageData, fileData, stepChange }) => {
       newFiles = newFiles.slice(0, 12 - files.length);
     }
 
-    setFiles([...files, ...newFiles]);
     newFiles.forEach((file, i) => {
       const reader = new FileReader();
       reader.onload = (e) => {
-        imagePreviews.push(e.target.result);
+        imagePreviews.push(reader.result);
         if (i === newFiles.length - 1) {
-          console.table(imagePreviews);
           setImages([...images, ...imagePreviews]);
+          setFiles([...files, ...newFiles]);
         }
       };
       reader.readAsDataURL(file);
