@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import "./draganddrop.css";
 
@@ -78,6 +79,19 @@ class DragAndDrop extends Component {
         <div className="p-3 overflow-auto w-full h-full bg-darktheme-900 bg-opacity-25 rounded-lg">
           {this.props.children}
         </div>
+        {this.props.reading && (
+          <div className="absolute inset-0 z-20 bg-darktheme-900 bg-opacity-75 flex flex-col items-center justify-center">
+            <CircularProgress
+              color="primary"
+              disableShrink
+              size={40}
+              thickness={4}
+            />
+            <div className="text-xl font-medium text-darktheme-200">
+              Reading files
+            </div>
+          </div>
+        )}
       </div>
     );
   }

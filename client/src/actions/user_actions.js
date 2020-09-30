@@ -8,6 +8,8 @@ import {
   RESEND_EMAIL,
   UPDATE_USER,
   CLEAR_VERIFY,
+  RESET_PASSWORD,
+  RESET_PASSWORD_CONFIRMATION,
 } from "../ACTION_TYPES";
 
 const PRESET = "b2meImages";
@@ -123,5 +125,29 @@ export async function clearVerify() {
   return {
     type: CLEAR_VERIFY,
     payload: null,
+  };
+}
+
+export async function resetPasswordLink(email, loggedIn, id) {
+  const request = await axios
+    .post("/api/user/resetPasswordLink", { email, loggedIn, id })
+    .then((response) => {
+      return response.data;
+    });
+
+  return {
+    type: RESET_PASSWORD,
+    payload: request,
+  };
+}
+
+export async function resetPasswordConfirm(token, id, tokenVerified, password) {
+  const request = await axios
+    .post("/api/user/resetPassword", { token, id, tokenVerified, password })
+    .then((response) => response.data);
+
+  return {
+    type: RESET_PASSWORD_CONFIRMATION,
+    payload: request,
   };
 }

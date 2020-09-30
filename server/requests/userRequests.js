@@ -127,6 +127,88 @@ module.exports = function (app) {
     });
   });
 
+  app.post("/api/user/resetPasswordLink", (req, res) => {
+    let { email, id } = req.body;
+
+    User.findOne({ email: email }, (err, user) => {
+      if (err) return res.status(200).json({ linksent: false });
+      if (user === null)
+        return res.status(200).json({ linksent: false, userFound: false });
+      user.generateAuthToken((err, user) => {
+        if (err) return res.status(200).json({ linksent: false });
+        if (user._id.toString().localeCompare(id) === 0)
+          res.cookie("auth", user.token);
+
+        user.sendPasswordResetLink(user.token, user._id, (err) => {
+          if (err) return res.status(200).json({ linksent: false });
+
+          return res.status(200).json({
+            linksent: true,
+          });
+        });
+      });
+    });
+  });
+
+  app.post("/api/user/resetPassword", (req, res) => {
+    let { token, id, tokenVerified, password } = req.body;
+    console.log(req.body);
+    if (tokenVerified === false) {
+      Token.findOneAndUpdate(
+        { token: token },
+        { $unset: { token: 1 } },
+        (err, token) => {
+          if (err)
+            return res.status(200).json({
+              reset: false,
+              err,
+            });
+          else if (!token)
+            return res.status(200).json({
+              reset: false,
+              expired: true,
+              err,
+            });
+          User.findById(id, (err, user) => {
+            if (err || !user)
+              return res.status(200).json({ reset: false, expired: true, err });
+            res.cookie("auth", null);
+            return res.status(200).json({ reset: false, expired: false });
+          });
+        }
+      );
+    } else {
+      User.findByToken(token, (err, user) => {
+        if (err) return res.status(200).json({ reset: false, err });
+        else if (!user) return res.status(200).json({ reset: false });
+        console.log(user);
+
+        user.generateAuthToken((err, user) => {
+          if (err) return res.status(200).json({ reset: false, err });
+
+          res.cookie("auth", user.token);
+          user.password = password;
+
+          user.save((err, user) => {
+            if (err) return res.status(200).json({ reset: false, err });
+            return res.status(200).json({
+              reset: true,
+              user: {
+                isAuth: true,
+                id: user._id,
+                role: user.role,
+                email: user.email,
+                name: user.name,
+                lastname: user.lastname,
+                image: user.imageURL,
+              },
+            });
+          });
+        });
+      });
+    }
+  });
+
   ///GET REQUESTS///
 
   app.get("/api/auth", auth, (req, res) => {

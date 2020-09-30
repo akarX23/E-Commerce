@@ -7,6 +7,8 @@ export const VERIFY_EMAIL = "verify_email";
 export const RESEND_EMAIL = "resend_email";
 export const UPDATE_USER = "update_user";
 export const CLEAR_VERIFY = "clear_verify";
+export const RESET_PASSWORD = "reset_password";
+export const RESET_PASSWORD_CONFIRMATION = "reset_password_confirmation";
 
 //PRODUCT ACTION TYPES
 export const PRODUCT_LIST = "product_list";

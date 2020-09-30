@@ -9,6 +9,7 @@ import Alert from "@material-ui/lab/Alert";
 
 import DragAndDrop from "../../WidgetsUI/DragAndDrop/draganddrop";
 import UploadImageCard from "../../WidgetsUI/UploadImageCard/uploadimagecard";
+import AutorenewIcon from "@material-ui/icons/Autorenew";
 
 const useStyles = makeStyles((theme) => ({
   prevStep: {
@@ -50,6 +51,7 @@ const ImageAdd = ({ imageData, fileData, stepChange }) => {
   const [images, setImages] = useState([...imageData]);
   const [files, setFiles] = useState([...fileData]);
   const [error, setError] = useState("");
+  const [imageRendering, setImageRendering] = useState(false);
 
   const changeStep = (changeInStep) => {
     if (images.length === 0)
@@ -85,9 +87,15 @@ const ImageAdd = ({ imageData, fileData, stepChange }) => {
       const reader = new FileReader();
       reader.onload = (e) => {
         imagePreviews.push(reader.result);
+      };
+      reader.onloadstart = () => {
+        setImageRendering(true);
+      };
+      reader.onloadend = () => {
         if (i === newFiles.length - 1) {
           setImages([...images, ...imagePreviews]);
           setFiles([...files, ...newFiles]);
+          setImageRendering(false);
         }
       };
       reader.readAsDataURL(file);
@@ -146,6 +154,7 @@ const ImageAdd = ({ imageData, fileData, stepChange }) => {
               classes={{ root: classes.upload }}
               component="span"
               startIcon={<BackupIcon fontSize="large" />}
+              endIcon={imageRendering && <AutorenewIcon />}
             >
               Upload
             </Button>
@@ -159,16 +168,19 @@ const ImageAdd = ({ imageData, fileData, stepChange }) => {
           <DragAndDrop
             handleDrop={(files) => getDraggedFiles(files)}
             dropped={images.length > 0}
+            reading={imageRendering}
           >
             <div className="mx-auto w-full grid grid-cols-2 md:grid-cols-4 sm:grid-cols-3 gap-6">
-              {files.map((file, i) => (
-                <UploadImageCard
-                  key={i}
-                  file={file}
-                  image={images[i]}
-                  deleteImage={() => handleDeleteImage(i)}
-                />
-              ))}
+              {files.map((file, i) => {
+                return (
+                  <UploadImageCard
+                    key={i}
+                    file={file}
+                    image={images[i]}
+                    deleteImage={() => handleDeleteImage(i)}
+                  />
+                );
+              })}
             </div>
           </DragAndDrop>
         </div>

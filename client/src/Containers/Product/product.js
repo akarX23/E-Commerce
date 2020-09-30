@@ -24,6 +24,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import GetAppIcon from "@material-ui/icons/GetApp";
+import EditIcon from "@material-ui/icons/Edit";
 
 import PageNotFound from "../../WidgetsUI/PageNotFound/pageNotFound";
 import Loading from "../../WidgetsUI/Loading/loading";
@@ -44,8 +45,8 @@ const styles = (theme) => ({
     width: "50px",
     height: "50px",
   },
-  addToCart: {
-    color: "#fff",
+  productAction: {
+    color: "#fff !important",
     fontSize: "20px",
     transition: "ease-in 0.2s all",
     backgroundColor: "#fb641b",
@@ -188,7 +189,7 @@ class Product extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.product.product) {
+    if (nextProps.product.product && nextProps.product.product.found === true) {
       let myReview = {},
         rating = 5,
         ratingHover = 5,
@@ -261,7 +262,7 @@ class Product extends Component {
         vertical,
         horizontal,
       });
-    }
+    } else this.setState({ loading: false });
   }
 
   getQuantityLabel = (quantity) => {
@@ -447,15 +448,27 @@ class Product extends Component {
                           </div>
                         ))}
                       </div>
-                      <Button
-                        classes={{ root: classes.addToCart }}
-                        variant="contained"
-                        startIcon={
-                          <AddShoppingCartIcon style={{ fontSize: 30 }} />
-                        }
-                      >
-                        ADD TO CART
-                      </Button>
+                      {details.owner._id !== this.props.user.user.id ? (
+                        <Button
+                          classes={{ root: classes.productAction }}
+                          variant="contained"
+                          startIcon={
+                            <AddShoppingCartIcon style={{ fontSize: 30 }} />
+                          }
+                        >
+                          ADD TO CART
+                        </Button>
+                      ) : (
+                        <Button
+                          classes={{ root: classes.productAction }}
+                          variant="contained"
+                          startIcon={<EditIcon style={{ fontSize: 30 }} />}
+                          component="a"
+                          href={`/product/edit/${this.props.queries.id}`}
+                        >
+                          Edit this product
+                        </Button>
+                      )}
                     </div>
                   </Scene>
                 </Controller>
@@ -575,18 +588,7 @@ class Product extends Component {
                   </div>
                   {this.state.myReview.rating
                     ? this.renderUserReview(this.state.myReview)
-                    : // <>
-                      //   <Fade left duration={400}>
-                      //     <Comment
-                      //       {...this.state.myReview}
-                      //       userComment={true}
-                      //       openReviewEdit={() => this.toggleRatingDialogue()}
-                      //       openReviewDelete={() => this.toggleDeleteDialogue()}
-                      //     />
-                      //     <div className="border-b border-darktheme-700 mt-3 w-11/12 mx-auto"></div>
-                      //   </Fade>
-                      // </>
-                      null}
+                    : null}
                   {this.state.reviewList.length === 0 ? (
                     <div className="text-2xl text-darktheme-200 mx-auto pt-4">
                       This product has not been reviewed yet

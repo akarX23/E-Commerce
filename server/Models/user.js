@@ -90,7 +90,6 @@ userSchema.methods.generateAuthToken = function generateAuthToken(cb) {
 userSchema.methods.comparePasswords = function (candidatePassword, cb) {
   let user = this;
   bcrypt.compare(candidatePassword, user.password, (err, isMatch) => {
-    if (err) return cb(err);
     return cb(null, isMatch);
   });
 };
@@ -141,6 +140,27 @@ userSchema.methods.sendConfirmationEmail = function (id, token, cb) {
     user.email,
     `${user.name} ${user.lastname}`,
     "confirmEmail",
+    (err) => {
+      if (err) return cb(err);
+      return cb(null);
+    }
+  );
+};
+
+userSchema.methods.sendPasswordResetLink = function (token, id, cb) {
+  let user = this;
+
+  const newtoken = new Token({ token: token });
+  newtoken.save((err) => {
+    if (err) return cb(err);
+  });
+
+  sendEmail(
+    id,
+    token,
+    user.email,
+    `${user.name} ${user.lastname}`,
+    "passwordResetEmail",
     (err) => {
       if (err) return cb(err);
       return cb(null);

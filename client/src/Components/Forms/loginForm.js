@@ -152,7 +152,10 @@ class LoginForm extends Component {
               </Fade>
               <Fade bottom collapse duration={1200}>
                 <Link to="/user/forgot" className="">
-                  <p className="text-xs text-blue-400 hover:underline">
+                  <p
+                    className="text-xs text-blue-400 hover:underline"
+                    onClick={() => this.props.hideModal()}
+                  >
                     Forgot Password?
                   </p>
                 </Link>

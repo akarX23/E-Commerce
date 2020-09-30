@@ -3,11 +3,15 @@ import TextField from "@material-ui/core/TextField";
 import ChipInput from "material-ui-chip-input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Fade from "react-reveal/Fade";
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const Input = ({
+  typeOf,
   label,
   multiline,
   Icon,
+  EndIcon,
   rows,
   rowsMax,
   classes,
@@ -21,6 +25,8 @@ const Input = ({
   error,
   handleBlur,
   readonly,
+  altIconAction,
+  altIconTooltip,
 }) => {
   return (
     <div className="flex w-full mt-8 flex-col items-start">
@@ -37,13 +43,30 @@ const Input = ({
             variant="outlined"
             classes={{ root: classes.textField }}
             InputProps={{
+              type: typeOf ? typeOf : "text",
               readOnly: readonly,
               autoComplete: "new-password",
               startAdornment: (
                 <>
                   {Icon ? (
-                    <InputAdornment position="start" className={classes.icon}>
+                    <InputAdornment className={classes.icon}>
                       <Icon />
+                    </InputAdornment>
+                  ) : null}
+                </>
+              ),
+              endAdornment: (
+                <>
+                  {EndIcon ? (
+                    <InputAdornment>
+                      <Tooltip placement="bottom" title={altIconTooltip}>
+                        <IconButton
+                          onClick={() => altIconAction()}
+                          classes={{ root: classes.altIcon }}
+                        >
+                          <EndIcon />
+                        </IconButton>
+                      </Tooltip>
                     </InputAdornment>
                   ) : null}
                 </>

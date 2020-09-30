@@ -457,6 +457,7 @@ class Header extends Component {
               this.props.login(data);
             }}
             changeForm={() => this.changeForm()}
+            hideModal={() => this.toggleAuthHandler("showLogIn")}
           />
         </Modal>
         <Modal

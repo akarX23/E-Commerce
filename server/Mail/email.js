@@ -2,8 +2,9 @@ const nodemailer = require("nodemailer");
 const config = require("../config/config").get(process.env.NODE_ENV);
 
 //TEMPLATES
-const { Test } = require("./views/test.js");
-const { confirmMail } = require("./views/confirmMail.js");
+const { Test } = require("./views/test");
+const { confirmMail } = require("./views/confirmMail");
+const { passwordResetMail } = require("./views/resetPassword");
 
 const getEmailData = (id, token, to, name, template) => {
   let data = null;
@@ -23,6 +24,14 @@ const getEmailData = (id, token, to, name, template) => {
         to,
         subject: "Verification of email almost done!",
         html: confirmMail(id, token, config.URL, name),
+      };
+      break;
+    case "passwordResetEmail":
+      data = {
+        from: "B2ME <b2meecommercewebsite@gmail.com>",
+        to,
+        subject: "Reset your password for B2ME",
+        html: passwordResetMail(id, token, config.URL, name),
       };
       break;
     default:

@@ -7,6 +7,8 @@ import {
   RESEND_EMAIL,
   UPDATE_USER,
   CLEAR_VERIFY,
+  RESET_PASSWORD,
+  RESET_PASSWORD_CONFIRMATION,
 } from "../ACTION_TYPES";
 
 export default (state = {}, { type, payload }) => {
@@ -14,11 +16,23 @@ export default (state = {}, { type, payload }) => {
     case USER_AUTH:
       return { ...state, user: payload };
     case LOGOUT:
-      return { ...state, user: payload };
+      return {
+        ...state,
+        user: payload,
+        verification: { verified: false, linksent: null },
+      };
     case SIGNUP:
-      return { ...state, user: payload, verification: { verified: false } };
+      return {
+        ...state,
+        user: payload,
+        verification: { verified: false, linksent: null },
+      };
     case LOGIN:
-      return { ...state, user: payload, verification: { verified: false } };
+      return {
+        ...state,
+        user: payload,
+        verification: { verified: false, linksent: null },
+      };
     case VERIFY_EMAIL: {
       if (payload.changeAuth === true)
         return {
@@ -37,6 +51,27 @@ export default (state = {}, { type, payload }) => {
     }
     case CLEAR_VERIFY:
       return { ...state, verification: null, update: null };
+    case RESET_PASSWORD:
+      return { ...state, resetPasswordLink: payload };
+    case RESET_PASSWORD_CONFIRMATION: {
+      if (payload.expired !== null && payload.reset === false)
+        return {
+          ...state,
+          resetPassword: { ...payload },
+          user: { isAuth: false },
+        };
+      else if (payload.reset === false)
+        return {
+          ...state,
+          resetPassword: { ...payload },
+        };
+      else
+        return {
+          ...state,
+          resetPassword: { reset: true },
+          user: { ...payload.user },
+        };
+    }
     default:
       return state;
   }

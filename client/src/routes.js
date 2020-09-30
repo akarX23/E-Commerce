@@ -11,11 +11,25 @@ import Product from "./Containers/Product/product";
 import Test from "./Containers/Test/test";
 import AddProduct from "./Containers/AddProduct/addproduct";
 import EmailConfirmation from "./Containers/EmailConfirmation/emailconfirmation";
+import RequestVerification from "./Containers/RequestVerification/requestverification";
+import ForgotPassword from "./Containers/ForgotPassword/forgotpassword";
+import ResetPasword from "./Containers/ResetPassword/resetpassword";
 
 const Routes = () => {
   return (
     <Layout>
       <Switch>
+        <Route path="/user/forgot" exact component={Auth(ForgotPassword)} />
+        <Route
+          path="/user/reset/:id/:token"
+          exact
+          component={Auth(ResetPasword)}
+        />
+        <Route
+          path="/user/requestverification"
+          exact
+          component={Auth(RequestVerification)}
+        />
         <Route
           path="/user/confirm/:id/:token"
           exact
