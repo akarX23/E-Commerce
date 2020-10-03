@@ -4,6 +4,7 @@ import { auth } from "../actions/user_actions";
 import { bindActionCreators } from "redux";
 import AuthRevoked from "../Components/AuthRevoked/authrevoked";
 import Loading from "../WidgetsUI/Loading/loading";
+import { Prompt } from "react-router-dom";
 
 export default function (ComposedClass, authUser, authAdmin) {
   class AuthenticationCheck extends Component {
@@ -36,11 +37,14 @@ export default function (ComposedClass, authUser, authAdmin) {
       if (this.state.loading) return <Loading />;
       if (this.state.authRevoke) return <AuthRevoked />;
       return (
-        <ComposedClass
-          user={this.props.user.user}
-          history={this.props.history}
-          queries={this.props.match.params}
-        />
+        <>
+          <ComposedClass
+            user={this.props.user.user}
+            history={this.props.history}
+            queries={this.props.match.params}
+            {...this.props}
+          />
+        </>
       );
     }
   }

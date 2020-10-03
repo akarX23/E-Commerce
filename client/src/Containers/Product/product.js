@@ -32,9 +32,6 @@ import { Controller, Scene } from "react-scrollmagic";
 import Fade from "react-reveal/Fade";
 import Comment from "../../WidgetsUI/Comment/comment";
 
-import cimage1 from "../../assets/cmiage1.jpg";
-import cimage2 from "../../assets/cmiage2.jpg";
-import cimage3 from "../../assets/cmiage3.jpg";
 import "./product.css";
 
 const styles = (theme) => ({
@@ -151,17 +148,6 @@ const rateHover = {
 
 class Product extends Component {
   state = {
-    images: [
-      cimage1,
-      cimage2,
-      cimage3,
-      cimage1,
-      cimage2,
-      cimage3,
-      cimage1,
-      cimage2,
-      cimage3,
-    ],
     activeIndex: 0,
     loading: false,
     myReview: {},

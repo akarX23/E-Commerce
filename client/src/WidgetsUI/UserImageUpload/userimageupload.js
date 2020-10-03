@@ -15,23 +15,6 @@ const useStyles = makeStyles((theme) => ({
   input: {
     display: "none",
   },
-  save: {
-    outline: "none !important",
-    border: "none !important",
-    width: "150px",
-    [theme.breakpoints.up(420)]: {
-      marginTop: "30px",
-      marginRight: "30px",
-    },
-    [theme.breakpoints.down(420)]: {
-      marginBottom: "30px",
-    },
-    backgroundColor: "#48bb78",
-    "&:hover": {
-      backgroundColor: "#2f855a",
-    },
-    color: "white",
-  },
 }));
 
 const UserImageUpload = ({ image, onChangeImage, file }) => {

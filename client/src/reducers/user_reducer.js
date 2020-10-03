@@ -9,6 +9,7 @@ import {
   CLEAR_VERIFY,
   RESET_PASSWORD,
   RESET_PASSWORD_CONFIRMATION,
+  MY_PROFILE,
 } from "../ACTION_TYPES";
 
 export default (state = {}, { type, payload }) => {
@@ -72,6 +73,8 @@ export default (state = {}, { type, payload }) => {
           user: { ...payload.user },
         };
     }
+    case MY_PROFILE:
+      return { ...state, myprofile: payload };
     default:
       return state;
   }

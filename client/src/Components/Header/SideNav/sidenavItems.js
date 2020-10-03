@@ -63,7 +63,7 @@ const SidenavItems = ({ isAuth, role, ...rest }) => {
       ),
       generateItem(
         "My Profile",
-        "/user",
+        "/user/myprofile",
         <AccountBoxIcon style={{ fill: "#fff" }} />,
         true,
         null

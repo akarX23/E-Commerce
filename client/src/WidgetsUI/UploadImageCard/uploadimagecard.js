@@ -13,7 +13,7 @@ import "./uploadImageCard.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "auto",
+    width: "full",
     borderRadius: "10px",
     border: "none !important",
     boxShadow: "0 0 3px 2px #000",
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 const UploadImageCard = ({ file, image, deleteImage, readonly }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down(400));
+  const mobile = useMediaQuery(theme.breakpoints.down(420));
   let name = null,
     type = null,
     size = null;
@@ -89,9 +89,11 @@ const UploadImageCard = ({ file, image, deleteImage, readonly }) => {
           }
         }}
         onMouseOver={() => {
-          setTooltip(true);
           if (!readonly) {
             setHover(true);
+            setTooltip(true);
+          } else {
+            setHover(false);
           }
         }}
         onMouseOut={() => {
@@ -105,7 +107,7 @@ const UploadImageCard = ({ file, image, deleteImage, readonly }) => {
           <div className="w-full">
             <img
               src={image}
-              className="object-cover d-block object-center w-full h-48"
+              className="object-cover object-center w-full h-48"
               alt="product_image_review"
             />
           </div>
@@ -138,17 +140,23 @@ const UploadImageCard = ({ file, image, deleteImage, readonly }) => {
             </CardContent>
           )}
 
-          <div
-            className={`absolute flex justify-center items-center inset-0 transition-all duration-200 ease-in bg-black ${
-              hover === true
-                ? "bg-opacity-50 opacity-100"
-                : "bg-opacity-0 opacity-0"
-            }`}
-          >
-            <DeleteIcon
-              style={{ fontSize: 60, color: "white", marginTop: "-40px" }}
-            />
-          </div>
+          {!readonly && (
+            <div
+              className={`absolute flex justify-center items-center inset-0 transition-all duration-200 ease-in bg-black ${
+                hover === true
+                  ? "bg-opacity-50 opacity-100"
+                  : "bg-opacity-0 opacity-0"
+              }`}
+            >
+              <DeleteIcon
+                style={{
+                  fontSize: 60,
+                  color: "white",
+                  marginTop: file ? "-40px" : "0",
+                }}
+              />
+            </div>
+          )}
         </>
       </Card>
     </ClickAwayListener>

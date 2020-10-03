@@ -91,6 +91,8 @@ module.exports = function (app) {
             name: user.name,
             lastname: user.lastname,
             image: user.imageURL,
+            address: [...user.address],
+            mobile: user.mobile,
           });
         });
       });
@@ -201,6 +203,8 @@ module.exports = function (app) {
                 name: user.name,
                 lastname: user.lastname,
                 image: user.imageURL,
+                address: [...user.address],
+                mobile: user.mobile,
               },
             });
           });
@@ -220,6 +224,8 @@ module.exports = function (app) {
       name: req.user.name,
       lastname: req.user.lastname,
       image: req.user.imageURL,
+      address: [...req.user.address],
+      mobile: req.user.mobile,
     });
   });
 
@@ -240,7 +246,17 @@ module.exports = function (app) {
 
     User.findById(id, (err, user) => {
       if (err) return res.status(200).json({ found: false, err });
-      return res.status(200).json({ found: true, user });
+      return res.status(200).json({
+        found: true,
+        userProfile: {
+          name: user.name,
+          lastname: user.lastname,
+          email: user.email,
+          address: [...user.address],
+          mobile: user.mobile,
+          image: user.imageURL,
+        },
+      });
     });
   });
 
@@ -309,6 +325,8 @@ module.exports = function (app) {
               name: user.name,
               lastname: user.lastname,
               image: user.imageURL,
+              address: [...user.address],
+              mobile: user.mobile,
             },
           });
         });
@@ -335,6 +353,8 @@ module.exports = function (app) {
             name: user.name,
             lastname: user.lastname,
             image: user.imageURL,
+            address: [...user.address],
+            mobile: user.mobile,
           },
         });
       }

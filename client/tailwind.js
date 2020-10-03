@@ -15,6 +15,7 @@ module.exports = {
       xl: "1280px",
       mdmax: { max: "767px" },
       mbmax: { max: "420px" },
+      smmax: { max: "640px" },
     },
     colors: {
       transparent: "transparent",

@@ -14,6 +14,7 @@ import EmailConfirmation from "./Containers/EmailConfirmation/emailconfirmation"
 import RequestVerification from "./Containers/RequestVerification/requestverification";
 import ForgotPassword from "./Containers/ForgotPassword/forgotpassword";
 import ResetPasword from "./Containers/ResetPassword/resetpassword";
+import ProfileDisplayAndEdit from "./Containers/ProfileDisplayAndEdit/profiledisplayandedit";
 
 const Routes = () => {
   return (
@@ -39,6 +40,11 @@ const Routes = () => {
           path="/user/addproduct"
           exact
           component={Auth(AddProduct, true, false)}
+        />
+        <Route
+          path="/user/myprofile"
+          exact
+          component={Auth(ProfileDisplayAndEdit, true, false)}
         />
         <Route path="/product/:id" exact component={Auth(Product)} />
         <Route path="/test" exact component={Test} />

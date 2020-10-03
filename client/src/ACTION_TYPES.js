@@ -9,6 +9,7 @@ export const UPDATE_USER = "update_user";
 export const CLEAR_VERIFY = "clear_verify";
 export const RESET_PASSWORD = "reset_password";
 export const RESET_PASSWORD_CONFIRMATION = "reset_password_confirmation";
+export const MY_PROFILE = "my_profile";
 
 //PRODUCT ACTION TYPES
 export const PRODUCT_LIST = "product_list";

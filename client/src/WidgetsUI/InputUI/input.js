@@ -30,7 +30,7 @@ const Input = ({
 }) => {
   return (
     <div className="flex w-full mt-8 flex-col items-start">
-      <div className="text-darktheme-200 w-auto text mb:text-xl">{label}</div>
+      <div className="text-darktheme-200 w-auto mb:text-xl">{label}</div>
       <div className="w-full mt-2">
         {!chipped ? (
           <TextField

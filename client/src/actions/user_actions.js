@@ -10,6 +10,7 @@ import {
   CLEAR_VERIFY,
   RESET_PASSWORD,
   RESET_PASSWORD_CONFIRMATION,
+  MY_PROFILE,
 } from "../ACTION_TYPES";
 
 const PRESET = "b2meImages";
@@ -106,8 +107,10 @@ async function uploadUserImage(imageSource) {
 }
 
 export async function updateUser(userdetails, imageSource) {
-  let imageURL = await uploadUserImage(imageSource);
-
+  let imageURL = "";
+  if (imageSource) {
+    imageURL = await uploadUserImage(imageSource);
+  }
   userdetails = { ...userdetails, imageURL };
   const request = await axios
     .post("/api/user/update", userdetails)
@@ -148,6 +151,17 @@ export async function resetPasswordConfirm(token, id, tokenVerified, password) {
 
   return {
     type: RESET_PASSWORD_CONFIRMATION,
+    payload: request,
+  };
+}
+
+export async function getProfileDetails() {
+  const request = await axios
+    .get("/api/user/profile")
+    .then((response) => response.data);
+
+  return {
+    type: MY_PROFILE,
     payload: request,
   };
 }
