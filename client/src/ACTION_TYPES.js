@@ -19,3 +19,4 @@ export const DELETE_REVIEW = "delete_review";
 export const UPDATE_LIKES = "update_likes";
 export const UPLOAD_IMAGES = "upload_images";
 export const ADD_PRODUCT = "add_product";
+export const USER_PRODUCT_LIST = "user_product_list";

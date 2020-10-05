@@ -495,7 +495,7 @@ class ProfileDisplayAndEdit extends Component {
           closeDialogue={() => this.setState({ addAddress: false })}
           onSaveAddress={(address) => this.handleSaveAddress(address, 0, true)}
         />
-        {/* <NavigationPrompt when={this.state.changed}></NavigationPrompt> */}
+        <NavigationPrompt when={this.state.changed}></NavigationPrompt>
       </>
     );
   }

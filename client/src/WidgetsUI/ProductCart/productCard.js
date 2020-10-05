@@ -73,6 +73,8 @@ const ProductCard = ({
   _id,
   owner,
   userReview,
+  noTags,
+  noExpand,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -86,7 +88,12 @@ const ProductCard = ({
         elevation={5}
         href={`/product/${_id}`}
       >
-        <div className="block card-container w-auto card-container h-auto rounded-lg overflow-hidden hover:scale-105 transition-all transform duration-500 ease-in-out text-white">
+        <div
+          className={`${
+            !noExpand &&
+            "card-container  hover:scale-105 transition-all transform duration-500 ease-in-out"
+          } block w-auto h-auto rounded-lg overflow-hidden text-white`}
+        >
           <Carousel
             interval={3000}
             controls={false}
@@ -157,20 +164,22 @@ const ProductCard = ({
               <div className="text-darktheme-400 text-3xl ml-2">{price}</div>
             </div>
           </CardContent>
-          <CardActions classes={{ root: classes.cardActions }}>
-            <div className="w-full text-center flex-wrap flex">
-              {tags.map((tag, i) => (
-                <Chip
-                  label={"#" + tag}
-                  key={i}
-                  variant="outlined"
-                  size={matches ? "small" : "medium"}
-                  clickable
-                  classes={{ root: classes.tags }}
-                />
-              ))}
-            </div>
-          </CardActions>
+          {!noTags && (
+            <CardActions classes={{ root: classes.cardActions }}>
+              <div className="w-full text-center flex-wrap flex">
+                {tags.map((tag, i) => (
+                  <Chip
+                    label={"#" + tag}
+                    key={i}
+                    variant="outlined"
+                    size={matches ? "small" : "medium"}
+                    clickable
+                    classes={{ root: classes.tags }}
+                  />
+                ))}
+              </div>
+            </CardActions>
+          )}
         </div>
       </Card>
     </>

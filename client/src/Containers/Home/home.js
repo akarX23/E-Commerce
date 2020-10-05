@@ -326,7 +326,6 @@ class Home extends Component {
                           this.setState({ searchArray })
                         }
                         options={options}
-                        test={() => console.log("Submit")}
                       />
                       <Button
                         variant="contained"

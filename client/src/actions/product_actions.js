@@ -5,6 +5,7 @@ import {
   DELETE_REVIEW,
   UPDATE_LIKES,
   ADD_PRODUCT,
+  USER_PRODUCT_LIST,
 } from "../ACTION_TYPES";
 import axios from "axios";
 
@@ -143,5 +144,33 @@ export async function addProduct(productDetails, productImages) {
   return {
     type: ADD_PRODUCT,
     payload: request,
+  };
+}
+
+export async function userProductList() {
+  const request = await axios
+    .get("/api/product/user-product-list")
+    .then((response) => response.data);
+
+  return {
+    type: USER_PRODUCT_LIST,
+    payload: request,
+  };
+}
+
+export async function deleteProducts(products) {
+  let idsToRemove = [];
+  products.forEach((product) => idsToRemove.push(product._id));
+
+  const deleteRequest = await axios
+    .post("/api/product/delete", { idsToRemove: [...idsToRemove] })
+    .then((response) => response.data);
+  const newProducts = await axios
+    .get("/api/product/user-product-list")
+    .then((response) => response.data);
+
+  return {
+    type: USER_PRODUCT_LIST,
+    payload: { ...deleteRequest, ...newProducts },
   };
 }

@@ -64,6 +64,15 @@ module.exports = function (app) {
     });
   });
 
+  app.post("/api/product/delete", auth, (req, res) => {
+    let removeIds = [...req.body.idsToRemove];
+
+    Product.deleteMany({ _id: { $in: [...removeIds] } }, (err) => {
+      if (err) return res.status(200).json({ deleted: false });
+      return res.status(200).json({ deleted: true });
+    });
+  });
+
   ///GET///
 
   app.get("/api/product/all", (req, res) => {
@@ -78,12 +87,8 @@ module.exports = function (app) {
   });
 
   app.get("/api/product/user-product-list", auth, (req, res) => {
-    Product.find({ ownerId: req.user._id }, (err, products) => {
+    Product.find({ "owner._id": req.user._id }, (err, products) => {
       if (err) return res.status(400).json({ list: false, err });
-      if (products.length === 0)
-        return res
-          .status(200)
-          .json({ list: false, errorMessage: "No products to display" });
       return res.status(200).json({ list: true, products });
     });
   });
@@ -122,29 +127,6 @@ module.exports = function (app) {
   });
 
   ///DELETE
-
-  app.delete("/api/product/delete", auth, (req, res) => {
-    let id = req.query.id;
-    Product.findById(id, (err, product) => {
-      if (err) return res.status(400).send(err);
-      if (!product)
-        return res
-          .status(200)
-          .json({ deleted: false, errorMessage: "Product not found" });
-      if (
-        req.user.role === 1 ||
-        req.user._id.toString().localeCompare(product.ownerId) === 0
-      ) {
-        Product.deleteOne({ _id: id }, (err, product) => {
-          if (err) return res.status(400).send(err);
-          return res.status(200).json({ delete: true, product });
-        });
-      } else
-        return res
-          .status(200)
-          .json({ delete: false, errorMessage: "You are not authorised!" });
-    });
-  });
 
   app.delete("/api/product/deleteReview", auth, (req, res) => {
     let id = req.query.id;

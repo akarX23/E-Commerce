@@ -68,8 +68,8 @@ const ConfirmProduct = ({
   const classes = useStyles();
 
   return (
-    <div className="mx-auto px-3 w-full">
-      <div className="flex w-full mt-3 px-6 justify-end">
+    <div className="mx-auto px-6 w-full">
+      <div className="flex w-full mt-3 justify-end">
         <Button
           variant="contained"
           color="primary"

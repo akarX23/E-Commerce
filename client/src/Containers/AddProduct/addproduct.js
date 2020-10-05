@@ -13,6 +13,7 @@ import PhotoLibraryRoundedIcon from "@material-ui/icons/PhotoLibraryRounded";
 import CheckCircleRoundedIcon from "@material-ui/icons/CheckCircleRounded";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+import NavigationPrompt from "react-router-navigation-prompt";
 
 import ProductDetailsAdd from "./productDetailsAdd";
 import ImageAdd from "./imageAdd";
@@ -260,6 +261,7 @@ class AddProduct extends Component {
             {this.state.alertMessage}
           </Alert>
         </Snackbar>
+        <NavigationPrompt when={this.state.changed}></NavigationPrompt>
       </>
     );
   }

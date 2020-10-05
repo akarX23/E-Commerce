@@ -62,7 +62,7 @@ class Header extends Component {
     },
     loading: false,
     options: [
-      { text: "My Profile", divide: true, link: "/myprofile" },
+      { text: "My Profile", divide: true, link: "/user/myprofile" },
       { text: "Delete User", link: "/user/delete" },
     ],
     showHeader: true,

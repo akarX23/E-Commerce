@@ -402,7 +402,7 @@ class Product extends Component {
                       <Tooltip title="Download Image" placement="left">
                         <div className="absolute z-10 right-0 top-0 bg-darktheme-800 rounded-b-lg">
                           <a
-                            href={this.state.images[this.state.activeIndex]}
+                            href={details.imageURLs[this.state.activeIndex]}
                             download
                           >
                             <IconButton
@@ -415,7 +415,7 @@ class Product extends Component {
                       </Tooltip>
                       <div
                         className={`flex ${
-                          this.state.images.length <= 6 ? "justify-center" : ""
+                          details.imageURLs.length <= 6 ? "justify-center" : ""
                         } overflow-x-auto overflow-y-hidden transition-all duration-200 ease-in-out`}
                       >
                         {details.imageURLs.map((imagesrc, i) => (
@@ -460,7 +460,7 @@ class Product extends Component {
                 </Controller>
               </div>
               <div
-                className={`break-words flex flex-col items-start justify-start box-border ml-4 mr-2 `}
+                className={`break-words w-full flex flex-col items-start justify-start box-border ml-4 mr-2 `}
               >
                 <div className="sm:text-4xl text-2xl flex justify-between w-full mt-3 sm:mt-0 text-darktheme-200">
                   <p>{details.title}</p>
@@ -555,7 +555,9 @@ class Product extends Component {
                     Seller
                   </div>
                   <div className="ml-4 font-sans text-base sm:text-xl text-darktheme-500">
-                    {details.owner.name + " " + details.owner.lastname}
+                    {details.owner._id !== this.props.user.user.id
+                      ? `${details.owner.name + " " + details.owner.lastname}`
+                      : "You"}
                   </div>
                 </div>
                 <div className="flex flex-col mt-1 w-full">

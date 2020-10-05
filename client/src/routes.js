@@ -15,6 +15,7 @@ import RequestVerification from "./Containers/RequestVerification/requestverific
 import ForgotPassword from "./Containers/ForgotPassword/forgotpassword";
 import ResetPasword from "./Containers/ResetPassword/resetpassword";
 import ProfileDisplayAndEdit from "./Containers/ProfileDisplayAndEdit/profiledisplayandedit";
+import MyProducts from "./Containers/MyProducts/myproducts";
 
 const Routes = () => {
   return (
@@ -30,6 +31,11 @@ const Routes = () => {
           path="/user/requestverification"
           exact
           component={Auth(RequestVerification)}
+        />
+        <Route
+          path="/user/myproducts"
+          exact
+          component={Auth(MyProducts, true, false)}
         />
         <Route
           path="/user/confirm/:id/:token"
