@@ -8,17 +8,11 @@ module.exports = function (app) {
   app.post("/api/product/add", auth, (req, res) => {
     const product = new Product({
       ...req.body,
-      owner: {
-        _id: req.user._id,
-        role: req.user.role,
-        email: req.user.email,
-        name: req.user.name,
-        lastname: req.user.lastname,
-      },
+      owner: req.user._id,
     });
-
     product.save((err, product) => {
       if (err || !product) return res.status(400).json({ err, added: false });
+
       return res.status(200).json({ added: true, product });
     });
   });
@@ -34,7 +28,11 @@ module.exports = function (app) {
 
       product.addOrUpdateReview(req.body, req.user, (err, product) => {
         if (err) return res.status(400).json({ reviewAdded: false, err });
-        return res.status(200).json({ reviewAdded: true, product });
+
+        product.save((err, product) => {
+          if (err) return res.status(400).json({ reviewAdded: false, err });
+          return res.status(200).json({ reviewAdded: true, product });
+        });
       });
     });
   });
@@ -46,6 +44,7 @@ module.exports = function (app) {
 
       product.updateLikes(req.body, req.user._id.toString(), (err, product) => {
         if (err) return res.status(200).json({ updateLikes: false, err });
+        // console.log(product);
         return res.status(200).json({ updateLikes: true, product });
       });
     });
@@ -76,18 +75,23 @@ module.exports = function (app) {
   ///GET///
 
   app.get("/api/product/all", (req, res) => {
-    Product.find({}, (err, products) => {
-      if (err) return res.status(400).json({ list: false, err });
-      if (products.length === 0)
-        return res
-          .status(200)
-          .json({ list: false, errorMessage: "No products to display" });
-      return res.status(200).json({ list: true, products });
-    });
+    Product.find({})
+      .populate({
+        path: "owner",
+        select: "-password -token  -__v -validated",
+      })
+      .exec((err, products) => {
+        if (err) return res.status(400).json({ list: false, err });
+        if (products.length === 0)
+          return res
+            .status(200)
+            .json({ list: false, errorMessage: "No products to display" });
+        return res.status(200).json({ list: true, products });
+      });
   });
 
   app.get("/api/product/user-product-list", auth, (req, res) => {
-    Product.find({ "owner._id": req.user._id }, (err, products) => {
+    Product.find({ owner: req.user._id }, (err, products) => {
       if (err) return res.status(400).json({ list: false, err });
       return res.status(200).json({ list: true, products });
     });
@@ -96,14 +100,23 @@ module.exports = function (app) {
   app.get("/api/product", (req, res) => {
     let id = req.query.id;
 
-    Product.findById(id, (err, product) => {
-      if (err) return res.status(200).json({ found: false, err });
-      if (!product)
-        return res
-          .status(200)
-          .json({ found: false, errorMessage: "Product not found" });
-      return res.status(200).json({ found: true, product });
-    });
+    Product.findById(id)
+      .populate({
+        path: "owner",
+        select: "-password -token  -__v -validated",
+      })
+      .populate({
+        path: "userReview.userInfo",
+        select: "-password -token  -__v -validated",
+      })
+      .exec((err, product) => {
+        if (err) return res.status(200).json({ found: false, err });
+        if (!product)
+          return res
+            .status(200)
+            .json({ found: false, errorMessage: "Product not found" });
+        return res.status(200).json({ found: true, product });
+      });
   });
 
   ///UPDATE///
@@ -132,10 +145,10 @@ module.exports = function (app) {
     let id = req.query.id;
     Product.findById(id, (err, product) => {
       if (err) return res.status(200).send({ deleted: false, err });
-
+      console.log(product);
       product.deleteReview(req.user._id, (err, product) => {
         if (err) return res.status(200).send({ deleted: false, err });
-
+        // console.log(product);
         return res.status(200).send({ deleted: true, product });
       });
     });

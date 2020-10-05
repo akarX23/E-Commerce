@@ -343,6 +343,7 @@ module.exports = function (app) {
       { new: true },
       (err, user) => {
         if (err || !user) return res.status(200).json({ update: false, err });
+
         return res.status(200).json({
           update: true,
           user: {

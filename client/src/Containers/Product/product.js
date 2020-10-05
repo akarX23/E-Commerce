@@ -223,7 +223,7 @@ class Product extends Component {
       reviewList = reviewList.filter((review) => {
         if (
           nextProps.user.user.isAuth === true &&
-          review.userInfo.id === nextProps.user.user.id
+          review.userInfo._id === nextProps.user.user.id
         ) {
           myReview = review;
           rating = review.rating;
@@ -353,7 +353,7 @@ class Product extends Component {
                 liked,
                 disliked,
                 action,
-                review.userInfo.id
+                review.userInfo._id
               )
             }
             userComment={true}
@@ -602,7 +602,7 @@ class Product extends Component {
                                 liked,
                                 disliked,
                                 action,
-                                review.userInfo.id
+                                review.userInfo._id
                               )
                             }
                           />

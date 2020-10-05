@@ -18,10 +18,10 @@ const productSchema = mongoose.Schema(
       required: true,
     },
     tags: [String],
-    owner: {},
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     userReview: [
       {
-        userInfo: {},
+        userInfo: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
         rating: Number,
         comment: String,
         _id: false,
@@ -38,12 +38,37 @@ const productSchema = mongoose.Schema(
   { timestamps: true }
 );
 
+productSchema.pre("find", function () {
+  this.populate({
+    path: "owner",
+    select: "-password -token  -__v -validated",
+  }).populate({
+    path: "userReview.userInfo",
+    select: "-password -token  -__v -validated",
+  });
+});
+
+productSchema.pre("save", function (next) {
+  this.populate({
+    path: "owner",
+    select: "-password -token  -__v -validated",
+  })
+    .populate({
+      path: "userReview.userInfo",
+      select: "-password -token  -__v -validated",
+    })
+    .execPopulate()
+    .then(function () {
+      next();
+    });
+});
+
 productSchema.methods.addOrUpdateReview = function (data, user, cb) {
   let product = this;
   let found = false;
 
   for (const review of product.userReview) {
-    if (`${review.userInfo.id}`.localeCompare(user._id) === 0) {
+    if (`${review.userInfo}`.localeCompare(user._id) === 0) {
       product.totalRating -= review.rating;
       review.rating = data.rating;
       review.comment = data.comment;
@@ -55,9 +80,8 @@ productSchema.methods.addOrUpdateReview = function (data, user, cb) {
   }
 
   if (!found) {
-    const userInfo = { id: user._id, name: user.name, lastname: user.lastname };
     product.userReview.unshift({
-      userInfo: userInfo,
+      userInfo: user._id,
       rating: data.rating,
       comment: data.comment,
       updatedAt: Date.now(),
@@ -66,17 +90,14 @@ productSchema.methods.addOrUpdateReview = function (data, user, cb) {
   }
   product.rating = product.totalRating / (product.userReview.length + 1);
 
-  product.save((err, product) => {
-    if (err) return cb(err);
-    return cb(null, product);
-  });
+  return cb(null, product);
 };
 
 productSchema.methods.deleteReview = function (userId, cb) {
   let product = this;
 
   product.userReview = product.userReview.filter((review) => {
-    if (review.userInfo.id.toString().localeCompare(userId) === 0) {
+    if (review.userInfo.toString().localeCompare(userId) === 0) {
       product.totalRating -= review.rating;
       return false;
     }
@@ -99,7 +120,7 @@ productSchema.methods.updateLikes = function (
   let product = this;
 
   for (const review of product.userReview) {
-    if (`${review.userInfo.id}`.localeCompare(ownerId) === 0) {
+    if (`${review.userInfo}`.localeCompare(ownerId) === 0) {
       if (liked === false)
         review.usersLiked = review.usersLiked.filter((id) => {
           return userId.localeCompare(id) !== 0;
