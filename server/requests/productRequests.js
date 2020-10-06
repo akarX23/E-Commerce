@@ -19,8 +19,9 @@ module.exports = function (app) {
 
   app.post("/api/product/review", auth, (req, res) => {
     let id = req.query.id;
-    Product.findById(id, (err, product) => {
+    Product.find({ _id: id }, (err, products) => {
       if (err) return res.status(200).json({ reviewAdded: false, err });
+      let product = products[0];
       if (!product)
         return res
           .status(200)
@@ -39,12 +40,12 @@ module.exports = function (app) {
 
   app.post("/api/product/reviewUpdateLikes", auth, (req, res) => {
     let id = req.query.id;
-    Product.findById(id, (err, product) => {
+    Product.find({ _id: id }, (err, products) => {
       if (err) return res.status(200).json({ updateLikes: false, err });
+      let product = products[0];
 
       product.updateLikes(req.body, req.user._id.toString(), (err, product) => {
         if (err) return res.status(200).json({ updateLikes: false, err });
-        // console.log(product);
         return res.status(200).json({ updateLikes: true, product });
       });
     });
@@ -75,19 +76,16 @@ module.exports = function (app) {
   ///GET///
 
   app.get("/api/product/all", (req, res) => {
-    Product.find({})
-      .populate({
-        path: "owner",
-        select: "-password -token  -__v -validated",
-      })
-      .exec((err, products) => {
-        if (err) return res.status(400).json({ list: false, err });
-        if (products.length === 0)
-          return res
-            .status(200)
-            .json({ list: false, errorMessage: "No products to display" });
-        return res.status(200).json({ list: true, products });
-      });
+    Product.find({}, (err, products) => {
+      if (err) {
+        return res.status(400).json({ list: false, err });
+      }
+      if (products.length === 0)
+        return res
+          .status(200)
+          .json({ list: false, errorMessage: "No products to display" });
+      return res.status(200).json({ list: true, products });
+    });
   });
 
   app.get("/api/product/user-product-list", auth, (req, res) => {
@@ -100,23 +98,16 @@ module.exports = function (app) {
   app.get("/api/product", (req, res) => {
     let id = req.query.id;
 
-    Product.findById(id)
-      .populate({
-        path: "owner",
-        select: "-password -token  -__v -validated",
-      })
-      .populate({
-        path: "userReview.userInfo",
-        select: "-password -token  -__v -validated",
-      })
-      .exec((err, product) => {
-        if (err) return res.status(200).json({ found: false, err });
-        if (!product)
-          return res
-            .status(200)
-            .json({ found: false, errorMessage: "Product not found" });
-        return res.status(200).json({ found: true, product });
-      });
+    Product.find({ _id: id }, (err, products) => {
+      if (err) return res.status(200).json({ found: false, err });
+      let product = products[0];
+
+      if (!product)
+        return res
+          .status(200)
+          .json({ found: false, errorMessage: "Product not found" });
+      return res.status(200).json({ found: true, product });
+    });
   });
 
   ///UPDATE///
@@ -125,11 +116,12 @@ module.exports = function (app) {
     let id = req.query.id;
 
     Product.findOneAndUpdate(
-      { _id: id, ownerId: req.user._id },
+      { _id: id },
       req.body,
       { new: true },
       (err, product) => {
         if (err) return res.status(400).send(err);
+
         if (!product)
           return res
             .status(200)
@@ -143,12 +135,12 @@ module.exports = function (app) {
 
   app.delete("/api/product/deleteReview", auth, (req, res) => {
     let id = req.query.id;
-    Product.findById(id, (err, product) => {
+    Product.find({ _id: id }, (err, products) => {
       if (err) return res.status(200).send({ deleted: false, err });
-      console.log(product);
+      let product = products[0];
+
       product.deleteReview(req.user._id, (err, product) => {
         if (err) return res.status(200).send({ deleted: false, err });
-        // console.log(product);
         return res.status(200).send({ deleted: true, product });
       });
     });

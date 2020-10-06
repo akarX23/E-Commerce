@@ -68,7 +68,7 @@ productSchema.methods.addOrUpdateReview = function (data, user, cb) {
   let found = false;
 
   for (const review of product.userReview) {
-    if (`${review.userInfo}`.localeCompare(user._id) === 0) {
+    if (`${review.userInfo._id}`.localeCompare(user._id) === 0) {
       product.totalRating -= review.rating;
       review.rating = data.rating;
       review.comment = data.comment;
@@ -97,7 +97,7 @@ productSchema.methods.deleteReview = function (userId, cb) {
   let product = this;
 
   product.userReview = product.userReview.filter((review) => {
-    if (review.userInfo.toString().localeCompare(userId) === 0) {
+    if (review.userInfo._id.toString().localeCompare(userId) === 0) {
       product.totalRating -= review.rating;
       return false;
     }
@@ -120,7 +120,7 @@ productSchema.methods.updateLikes = function (
   let product = this;
 
   for (const review of product.userReview) {
-    if (`${review.userInfo}`.localeCompare(ownerId) === 0) {
+    if (`${review.userInfo._id}`.localeCompare(ownerId) === 0) {
       if (liked === false)
         review.usersLiked = review.usersLiked.filter((id) => {
           return userId.localeCompare(id) !== 0;

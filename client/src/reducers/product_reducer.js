@@ -6,6 +6,7 @@ import {
   UPDATE_LIKES,
   ADD_PRODUCT,
   USER_PRODUCT_LIST,
+  EDIT_PRODUCT,
 } from "../ACTION_TYPES";
 
 export default (state = {}, { type, payload }) => {
@@ -24,6 +25,8 @@ export default (state = {}, { type, payload }) => {
       return { ...state, productAdd: payload };
     case USER_PRODUCT_LIST:
       return { ...state, userProducts: payload };
+    case EDIT_PRODUCT:
+      return { ...state, product: { ...payload, found: true } };
     default:
       return state;
   }

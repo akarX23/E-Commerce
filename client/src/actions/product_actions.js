@@ -6,6 +6,7 @@ import {
   UPDATE_LIKES,
   ADD_PRODUCT,
   USER_PRODUCT_LIST,
+  EDIT_PRODUCT,
 } from "../ACTION_TYPES";
 import axios from "axios";
 
@@ -143,6 +144,20 @@ export async function addProduct(productDetails, productImages) {
 
   return {
     type: ADD_PRODUCT,
+    payload: request,
+  };
+}
+
+export async function editProduct(productDetails, productImages, id) {
+  let imageURLs = await uploadImages(productImages);
+  productDetails = { ...productDetails, imageURLs };
+
+  const request = await axios
+    .post(`/api/product/edit?id=${id}`, { ...productDetails })
+    .then((response) => response.data);
+
+  return {
+    type: EDIT_PRODUCT,
     payload: request,
   };
 }

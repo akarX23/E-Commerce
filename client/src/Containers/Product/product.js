@@ -168,7 +168,7 @@ class Product extends Component {
     disliked: false,
   };
 
-  componentDidMount() {
+  componentWillMount() {
     this.setState({ loading: true }, () =>
       this.props.getProductDetails(this.props.queries.id)
     );
@@ -370,7 +370,6 @@ class Product extends Component {
     const { classes } = this.props;
     const mobile = this.props.width === "xs";
     const details = this.state.product;
-
     return (
       <>
         {this.props.product.product ? (
@@ -434,6 +433,7 @@ class Product extends Component {
                           </div>
                         ))}
                       </div>
+
                       {details.owner._id !== this.props.user.user.id ? (
                         <Button
                           classes={{ root: classes.productAction }}
