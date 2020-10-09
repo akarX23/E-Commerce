@@ -17,6 +17,7 @@ import ResetPasword from "./Containers/ResetPassword/resetpassword";
 import ProfileDisplayAndEdit from "./Containers/ProfileDisplayAndEdit/profiledisplayandedit";
 import MyProducts from "./Containers/MyProducts/myproducts";
 import EditProduct from "./Containers/EditProduct/editproduct";
+import AdminPanel from "./Containers/AdminPanel/adminpanel";
 
 const Routes = () => {
   return (
@@ -52,6 +53,11 @@ const Routes = () => {
           path="/user/myprofile"
           exact
           component={Auth(ProfileDisplayAndEdit, true, false)}
+        />
+        <Route
+          path="/admin/userlist"
+          exact
+          component={Auth(AdminPanel, true, true)}
         />
         <Route
           path="/product/edit/:id"

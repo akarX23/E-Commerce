@@ -11,6 +11,11 @@ import {
   RESET_PASSWORD,
   RESET_PASSWORD_CONFIRMATION,
   MY_PROFILE,
+  USER_LIST,
+  ADD_USER_ADMIN,
+  CLEAR_ADMIN_FUNC,
+  PROMOTE_USER,
+  DELETE_USER,
 } from "../ACTION_TYPES";
 
 const PRESET = "b2meImages";
@@ -162,6 +167,59 @@ export async function getProfileDetails() {
 
   return {
     type: MY_PROFILE,
+    payload: request,
+  };
+}
+
+export async function getUsersList() {
+  const request = await axios.get("/api/admin/user-list").then((response) => {
+    return response.data;
+  });
+
+  return {
+    type: USER_LIST,
+    payload: request,
+  };
+}
+
+export async function addUserByAdmin(details) {
+  const request = await axios
+    .post("/api/admin/addUser", { ...details, validated: true })
+    .then((response) => response.data);
+
+  return {
+    type: ADD_USER_ADMIN,
+    payload: request,
+  };
+}
+
+export async function promoteUser(id) {
+  const request = await axios
+    .post("/api/admin/promoteUser", { id })
+    .then((response) => response.data);
+
+  console.log(request);
+
+  return {
+    type: PROMOTE_USER,
+    payload: request,
+  };
+}
+
+export function clearAdminActions() {
+  return {
+    type: CLEAR_ADMIN_FUNC,
+    payload: null,
+  };
+}
+
+export async function deleteUser(id) {
+  const request = await axios
+    .delete(`/api/user/delete?id=${id}`)
+    .then((response) => response.data);
+
+  return {
+    type: DELETE_USER,
     payload: request,
   };
 }

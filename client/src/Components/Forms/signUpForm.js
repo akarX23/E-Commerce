@@ -256,12 +256,18 @@ class SignUpForm extends Component {
   render() {
     return (
       <>
-        <div
-          className="text-sm text-blue-400 hover:underline form-toggle cursor-pointer"
-          onClick={() => this.props.changeForm()}
-        >
-          Already a user? Log In here.
-        </div>
+        {this.props.adminSignUp ? (
+          <div className="text-black font-bold w-full text-center">
+            Adding a user as an admin doesn't require verification.
+          </div>
+        ) : (
+          <div
+            className="text-sm text-blue-400 hover:underline form-toggle cursor-pointer"
+            onClick={() => this.props.changeForm()}
+          >
+            Already a user? Log In here.
+          </div>
+        )}
         <form onSubmit={(e) => this.submitForm(e)}>
           <div className="flex flex-col justify-evenly items-center p-2 pl-4 h-auto w-auto">
             <Input
@@ -396,23 +402,27 @@ class SignUpForm extends Component {
               </div>
             </div>
             <Fade bottom duration={1000}>
-              <div className="text-gray-400 text-xs text-left box-border">
-                Address fields optional. Invalid values will be discarded. You
-                can add multiple addresses later.
-              </div>
-              <button
-                type="submit"
-                className="py-2 px-4 submit text-base my-2 bg-darktheme-800 rounded-lg w-auto hover:bg-gray-100 sign-up transition-all duration-300 font-bold"
-              >
-                {this.state.loading ? (
-                  <div className="loading"></div>
-                ) : (
-                  "Sign Up!"
+              <>
+                <div className="text-gray-400 text-xs text-left box-border">
+                  Address fields optional. Invalid values will be discarded. You
+                  can add multiple addresses later.
+                </div>
+                <button
+                  type="submit"
+                  className="py-2 px-4 submit text-base my-2 bg-darktheme-800 rounded-lg w-auto hover:bg-gray-100 sign-up transition-all duration-300 font-bold"
+                >
+                  {this.state.loading ? (
+                    <div className="loading"></div>
+                  ) : (
+                    "Sign Up!"
+                  )}
+                </button>
+                {!this.props.adminSignUp && (
+                  <p className="text-black font-bold font-serif">
+                    An email will be sent to you for confirmation.
+                  </p>
                 )}
-              </button>
-              <p className="text-black font-bold font-serif">
-                An email will be sent to you for confirmation.
-              </p>
+              </>
             </Fade>
           </div>
         </form>

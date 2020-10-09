@@ -377,7 +377,7 @@ class Home extends Component {
           </div>
         ) : null}
         {this.props.products.list && this.props.products.list.products ? (
-          <div className="mx-auto gap-20 grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 w-3/4 sm:w-4/5 md:w-5/6">
+          <div className="mx-auto gap-10 grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 w-11/12">
             {this.props.products.list.products.map((product, i) => (
               <Fade bottom key={i} duration={300}>
                 <ProductCard {...product} />

@@ -60,7 +60,7 @@ const useStyles = makeStyles({
     backgroundColor: "#33383D",
     paddingLeft: "7px",
     paddingRight: "7px",
-    boxShadow: "0 0 4px 3px #0  00",
+    boxShadow: "0 0 4px 3px #000",
   },
   sortMenuItem: {
     color: "#D2D8DD !important",
@@ -236,7 +236,7 @@ const Filter = (props) => {
     <>
       <ClickAwayListener onClickAway={() => setfilterOpen(false)}>
         <div className="filterContainer flex flex-col items-end">
-          <Bounce right when={filterOpen} unmountOnExit duration={700}>
+          <Bounce right when={filterOpen} collapse unmountOnExit duration={700}>
             <div className="rounded-lg mb-1 p-2 flex flex-col bg-darktheme-800 items-center justify-start">
               <div className="flex justify-between items-center w-full px-1">
                 <div className="text-darktheme-100 text-base">Rating</div>

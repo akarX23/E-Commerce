@@ -10,6 +10,11 @@ import {
   RESET_PASSWORD,
   RESET_PASSWORD_CONFIRMATION,
   MY_PROFILE,
+  USER_LIST,
+  ADD_USER_ADMIN,
+  CLEAR_ADMIN_FUNC,
+  PROMOTE_USER,
+  DELETE_USER,
 } from "../ACTION_TYPES";
 
 export default (state = {}, { type, payload }) => {
@@ -75,6 +80,16 @@ export default (state = {}, { type, payload }) => {
     }
     case MY_PROFILE:
       return { ...state, myprofile: payload };
+    case USER_LIST:
+      return { ...state, userList: payload };
+    case ADD_USER_ADMIN:
+      return { ...state, adminActions: payload };
+    case CLEAR_ADMIN_FUNC:
+      return { ...state, adminActions: null };
+    case PROMOTE_USER:
+      return { ...state, adminActions: payload };
+    case DELETE_USER:
+      return { ...state, adminActions: payload };
     default:
       return state;
   }

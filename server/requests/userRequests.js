@@ -213,6 +213,77 @@ module.exports = function (app) {
     }
   });
 
+  app.post("/api/admin/addUser", auth, (req, res) => {
+    User.findOne({ email: req.body.email }, (err, user) => {
+      if (err)
+        return res.status(200).json({
+          success: false,
+          err,
+        });
+      if (user)
+        return res.status(200).json({
+          success: false,
+          found: true,
+        });
+
+      const newUser = new User({ ...req.body });
+
+      newUser.save((err, user) => {
+        if (err)
+          return res.status(200).json({
+            userAdded: false,
+            err,
+          });
+
+        return res.status(200).json({
+          success: true,
+          added: true,
+          user: {
+            _id: user._id,
+            role: user.role,
+            email: user.email,
+            name: user.name,
+            lastname: user.lastname,
+            image: user.imageURL,
+            mobile: user.mobile,
+          },
+        });
+      });
+    });
+  });
+
+  app.post("/api/admin/promoteUser", auth, (req, res) => {
+    let id = req.body.id;
+
+    User.findById(id, (err, user) => {
+      if (err) return res.status(200).json({ success: false, err });
+      user.role = 1;
+      user.save((err, user) => {
+        if (err)
+          return res.status(200).json({
+            success: false,
+            err,
+          });
+        user.password = null;
+        user.address = null;
+
+        return res.status(200).json({
+          success: true,
+          promoted: true,
+          user: {
+            _id: user._id,
+            role: user.role,
+            email: user.email,
+            name: user.name,
+            lastname: user.lastname,
+            image: user.imageURL,
+            mobile: user.mobile,
+          },
+        });
+      });
+    });
+  });
+
   ///GET REQUESTS///
 
   app.get("/api/auth", auth, (req, res) => {
@@ -227,6 +298,24 @@ module.exports = function (app) {
       address: [...req.user.address],
       mobile: req.user.mobile,
     });
+  });
+
+  app.get("/api/admin/user-list", auth, (req, res) => {
+    User.find({}, "-password -address", (err, users) => {
+      if (err) return res.status(400).json({ list: false, err });
+      return res.status(200).json({
+        list: true,
+        users,
+      });
+    });
+
+    // User.getUserList(req.body, (err, users) => {
+    //   if (err) return res.status(400).json({ list: false, err });
+    //   return res.status(200).json({
+    //     list: true,
+    //     users,
+    //   });
+    // });
   });
 
   app.get("/api/user/logout", auth, (req, res) => {
@@ -257,17 +346,6 @@ module.exports = function (app) {
           image: user.imageURL,
         },
       });
-    });
-  });
-
-  app.get("/api/user/user-list", (req, res) => {
-    User.find({ role: 0 }, (err, users) => {
-      if (err) return res.status(200).json({ found: false, err });
-      if (users.length === 0)
-        return res
-          .status(200)
-          .json({ list: false, errorMessage: "No Users to display" });
-      return res.status(200).json({ found: true, users });
     });
   });
 
@@ -372,11 +450,24 @@ module.exports = function (app) {
       req.user._id.toString().localeCompare(id) === 0
     ) {
       User.findById(id, (err, user) => {
-        if (err || !user) return res.status(400).json({ delete: false, err });
+        if (err || !user)
+          return res.status(400).json({ success: false, delete: false, err });
 
         user.deleteUser((err) => {
           if (err) return res.status(400).json({ delete: false, err });
-          return res.status(200).json({ delete: true });
+          return res.status(200).json({
+            success: true,
+            deleted: true,
+            user: {
+              _id: user._id,
+              role: user.role,
+              email: user.email,
+              name: user.name,
+              lastname: user.lastname,
+              image: user.imageURL,
+              mobile: user.mobile,
+            },
+          });
         });
       });
     }

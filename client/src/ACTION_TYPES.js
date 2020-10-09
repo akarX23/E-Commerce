@@ -11,6 +11,11 @@ export const RESET_PASSWORD = "reset_password";
 export const RESET_PASSWORD_CONFIRMATION = "reset_password_confirmation";
 export const MY_PROFILE = "my_profile";
 export const EDIT_PRODUCT = "edit_product";
+export const USER_LIST = "user_list";
+export const ADD_USER_ADMIN = "add_user_admin";
+export const CLEAR_ADMIN_FUNC = "clear_admin_functions";
+export const PROMOTE_USER = "promote_user";
+export const DELETE_USER = "delete_user";
 
 //PRODUCT ACTION TYPES
 export const PRODUCT_LIST = "product_list";

@@ -34,62 +34,39 @@ const useStyles = makeStyles((theme) => ({
 const SidenavItems = ({ isAuth, role, ...rest }) => {
   const classes = useStyles();
 
-  const generateItem = (
-    text,
-    link = null,
-    icon,
-    authorized,
-    adminLink,
-    authHandler = null
-  ) => {
+  const generateItem = (text, link = null, icon, authHandler = null) => {
     return {
       text,
       link,
       icon,
-      authorized,
-      adminLink,
       authHandler,
     };
   };
 
   const authList = [
     [
-      generateItem(
-        "Home",
-        "/",
-        <HomeIcon style={{ fill: "#fff" }} />,
-        null,
-        null
-      ),
+      generateItem("Home", "/", <HomeIcon style={{ fill: "#fff" }} />),
       generateItem(
         "My Profile",
         "/user/myprofile",
-        <AccountBoxIcon style={{ fill: "#fff" }} />,
-        true,
-        null
+        <AccountBoxIcon style={{ fill: "#fff" }} />
       ),
       generateItem(
         "My Cart",
         "/user/mycart",
-        <ShoppingCartIcon style={{ fill: "#fff" }} />,
-        true,
-        null
+        <ShoppingCartIcon style={{ fill: "#fff" }} />
       ),
       generateItem(
         "My Orders",
         "/user/myorders",
-        <LocalMallIcon style={{ fill: "#fff" }} />,
-        true,
-        null
+        <LocalMallIcon style={{ fill: "#fff" }} />
       ),
     ],
     [
       generateItem(
         "My Products",
         "/user/myproducts",
-        <StoreSharpIcon style={{ fill: "#fff" }} />,
-        true,
-        null
+        <StoreSharpIcon style={{ fill: "#fff" }} />
       ),
       generateItem(
         "Add Product",
@@ -100,9 +77,7 @@ const SidenavItems = ({ isAuth, role, ...rest }) => {
           className="view-grid-add text-white w-6 h-6"
         >
           <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
-        </svg>,
-        true,
-        null
+        </svg>
       ),
     ],
     [
@@ -120,65 +95,41 @@ const SidenavItems = ({ isAuth, role, ...rest }) => {
             clipRule="evenodd"
           />
         </svg>,
-        true,
-        null,
         "showLogout"
       ),
-      generateItem(
-        "About Us",
-        "/About",
-        <InfoIcon style={{ fill: "#fff" }} />,
-        null,
-        null
-      ),
+      generateItem("About Us", "/about", <InfoIcon style={{ fill: "#fff" }} />),
       generateItem(
         "Contact Us",
         "/contact",
-        <ContactSupportIcon style={{ fill: "#fff" }} />,
-        null,
-        null
+        <ContactSupportIcon style={{ fill: "#fff" }} />
       ),
     ],
   ];
 
   const authAdminList = [
     [
-      generateItem(
-        "Home",
-        "/",
-        <HomeIcon style={{ fill: "#fff" }} />,
-        null,
-        null
-      ),
+      generateItem("Home", "/", <HomeIcon style={{ fill: "#fff" }} />),
       generateItem(
         "My Profile",
-        "/user",
-        <AccountBoxIcon style={{ fill: "#fff" }} />,
-        true,
-        null
+        "/user/myprofile",
+        <AccountBoxIcon style={{ fill: "#fff" }} />
       ),
       generateItem(
         "My Cart",
         "/user/mycart",
-        <ShoppingCartIcon style={{ fill: "#fff" }} />,
-        true,
-        null
+        <ShoppingCartIcon style={{ fill: "#fff" }} />
       ),
       generateItem(
         "My Orders",
         "/user/myorders",
-        <LocalMallIcon style={{ fill: "#fff" }} />,
-        true,
-        null
+        <LocalMallIcon style={{ fill: "#fff" }} />
       ),
     ],
     [
       generateItem(
         "My Products",
         "/user/myproducts",
-        <StoreSharpIcon style={{ fill: "#fff" }} />,
-        true,
-        null
+        <StoreSharpIcon style={{ fill: "#fff" }} />
       ),
       generateItem(
         "Add Product",
@@ -189,32 +140,24 @@ const SidenavItems = ({ isAuth, role, ...rest }) => {
           className="view-grid-add text-white w-6 h-6"
         >
           <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
-        </svg>,
-        true,
-        null
+        </svg>
       ),
     ],
     [
       generateItem(
         "User List",
         "/admin/userlist",
-        <ListAltIcon style={{ fill: "#fff" }} />,
-        true,
-        true
+        <ListAltIcon style={{ fill: "#fff" }} />
       ),
       generateItem(
         "Admin List",
         "/admin/adminlist",
-        <SupervisorAccountIcon style={{ fill: "#fff" }} />,
-        true,
-        true
+        <SupervisorAccountIcon style={{ fill: "#fff" }} />
       ),
       generateItem(
         "Add User",
         "/admin/adduser",
-        <PersonAddIcon style={{ fill: "#fff" }} />,
-        true,
-        true
+        <PersonAddIcon style={{ fill: "#fff" }} />
       ),
       generateItem(
         "Add Admin",
@@ -239,36 +182,21 @@ const SidenavItems = ({ isAuth, role, ...rest }) => {
             clipRule="evenodd"
           />
         </svg>,
-        true,
-        null,
+
         "showLogout"
       ),
-      generateItem(
-        "About Us",
-        "/About",
-        <InfoIcon style={{ fill: "#fff" }} />,
-        null,
-        null
-      ),
+      generateItem("About Us", "/about", <InfoIcon style={{ fill: "#fff" }} />),
       generateItem(
         "Contact Us",
         "/contact",
-        <ContactSupportIcon style={{ fill: "#fff" }} />,
-        null,
-        null
+        <ContactSupportIcon style={{ fill: "#fff" }} />
       ),
     ],
   ];
 
   const unAuthList = [
     [
-      generateItem(
-        "Home",
-        "/",
-        <HomeIcon style={{ fill: "#fff" }} />,
-        null,
-        null
-      ),
+      generateItem("Home", "/", <HomeIcon style={{ fill: "#fff" }} />),
       generateItem(
         "Log In",
         null,
@@ -283,33 +211,22 @@ const SidenavItems = ({ isAuth, role, ...rest }) => {
             clipRule="evenodd"
           />
         </svg>,
-        false,
-        null,
+
         "showLogIn"
       ),
       generateItem(
         "Sign Up",
         null,
         <AddIcon style={{ fill: "#fff" }} />,
-        false,
-        null,
         "showSignUp"
       ),
     ],
     [
-      generateItem(
-        "About Us",
-        "/About",
-        <InfoIcon style={{ fill: "#fff" }} />,
-        null,
-        null
-      ),
+      generateItem("About Us", "/about", <InfoIcon style={{ fill: "#fff" }} />),
       generateItem(
         "Contact Us",
         "/contact",
-        <ContactSupportIcon style={{ fill: "#fff" }} />,
-        null,
-        null
+        <ContactSupportIcon style={{ fill: "#fff" }} />
       ),
     ],
   ];
@@ -319,8 +236,6 @@ const SidenavItems = ({ isAuth, role, ...rest }) => {
     else if (isAuth && role === 1) return authAdminList;
     else return unAuthList;
   };
-
-  const listItems = getListItems();
 
   const element = (item, i) => {
     return (
@@ -344,21 +259,11 @@ const SidenavItems = ({ isAuth, role, ...rest }) => {
 
   return (
     <div className="w-full h-auto box-border overscroll-contain custom-scrollbar overflow-auto scrolling-touch">
-      {listItems.map((item, index) => (
+      {getListItems().map((item, index) => (
         <div key={index}>
           <List>
             {item.map((listitem, index) => {
-              if (
-                (!isAuth && !listitem.authorized) ||
-                (isAuth && role === 1 && listitem.authorized) ||
-                (isAuth &&
-                  role === 0 &&
-                  listitem.authorized &&
-                  !listitem.adminLink) ||
-                listitem.authorized === null
-              )
-                return element(listitem, index);
-              return null;
+              return element(listitem, index);
             })}
           </List>
           {index <= item.length ? (

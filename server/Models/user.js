@@ -11,60 +11,74 @@ const salt_i = 10;
 
 // Declare the Schema of the Mongo model
 
-const userSchema = mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    index: true,
-  },
-  lastname: {
-    type: String,
-    required: true,
-    index: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  mobile: {
-    type: String,
-    required: true,
-    unique: true,
-    minlength: 10,
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 5,
-  },
-  token: {
-    type: String,
-  },
-  role: {
-    type: Number,
-    default: 0,
-  },
-  address: [
-    {
-      _id: false,
-      street: { type: String },
-      city: { type: String },
-      state: { type: String },
-      pincode: { type: Number },
+const userSchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      index: true,
     },
-  ],
-  validated: {
-    type: Boolean,
-    default: false,
+    lastname: {
+      type: String,
+      required: true,
+      index: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    mobile: {
+      type: String,
+      required: true,
+      unique: true,
+      minlength: 10,
+    },
+    password: {
+      type: String,
+      required: true,
+      minlength: 5,
+    },
+    token: {
+      type: String,
+    },
+    role: {
+      type: Number,
+      default: 0,
+    },
+    address: [
+      {
+        _id: false,
+        street: { type: String },
+        city: { type: String },
+        state: { type: String },
+        pincode: { type: Number },
+      },
+    ],
+    validated: {
+      type: Boolean,
+      default: false,
+    },
+    imageURL: { type: String, default: "" },
   },
-  imageURL: { type: String, default: "" },
-});
+  { timestamps: true }
+);
 
 userSchema.pre("save", function (next) {
   let user = this;
 
   if (!user.isModified("password")) return next();
+
+  if (user.isNew) {
+    new Cart({ _id: user._id, products: [] }).save((err, doc) => {
+      if (err) return next(err);
+    });
+    new orderHistory({ ownerId: user._id, entries: [] })
+      .populate("ownerId")
+      .save((err, doc) => {
+        if (err) return next(err);
+      });
+  }
 
   bcrypt.genSalt(salt_i, (err, salt) => {
     if (err) return next(err);
@@ -110,20 +124,38 @@ userSchema.methods.confirmEmail = function (cb) {
   let user = this;
   user.validated = true;
 
-  new Cart({ _id: user._id, products: [] }).save((err, doc) => {
-    if (err) return cb(err);
-  });
-  new orderHistory({ ownerId: user._id, entries: [] })
-    .populate("ownerId")
-    .save((err, doc) => {
-      if (err) return cb(err);
-    });
-
   user.save((err, user) => {
     if (err) return cb(err);
 
     return cb(null, user);
   });
+};
+
+userSchema.statics.getUserList = function (
+  { searchString, limit, skip, role },
+  cb
+) {
+  const regex = searchString.split(" ").map((item) => new RegExp(item, "i"));
+
+  let query = null;
+  let users = this;
+
+  if (regex.length > 0)
+    query = users.find({
+      $or: [{ name: { $in: [...regex] } }, { lastname: { $in: [...regex] } }],
+    });
+  else query = users.find();
+
+  query
+    .limit(limit)
+    .skip(skip)
+    .exec((err, users) => {
+      if (err) return cb(err);
+      if (role !== 2) {
+        users = users.filter((user) => user.role === role);
+      }
+      return cb(null, users);
+    });
 };
 
 userSchema.methods.sendConfirmationEmail = function (id, token, cb) {
@@ -179,7 +211,7 @@ userSchema.methods.deleteToken = function (cb) {
 userSchema.methods.deleteUser = function (cb) {
   let user = this;
 
-  Product.deleteMany({ ownerId: user._id }, (err) => {
+  Product.deleteMany({ owner: user._id }, (err) => {
     if (err) return cb(err);
   });
 
