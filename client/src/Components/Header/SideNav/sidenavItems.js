@@ -145,26 +145,9 @@ const SidenavItems = ({ isAuth, role, ...rest }) => {
     ],
     [
       generateItem(
-        "User List",
-        "/admin/userlist",
-        <ListAltIcon style={{ fill: "#fff" }} />
-      ),
-      generateItem(
-        "Admin List",
-        "/admin/adminlist",
+        "Admin Panel",
+        "/admin",
         <SupervisorAccountIcon style={{ fill: "#fff" }} />
-      ),
-      generateItem(
-        "Add User",
-        "/admin/adduser",
-        <PersonAddIcon style={{ fill: "#fff" }} />
-      ),
-      generateItem(
-        "Add Admin",
-        "/user/admin/addadmin",
-        <GroupAddIcon style={{ fill: "#fff" }} />,
-        true,
-        true
       ),
     ],
     [
@@ -266,7 +249,7 @@ const SidenavItems = ({ isAuth, role, ...rest }) => {
               return element(listitem, index);
             })}
           </List>
-          {index <= item.length ? (
+          {index < getListItems().length - 1 ? (
             <Divider className={classes.divider} />
           ) : null}
         </div>

@@ -18,6 +18,7 @@ import ProfileDisplayAndEdit from "./Containers/ProfileDisplayAndEdit/profiledis
 import MyProducts from "./Containers/MyProducts/myproducts";
 import EditProduct from "./Containers/EditProduct/editproduct";
 import AdminPanel from "./Containers/AdminPanel/adminpanel";
+import UserDelete from "./Containers/UserDelete/userDelete";
 
 const Routes = () => {
   return (
@@ -28,6 +29,11 @@ const Routes = () => {
           path="/user/reset/:id/:token"
           exact
           component={Auth(ResetPasword)}
+        />
+        <Route
+          path="/user/delete"
+          exact
+          component={Auth(UserDelete, true, false)}
         />
         <Route
           path="/user/requestverification"
@@ -54,11 +60,7 @@ const Routes = () => {
           exact
           component={Auth(ProfileDisplayAndEdit, true, false)}
         />
-        <Route
-          path="/admin/userlist"
-          exact
-          component={Auth(AdminPanel, true, true)}
-        />
+        <Route path="/admin" exact component={Auth(AdminPanel, true, true)} />
         <Route
           path="/product/edit/:id"
           exact
