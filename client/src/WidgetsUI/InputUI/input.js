@@ -27,11 +27,19 @@ const Input = ({
   readonly,
   altIconAction,
   altIconTooltip,
+  inline,
+  variant,
 }) => {
   return (
     <div className="flex w-full mt-8 flex-col items-start">
-      <div className="text-darktheme-200 w-auto mb:text-xl">{label}</div>
-      <div className="w-full mt-2">
+      <div
+        className={`text-darktheme-200 w-auto ${
+          classes.label ? classes.label : "mb:text-xl"
+        }`}
+      >
+        {label}
+      </div>
+      <div className={`w-full mt-2 ${inline && "inline-block"}`}>
         {!chipped ? (
           <TextField
             value={value}
@@ -40,7 +48,7 @@ const Input = ({
             onBlur={handleBlur}
             size="small"
             multiline={multiline}
-            variant="outlined"
+            variant={variant ? variant : "outlined"}
             classes={{ root: classes.textField }}
             InputProps={{
               type: typeOf ? typeOf : "text",

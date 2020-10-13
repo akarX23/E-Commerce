@@ -19,6 +19,7 @@ import MyProducts from "./Containers/MyProducts/myproducts";
 import EditProduct from "./Containers/EditProduct/editproduct";
 import AdminPanel from "./Containers/AdminPanel/adminpanel";
 import UserDelete from "./Containers/UserDelete/userDelete";
+import Cart from "./Containers/Cart/cart";
 
 const Routes = () => {
   return (
@@ -35,6 +36,7 @@ const Routes = () => {
           exact
           component={Auth(UserDelete, true, false)}
         />
+        <Route path="/user/cart" exact component={Auth(Cart, true, false)} />
         <Route
           path="/user/requestverification"
           exact

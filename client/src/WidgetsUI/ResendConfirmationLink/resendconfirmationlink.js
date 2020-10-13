@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "2px",
     fontSize: "13px",
   },
+  icon: {
+    marginRight: "10px",
+  },
 }));
 
 const ResendConfirmationLink = ({ sendData }) => {

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 import "./header.css";
 import { logout, login, signUp } from "../../actions/user_actions";
+import { cartProductList } from "../../actions/cart_actions";
 import { bindActionCreators } from "redux";
 import Modal from "../../WidgetsUI/Modal/modal";
 import LogInForm from "../Forms/loginForm";
@@ -16,6 +17,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import { purple } from "@material-ui/core/colors";
 import Avatar from "@material-ui/core/Avatar";
+import Badge from "@material-ui/core/Badge";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import IconButton from "@material-ui/core/IconButton";
 
 const styles = (theme) => ({
   menu: {
@@ -42,6 +46,12 @@ const styles = (theme) => ({
       height: "27px !important",
       fontSize: "14px",
     },
+  },
+  cartIconButton: {
+    color: "white",
+    padding: 2,
+    outline: "none !important",
+    border: "none !important",
   },
 });
 
@@ -70,6 +80,7 @@ class Header extends Component {
 
   componentWillMount() {
     this.header = React.createRef();
+    this.props.cartProductList();
   }
 
   componentDidMount() {
@@ -138,15 +149,16 @@ class Header extends Component {
     const { classes } = this.props;
     return (
       <div className="flex items-center w-4/5 justify-between">
-        <Link to="/user/cart">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="fill-current text-gray-200 mb:w-6 mb:h-6 w-6 h-6 cursor-pointer transition-all hover:text-yellow-500 duration-300"
-            viewBox="0 0 20 20"
-          >
-            <path d="M4 2h16l-3 9H4a1 1 0 1 0 0 2h13v2H4a3 3 0 0 1 0-6h.33L3 5 2 2H0V0h3a1 1 0 0 1 1 1v1zm1 18a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm10 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
-          </svg>
-        </Link>
+        <Badge
+          badgeContent={this.props.cart.cartItems?.items?.length.toString()}
+          color="secondary"
+        >
+          <Link to="/user/cart">
+            <IconButton classes={{ root: classes.cartIconButton }}>
+              <ShoppingCartIcon />
+            </IconButton>
+          </Link>
+        </Badge>
         <div
           className="flex items-center relative cursor-pointer user"
           onClick={(event) => this.openMenu(event)}
@@ -256,90 +268,94 @@ class Header extends Component {
         body = "",
         variant = "";
 
-      if (authenticationDetails.success === false) {
-        if (authenticationDetails.verified === false) {
-          heading = "FAILED!";
-          variant = "warning";
-          body = (
-            <>
-              <hr />
-              You have not been verified yet. Check your mail or{" "}
-              <a href="/user/requestverification">
-                request for a new verification link!
-              </a>
-            </>
-          );
-        } else if (authenticationDetails.verified === true) {
-          heading = "FAILED!";
-          variant = "warning";
-          body = (
-            <>
-              <hr />
-              You are a registered user.{" "}
-              <div
-                className="cursor-pointer hover:underline inline-block font-bold"
-                onClick={() => this.changeForm()}
-              >
-                Log In here
-              </div>
-            </>
-          );
+      if (nextprops.auth.user.isAuth !== this.props.auth.user?.isAuth) {
+        this.props.cartProductList();
+      } else {
+        if (authenticationDetails.success === false) {
+          if (authenticationDetails.verified === false) {
+            heading = "FAILED!";
+            variant = "warning";
+            body = (
+              <>
+                <hr />
+                You have not been verified yet. Check your mail or{" "}
+                <a href="/user/requestverification">
+                  request for a new verification link!
+                </a>
+              </>
+            );
+          } else if (authenticationDetails.verified === true) {
+            heading = "FAILED!";
+            variant = "warning";
+            body = (
+              <>
+                <hr />
+                You are a registered user.{" "}
+                <div
+                  className="cursor-pointer hover:underline inline-block font-bold"
+                  onClick={() => this.changeForm()}
+                >
+                  Log In here
+                </div>
+              </>
+            );
+          } else if (
+            authenticationDetails.mismatch === true ||
+            authenticationDetails.emailNotFound === true
+          ) {
+            heading = "FAILED!";
+            variant = "warning";
+            body = (
+              <>
+                <hr />
+                Email or Password incorrect. Please try again!
+              </>
+            );
+          } else {
+            heading = "OOPS!";
+            variant = "danger";
+            body = (
+              <>
+                <hr />
+                Something went wrong. Please try again!
+              </>
+            );
+          }
+          let alertItems = {
+            heading,
+            body,
+            variant,
+          };
+          this.setState({ showAlert: true, alertItems });
         } else if (
-          authenticationDetails.mismatch === true ||
-          authenticationDetails.emailNotFound === true
+          authenticationDetails.isAuth === true &&
+          this.state.showLogIn === true
         ) {
-          heading = "FAILED!";
-          variant = "warning";
+          this.toggleAuthHandler("showLogIn");
+          this.setState({ showLogIn: false, showAlert: false });
+        } else if (
+          authenticationDetails.isAuth === false &&
+          this.state.showSignUp === true
+        ) {
+          variant = "success";
+          heading = "Almost done";
           body = (
             <>
               <hr />
-              Email or Password incorrect. Please try again!
+              Click the link in your mail to complete verification!
             </>
           );
-        } else {
-          heading = "OOPS!";
-          variant = "danger";
-          body = (
-            <>
-              <hr />
-              Something went wrong. Please try again!
-            </>
-          );
-        }
-        let alertItems = {
-          heading,
-          body,
-          variant,
-        };
-        this.setState({ showAlert: true, alertItems });
-      } else if (
-        authenticationDetails.isAuth === true &&
-        this.state.showLogIn === true
-      ) {
-        this.toggleAuthHandler("showLogIn");
-        this.setState({ showLogIn: false, showAlert: false });
-      } else if (
-        authenticationDetails.isAuth === false &&
-        this.state.showSignUp === true
-      ) {
-        variant = "success";
-        heading = "Almost done";
-        body = (
-          <>
-            <hr />
-            Click the link in your mail to complete verification!
-          </>
-        );
 
-        let alertItems = {
-          heading,
-          body,
-          variant,
-        };
-        this.setState({ showAlert: true, alertItems });
+          let alertItems = {
+            heading,
+            body,
+            variant,
+          };
+          this.setState({ showAlert: true, alertItems });
+        }
+        this.setState({ loading: false });
       }
     }
-    this.setState({ loading: false });
   }
 
   render() {
@@ -489,11 +505,12 @@ class Header extends Component {
 const mapStateToProps = (state) => {
   return {
     auth: state.user,
+    cart: state.cart,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators({ logout, login, signUp }, dispatch),
+  ...bindActionCreators({ logout, login, signUp, cartProductList }, dispatch),
 });
 
 export default connect(

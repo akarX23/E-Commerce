@@ -6,21 +6,34 @@ module.exports = function (app) {
   ///POST///
 
   app.post("/api/cart/add-item", auth, (req, res) => {
-    Cart.findById(req.user._id, (err, cart) => {
-      if (err || !cart) return res.status(400).json({ added: false, err });
+    Cart.find({ _id: req.user._id }, (err, carts) => {
+      let cart = carts[0];
+      if (err || !cart) return res.status(400).json({ success: false, err });
 
-      Product.findById(req.query.id, (err, product) => {
-        if (err || !product) return res.status(400).json({ added: false, err });
-        cart.addItem(
-          req.query.id,
-          product,
-          req.body.quantity ? req.body.quantity : 1,
-          (err, cart, exceeded) => {
-            if (err || !cart)
-              return res.status(400).json({ added: false, err });
-            return res.status(200).json({ added: true, cart, exceeded });
-          }
-        );
+      cart.addItem(
+        req.body.id,
+        req.body.quantity ? req.body.quantity : 1,
+        req.body.price,
+        (err, cart) => {
+          if (err || !cart)
+            return res.status(400).json({ success: false, err });
+          return res.status(200).json({ success: true, items: cart.products });
+        }
+      );
+    });
+  });
+
+  app.post("/api/cart/changeQuantity", auth, (req, res) => {
+    Cart.find({ _id: req.user._id }, (err, carts) => {
+      let cart = carts[0];
+      if (err || !cart) return res.status(400).json({ success: false, err });
+      let newQuantity = req.body.quantity;
+      let productId = req.body.id;
+      let price = req.body.price;
+
+      cart.changeQuantity(productId, newQuantity, price, (err, cart) => {
+        if (err || !cart) return res.status(400).json({ success: false, err });
+        return res.status(200).json({ success: true, items: cart.products });
       });
     });
   });
@@ -29,45 +42,29 @@ module.exports = function (app) {
 
   app.get("/api/cart/items", auth, (req, res) => {
     let id = req.user._id;
-    Cart.findById(id, (err, cart) => {
-      if (err || !cart || cart.products.length === 0)
-        return res.status(400).json({ gotItems: false, err });
-      return res.status(200).json({ gotItems: true, items: cart.products });
+    Cart.find({ _id: id }, (err, carts) => {
+      let cart = carts[0];
+      if (err || !cart) return res.status(400).json({ list: false, err });
+
+      return res.status(200).json({ list: true, items: cart.products });
     });
   });
 
   ///DELETE///
 
   app.delete("/api/cart/delete-item", auth, (req, res) => {
-    Cart.findById(req.user._id, (err, cart) => {
-      if (err || !cart) return res.status(400).json({ deleted: false, err });
-
-      Product.findById(req.query.id, (err, product) => {
-        if (err || !product)
-          return res.status(400).json({ deleted: false, err });
-        cart.deleteItem(req.query.id, product, (err, cart) => {
-          if (err || !cart)
-            return res.status(400).json({ deleted: false, err });
-          return res.status(200).json({ deleted: true, cart });
-        });
-      });
-    });
-  });
-
-  app.delete("/api/cart/delete-whole-item", auth, (req, res) => {
-    Cart.findById(req.user._id, (err, cart) => {
-      if (err || !cart) return res.status(400).json({ deleted: false, err });
-
+    Cart.find({ _id: req.user.id }, (err, carts) => {
+      let cart = carts[0];
+      if (err || !cart) return res.status(400).json({ success: false, err });
       let origLen = cart.products.length;
       cart.products = cart.products.filter((item) => {
-        return item.product._id === req.query.id;
+        return item.product._id.toString().localeCompare(req.query.id) !== 0;
       });
       if (cart.products.length === origLen)
-        return res.status(200).json({ deleted: false });
-
+        return res.status(200).json({ success: false });
       cart.save((err, cart) => {
-        if (err || !cart) return res.status(400).json({ deleted: false, err });
-        return res.status(200).json({ deleted: true, cart });
+        if (err || !cart) return res.status(400).json({ success: false, err });
+        return res.status(200).json({ success: true, items: cart.products });
       });
     });
   });

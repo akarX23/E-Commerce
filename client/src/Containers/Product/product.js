@@ -7,6 +7,7 @@ import {
   deleteReview,
   updateLikes,
 } from "../../actions/product_actions";
+import { addCartItem } from "../../actions/cart_actions";
 import { bindActionCreators } from "redux";
 import Carousel from "react-bootstrap/Carousel";
 import Button from "@material-ui/core/Button";
@@ -31,8 +32,6 @@ import Loading from "../../WidgetsUI/Loading/loading";
 import { Controller, Scene } from "react-scrollmagic";
 import Fade from "react-reveal/Fade";
 import Comment from "../../WidgetsUI/Comment/comment";
-
-import "./product.css";
 
 const styles = (theme) => ({
   productCaraousel: {
@@ -336,6 +335,20 @@ class Product extends Component {
     this.props.updateLikes(liked, disliked, ownerId, this.props.queries.id);
   };
 
+  addCartItemRequest = (id, price) => {
+    if (this.props.user.user.isAuth === false) {
+      this.setState({
+        message: "You need to be logged in to add items to cart!",
+        severity: "error",
+        showSnackbar: true,
+        vertical: "top",
+        horizontal: "center",
+      });
+      return;
+    }
+    this.props.addCartItem(id, price);
+  };
+
   renderUserReview = (review) => {
     let liked = review.usersLiked.includes(this.props.user.user.id);
     let disliked = review.usersDisliked.includes(this.props.user.user.id);
@@ -440,6 +453,9 @@ class Product extends Component {
                           variant="contained"
                           startIcon={
                             <AddShoppingCartIcon style={{ fontSize: 30 }} />
+                          }
+                          onClick={() =>
+                            this.addCartItemRequest(details._id, details.price)
                           }
                         >
                           ADD TO CART
@@ -740,7 +756,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators(
-    { getProductDetails, postReview, deleteReview, updateLikes },
+    { getProductDetails, postReview, deleteReview, updateLikes, addCartItem },
     dispatch
   ),
 });

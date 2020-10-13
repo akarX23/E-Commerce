@@ -26,3 +26,9 @@ export const UPDATE_LIKES = "update_likes";
 export const UPLOAD_IMAGES = "upload_images";
 export const ADD_PRODUCT = "add_product";
 export const USER_PRODUCT_LIST = "user_product_list";
+
+//CART ACTION TYPES
+export const CART_PRODUCT_LIST = "cart_product_list";
+export const ADD_CART_ITEM = "add_product_item";
+export const CHANGE_ITEM_QUANTITY = "change_item_quantity";
+export const CART_ACTION = "cart_action";

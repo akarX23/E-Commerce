@@ -7,24 +7,57 @@ const cartSchema = mongoose.Schema({
     {
       quantity: { type: Number, default: 1, min: 1 },
       totalPrice: { type: Number, default: 0 },
-      product: {},
+      product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
       _id: false,
     },
   ],
 });
 
-cartSchema.methods.addItem = function (id, product, quantity, cb) {
+cartSchema.pre("find", function () {
+  this.populate({
+    path: "products.product",
+    populate: {
+      path: "product.owner",
+    },
+  });
+});
+
+cartSchema.pre("save", function (next) {
+  this.populate({
+    path: "products.product",
+  })
+    .execPopulate()
+    .then(function () {
+      next();
+    });
+});
+
+cartSchema.methods.changeQuantity = function (id, quantity, price, cb) {
+  let cart = this;
+
+  for (const item of cart.products) {
+    if (item.product._id.toString().localeCompare(id) === 0) {
+      if (quantity > item.product.quantity) {
+        item.quantity = item.product.quantity;
+      } else item.quantity = quantity;
+      item.totalPrice = item.quantity * item.product.price;
+    }
+  }
+  cart.save((err, cart) => {
+    if (err || !cart) return cb(err);
+    return cb(null, cart);
+  });
+};
+
+cartSchema.methods.addItem = function (id, quantity, price, cb) {
   let cart = this;
   let found = false;
-  let exceeded = false;
 
   for (const item of cart.products) {
     if (item.product._id.toString().localeCompare(id) === 0) {
       found = true;
-      item.product = product;
       if (item.quantity + quantity > item.product.quantity) {
         item.quantity = item.product.quantity;
-        exceeded = true;
       } else item.quantity += quantity;
       item.totalPrice = item.quantity * item.product.price;
       break;
@@ -32,13 +65,12 @@ cartSchema.methods.addItem = function (id, product, quantity, cb) {
   }
 
   if (!found) {
-    cart.products.unshift({ product });
-    cart.products[0].totalPrice = product.price;
+    cart.products.unshift({ quantity: 1, totalPrice: price, product: id });
   }
 
   cart.save((err, cart) => {
     if (err || !cart) return cb(err);
-    return cb(null, cart, exceeded);
+    return cb(null, cart);
   });
 };
 
