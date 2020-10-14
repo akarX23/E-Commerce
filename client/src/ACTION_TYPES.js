@@ -32,3 +32,10 @@ export const CART_PRODUCT_LIST = "cart_product_list";
 export const ADD_CART_ITEM = "add_product_item";
 export const CHANGE_ITEM_QUANTITY = "change_item_quantity";
 export const CART_ACTION = "cart_action";
+export const CLEAR_CART_ACTIONS = "clear_cart_actions";
+export const PAY_BILL = "pay_bill";
+export const CLEAR_CART = "clear_cart";
+
+//ORDER HISTORY ACTION TYPES
+export const ADD_ORDER = "add_order";
+export const CLEAR_ORDER_ACTION = "clear_order_action";

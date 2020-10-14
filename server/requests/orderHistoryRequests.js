@@ -6,24 +6,44 @@ module.exports = function (app) {
   ///POST///
 
   app.post("/api/orderHistory/add", auth, (req, res) => {
-    OrderHistory.findOne({ ownerId: req.user._id }, (err, order) => {
-      if (err || !order)
-        return res.status(400).json({ historyAdded: false, err });
+    OrderHistory.find({ owner: req.user._id }, (err, histories) => {
+      let history = histories[0];
+      const { paymentID, orderID } = req.body;
 
-      Cart.findOne({ _id: req.user._id }, (err, cart) => {
-        if (err || !cart || cart.products.length === 0)
-          return res.status(400).json({ historyAdded: false, err });
+      if (err) {
+        return res.status(200).json({ historyAdded: false, err });
+      }
 
-        order.entries.unshift({ items: cart.products });
+      Cart.find({ _id: req.user._id }, (err, carts) => {
+        let cart = carts[0];
+        if (err) {
+          return res.status(200).json({ historyAdded: false, err });
+        }
+        let items = [];
+        cart.products.forEach((item) => {
+          items.push({
+            quantity: item.quantity,
+            totalPrice: item.totalPrice,
+            product: { ...item.prdouct },
+          });
+        });
 
-        cart.update({ products: [] }, (err, cart) => {
-          if (err || !cart)
-            return res.status(400).json({ historyAdded: false, err });
+        history.entries.unshift({
+          items: [...items],
+          paymentID,
+          orderID,
+        });
 
-          order.save((err, order) => {
-            if (err || !order)
-              return res.status(400).json({ historyAdded: false, err });
-            return res.status(200).json({ historyAdded: true, order });
+        cart.products = [];
+        cart.save((err, cart) => {
+          if (err) {
+            return res.status(200).json({ historyAdded: false, err });
+          }
+          history.save((err, newHistory) => {
+            if (err) {
+              return res.status(200).json({ historyAdded: false, err });
+            }
+            return res.status(200).json({ historyAdded: true, newHistory });
           });
         });
       });

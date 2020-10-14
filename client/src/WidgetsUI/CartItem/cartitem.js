@@ -194,6 +194,7 @@ const CartItem = ({
   const renderImage = () => {
     return (
       <div className={`w-full h-full`}>
+        <a href={`/product/${product._id}`}>
         <Carousel
           interval={2000}
           controls={false}
@@ -209,6 +210,7 @@ const CartItem = ({
             </Carousel.Item>
           ))}
         </Carousel>
+        </a>
       </div>
     );
   };

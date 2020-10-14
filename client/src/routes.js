@@ -20,6 +20,7 @@ import EditProduct from "./Containers/EditProduct/editproduct";
 import AdminPanel from "./Containers/AdminPanel/adminpanel";
 import UserDelete from "./Containers/UserDelete/userDelete";
 import Cart from "./Containers/Cart/cart";
+import Payment from "./Containers/Payment/payment";
 
 const Routes = () => {
   return (
@@ -35,6 +36,11 @@ const Routes = () => {
           path="/user/delete"
           exact
           component={Auth(UserDelete, true, false)}
+        />
+        <Route
+          path="/user/payment"
+          exact
+          component={Auth(Payment, true, false)}
         />
         <Route path="/user/cart" exact component={Auth(Cart, true, false)} />
         <Route

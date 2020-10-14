@@ -233,6 +233,14 @@ class Product extends Component {
         return true;
       });
 
+      if (nextProps.cart.cartActions?.success === true) {
+        message = "Item added to cart!";
+        showSnackbar = true;
+        severity = "success";
+        vertical = "top";
+        horizontal = "center";
+      }
+
       this.setState({
         loading: false,
         myReview,
@@ -751,6 +759,7 @@ const mapStateToProps = (state) => {
   return {
     product: state.product,
     user: state.user,
+    cart: state.cart,
   };
 };
 

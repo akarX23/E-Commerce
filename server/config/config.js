@@ -7,6 +7,8 @@ const config = {
     URL: process.env.URL,
     CLOUD_URL: process.env.CLOUD_URL,
     PRESET: process.env.PRESET,
+    RAZOR_PAY_KEY_ID: "rzp_test_d3gIhUbFAEGwOd",
+    RAZOR_PAY_KEY_SECRET: "hrN8q4vwJYPVP1PG9avqwpdB",
   },
   default: {
     SECRET: "ONLINESHOPSECRET",
@@ -16,6 +18,8 @@ const config = {
     URL: "localhost:3000",
     CLOUD_URL: "https://api.cloudinary.com/v1_1/dyhrqpsrs/image/upload",
     PRESET: "qelivzfz",
+    RAZOR_PAY_KEY_ID: "rzp_test_d3gIhUbFAEGwOd",
+    RAZOR_PAY_KEY_SECRET: "hrN8q4vwJYPVP1PG9avqwpdB",
   },
 };
 

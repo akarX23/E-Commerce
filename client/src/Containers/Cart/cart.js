@@ -5,16 +5,24 @@ import {
   changeQuantity,
   cartProductList,
   deleteItem,
+  clearCartActions,
+  makePayment,
+  clearCart,
 } from "../../actions/cart_actions";
+import {
+  addOrderHistory,
+  clearOrderAction,
+} from "../../actions/orderHistory_actions";
 import { bindActionCreators } from "redux";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
-import CartItem from "../../WidgetsUI/CartItem/cartitem";
 import Button from "@material-ui/core/Button";
 import ShoppingBasketOutlinedIcon from "@material-ui/icons/ShoppingBasketOutlined";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 import PageNotFound from "../../WidgetsUI/PageNotFound/pageNotFound";
 import Loading from "../../WidgetsUI/Loading/loading";
+import Payment from "../Payment/payment";
+import CartItem from "../../WidgetsUI/CartItem/cartitem";
 
 const styles = (theme) => ({
   checkout: {
@@ -37,6 +45,7 @@ class Cart extends Component {
     alert: "",
     severity: "",
     quantity: [],
+    showPayment: false,
   };
 
   componentWillMount() {
@@ -51,8 +60,9 @@ class Cart extends Component {
   componentWillReceiveProps(nextProps) {
     let showAlert = false,
       alert = "",
-      severity = "",
+      severity = this.state.severity,
       quantity = [];
+    console.log(nextProps);
 
     if (nextProps.cart.cartItems) {
       if (nextProps.cart.cartActions?.success === false) {
@@ -65,7 +75,30 @@ class Cart extends Component {
         );
       }
     }
-    this.setState({ loading: false, showAlert, alert, severity, quantity });
+    if (nextProps.orderHistory.orderAdded?.historyAdded === false) {
+      showAlert = true;
+      alert = "Something Went Wrong!";
+      severity = "error";
+    } else if (nextProps.orderHistory.orderAdded?.historyAdded === true) {
+      showAlert = true;
+      alert = "Payment Successful!";
+      severity = "success";
+      if (nextProps.cart.cartItems.items.length > 0) {
+        this.props.clearCart();
+      }
+    }
+    this.setState({
+      loading: false,
+      showAlert,
+      alert,
+      severity,
+      quantity,
+    });
+  }
+
+  componentWillUnmount() {
+    this.props.clearCartActions();
+    this.props.clearOrderAction();
   }
 
   changeQuantityRequest = (id, quantity, price) => {
@@ -80,7 +113,8 @@ class Cart extends Component {
     items.forEach((item, i) => {
       if (
         !this.state.quantity[i] ||
-        this.state.quantity[i] > item.product.quantity
+        this.state.quantity[i] > item.product.quantity ||
+        this.state.quantity[i] <= 0
       ) {
         proceed = false;
         showAlert = true;
@@ -93,7 +127,8 @@ class Cart extends Component {
       this.setState({ showAlert, alert, severity });
       return;
     }
-    console.log("checked");
+
+    this.setState({ showPayment: true });
   };
 
   deleteCartItem = (id) => {
@@ -113,8 +148,34 @@ class Cart extends Component {
     this.setState({ quantity: [...newQuantity] });
   };
 
+  getConfirmPaymentDetails = (details) => {
+    let alert = "",
+      severity = this.state.severity;
+
+    if (details.success === false) {
+      alert = "Your payment couldn't go through!";
+      severity = "error";
+      this.setState({ showPayment: false, alert, severity, showAlert: true });
+    } else {
+      this.setState(
+        {
+          showPayment: false,
+        },
+        () =>
+          this.props.addOrderHistory(details.status.id, details.status.order_id)
+      );
+    }
+  };
+
   render() {
-    const { loading, showAlert, alert, severity, quantity } = this.state;
+    const {
+      loading,
+      showAlert,
+      showPayment,
+      alert,
+      severity,
+      quantity,
+    } = this.state;
     const { cart, classes } = this.props;
 
     return (
@@ -161,7 +222,12 @@ class Cart extends Component {
             )}
           </div>
         )}
-
+        {showPayment && (
+          <Payment
+            closeModal={() => this.setState({ showPayment: false })}
+            paymentDone={(details) => this.getConfirmPaymentDetails(details)}
+          />
+        )}
         {loading && <Loading />}
         <Snackbar
           open={showAlert}
@@ -185,12 +251,22 @@ class Cart extends Component {
 const mapStateToProps = (state) => {
   return {
     cart: state.cart,
+    orderHistory: state.orderhistory,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators(
-    { changeQuantity, cartProductList, deleteItem },
+    {
+      changeQuantity,
+      cartProductList,
+      clearCartActions,
+      deleteItem,
+      makePayment,
+      addOrderHistory,
+      clearCart,
+      clearOrderAction,
+    },
     dispatch
   ),
 });

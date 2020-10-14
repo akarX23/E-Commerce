@@ -31,6 +31,7 @@ require("./requests/userRequests")(app);
 require("./requests/productRequests")(app);
 require("./requests/cartRequests")(app);
 require("./requests/orderHistoryRequests")(app);
+require("./requests/paymentRazorPay")(app);
 
 const port = process.env.PORT || 5000;
 const host = "0.0.0.0";

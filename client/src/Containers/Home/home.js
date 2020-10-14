@@ -10,6 +10,8 @@ import Fade from "react-reveal/Fade";
 import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
 import Tooltip from "@material-ui/core/Tooltip";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 import cimage1 from "../../assets/cmiage1.jpg";
 import cimage2 from "../../assets/cmiage2.jpg";
@@ -147,6 +149,9 @@ class Home extends Component {
     sortby: 0,
     order: "desc",
     searchValues: [],
+    showAlert: false,
+    alert: "",
+    severity: "",
   };
 
   componentWillMount() {
@@ -217,6 +222,9 @@ class Home extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.products.list) {
+      let showAlert = false,
+        severity = this.state.severity,
+        alert = "";
       if (first === false && nextProps.products.list.products) {
         var tags = [];
         nextProps.products.list.products.forEach((product) => {
@@ -229,7 +237,18 @@ class Home extends Component {
         first = true;
         this.getProductsToDisplay();
       }
-      this.setState({ loading: false, itemLoading: false });
+      if (nextProps.cart.cartActions?.success === true) {
+        alert = "Item added to cart!";
+        showAlert = true;
+        severity = "success";
+      }
+      this.setState({
+        loading: false,
+        itemLoading: false,
+        alert,
+        showAlert,
+        severity,
+      });
     }
   }
 
@@ -401,6 +420,20 @@ class Home extends Component {
         <Filter
           applyFilters={(filterObject) => this.applyFilters(filterObject)}
         />
+        <Snackbar
+          open={this.state.showAlert}
+          autoHideDuration={3000}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          onClose={() => this.setState({ showAlert: false })}
+        >
+          <Alert
+            variant="filled"
+            severity={this.state.severity}
+            onClose={() => this.setState({ showAlert: false })}
+          >
+            {this.state.alert}
+          </Alert>
+        </Snackbar>
       </div>
     );
   }
@@ -410,6 +443,7 @@ const mapStateToProps = (state) => {
   return {
     products: state.product,
     user: state.user,
+    cart: state.cart,
   };
 };
 
