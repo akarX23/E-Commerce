@@ -6,8 +6,10 @@ import {
   postReview,
   deleteReview,
   updateLikes,
+  clearReviewActions,
+  clearProduct,
 } from "../../actions/product_actions";
-import { addCartItem } from "../../actions/cart_actions";
+import { addCartItem, clearCartActions } from "../../actions/cart_actions";
 import { bindActionCreators } from "redux";
 import Carousel from "react-bootstrap/Carousel";
 import Button from "@material-ui/core/Button";
@@ -182,12 +184,12 @@ class Product extends Component {
         reviewList = [],
         product = {},
         showSnackbar = false,
-        severity = "",
+        severity = this.state.severity,
         message = "",
         vertical = "bottom",
         horizontal = "left";
 
-      if (nextProps.product.review) {
+      if (nextProps.product.review && !nextProps.cart.cartActions) {
         if (
           nextProps.product.review.reviewAdded === true ||
           nextProps.product.review.deleted === true ||
@@ -211,12 +213,21 @@ class Product extends Component {
         } else {
           message = "Something went wrong. Please try again!!";
           severity = "error";
+          showSnackbar = true;
           reviewList = this.state.reviewList;
           product = this.state.product;
         }
       } else {
         reviewList = nextProps.product.product.product.userReview;
         product = nextProps.product.product.product;
+      }
+
+      if (!nextProps.product.review && nextProps.cart.cartActions) {
+        if (nextProps.cart.cartActions.success === true) {
+          message = "Item added to cart!";
+          severity = "success";
+          showSnackbar = true;
+        }
       }
 
       reviewList = reviewList.filter((review) => {
@@ -233,14 +244,6 @@ class Product extends Component {
         return true;
       });
 
-      if (nextProps.cart.cartActions?.success === true) {
-        message = "Item added to cart!";
-        showSnackbar = true;
-        severity = "success";
-        vertical = "top";
-        horizontal = "center";
-      }
-
       this.setState({
         loading: false,
         myReview,
@@ -256,6 +259,12 @@ class Product extends Component {
         horizontal,
       });
     } else this.setState({ loading: false });
+  }
+
+  componentWillUnmount() {
+    this.props.clearCartActions();
+    this.props.clearReviewActions();
+    this.props.clearProduct();
   }
 
   getQuantityLabel = (quantity) => {
@@ -296,7 +305,9 @@ class Product extends Component {
   };
 
   toggleSnackbar = () => {
-    this.setState({ showSnackbar: !this.state.showSnackbar });
+    this.props.clearCartActions();
+    this.props.clearReviewActions();
+    this.setState({ showSnackbar: false });
   };
 
   sendReviewData = () => {
@@ -353,8 +364,9 @@ class Product extends Component {
         horizontal: "center",
       });
       return;
+    } else {
+      this.props.addCartItem(id, price);
     }
-    this.props.addCartItem(id, price);
   };
 
   renderUserReview = (review) => {
@@ -391,6 +403,7 @@ class Product extends Component {
     const { classes } = this.props;
     const mobile = this.props.width === "xs";
     const details = this.state.product;
+
     return (
       <>
         {this.props.product.product ? (
@@ -746,7 +759,11 @@ class Product extends Component {
             horizontal: this.state.horizontal,
           }}
         >
-          <Alert variant="filled" severity={this.state.severity}>
+          <Alert
+            variant="filled"
+            severity={this.state.severity}
+            onClose={() => this.toggleSnackbar()}
+          >
             {this.state.message}
           </Alert>
         </Snackbar>
@@ -765,7 +782,16 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators(
-    { getProductDetails, postReview, deleteReview, updateLikes, addCartItem },
+    {
+      getProductDetails,
+      postReview,
+      deleteReview,
+      updateLikes,
+      addCartItem,
+      clearCartActions,
+      clearReviewActions,
+      clearProduct,
+    },
     dispatch
   ),
 });

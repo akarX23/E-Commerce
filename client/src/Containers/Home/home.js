@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { productList, allProductList } from "../../actions/product_actions";
-import { addCartItem } from "../../actions/cart_actions";
+import { addCartItem, clearCartActions } from "../../actions/cart_actions";
 import { bindActionCreators } from "redux";
 import Carousel from "react-bootstrap/Carousel";
 import ProductCard from "../../WidgetsUI/ProductCart/productCard";
@@ -207,6 +207,7 @@ class Home extends Component {
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this.listenToScroll);
+    this.props.clearCartActions();
   }
 
   getProductsToDisplay = () => {
@@ -302,8 +303,14 @@ class Home extends Component {
     this.props.addCartItem(id, price, 1);
   };
 
+  clearCartActions = () => {
+    this.setState({ showAlert: false });
+    this.props.clearCartActions();
+  };
+
   render() {
     const { classes } = this.props;
+
     return (
       <div className="scrolling-touch">
         <div className="flex justify-center items-center mb-4 h-56 relative">
@@ -424,12 +431,12 @@ class Home extends Component {
           open={this.state.showAlert}
           autoHideDuration={3000}
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          onClose={() => this.setState({ showAlert: false })}
+          onClose={() => this.clearCartActions()}
         >
           <Alert
             variant="filled"
             severity={this.state.severity}
-            onClose={() => this.setState({ showAlert: false })}
+            onClose={() => this.clearCartActions()}
           >
             {this.state.alert}
           </Alert>
@@ -448,7 +455,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators({ productList, allProductList, addCartItem }, dispatch),
+  ...bindActionCreators(
+    { productList, allProductList, addCartItem, clearCartActions },
+    dispatch
+  ),
 });
 
 export default connect(

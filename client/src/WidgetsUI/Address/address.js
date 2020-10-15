@@ -30,44 +30,53 @@ const Address = ({
   onCheck,
   onDelete,
   onSaveAddress,
+  readOnly,
 }) => {
   const classes = useStyles();
 
   const [openDialogue, setOpenDialogue] = useState(false);
 
   return (
-    <div className="flex w-full bg-darktheme-900 rounded-lg pr-3 pb-3 mt-3">
+    <div className="flex w-full items-start pr-3 pb-3 mt-3">
       {checkable && (
-        <div className="p-1 box-border h-full">
-          <Radio checked={checked} onChange={() => onCheck()} />
+        <div className="h-full">
+          <Radio
+            checked={checked}
+            onChange={(e) => onCheck(e.target.checked)}
+            color="primary"
+          />
         </div>
       )}
-      <div className={`flex-grow flex flex-col pt-2 ${!checkable && "pl-3"}`}>
+      <div
+        className={`flex-grow  bg-darktheme-900 rounded-lg flex flex-col p-2 pl-3`}
+      >
         <div className="text-lg text-darktheme-300">{details.street}</div>
         <div className="text-lg text-darktheme-300">
           {details.city}, {details.state}
         </div>
         <div className="text-lg text-darktheme-300">{details.pincode}</div>
-        <div className="w-full flex justify-end mt-3">
-          <Button
-            color="primary"
-            variant="contained"
-            classes={{ root: classes.edit }}
-            onClick={() => setOpenDialogue(true)}
-            startIcon={<EditIcon />}
-          >
-            Edit
-          </Button>
-          <Button
-            color="primary"
-            variant="contained"
-            classes={{ root: classes.remove }}
-            onClick={() => onDelete()}
-            startIcon={<DeleteIcon />}
-          >
-            delete
-          </Button>
-        </div>
+        {!readOnly && (
+          <div className="w-full flex justify-end mt-3">
+            <Button
+              color="primary"
+              variant="contained"
+              classes={{ root: classes.edit }}
+              onClick={() => setOpenDialogue(true)}
+              startIcon={<EditIcon />}
+            >
+              Edit
+            </Button>
+            <Button
+              color="primary"
+              variant="contained"
+              classes={{ root: classes.remove }}
+              onClick={() => onDelete()}
+              startIcon={<DeleteIcon />}
+            >
+              delete
+            </Button>
+          </div>
+        )}
       </div>
       <AdressEditor
         address={{ ...details }}

@@ -17,6 +17,7 @@ import Input from "../../WidgetsUI/InputUI/input";
 import Loading from "../../WidgetsUI/Loading/loading";
 import DragAndDrop from "../../WidgetsUI/DragAndDrop/draganddrop";
 import UploadImageCard from "../../WidgetsUI/UploadImageCard/uploadimagecard";
+import PageNotFound from "../../WidgetsUI/PageNotFound/pageNotFound";
 
 const styles = (theme) => ({
   textField: {
@@ -345,179 +346,191 @@ class EditProduct extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, user, product } = this.props;
     const { values, errors, images, imageRendering } = this.state;
 
-    return (
-      <>
-        <div className="p-4">
-          <div className="text-3xl text-center text-darktheme-300 pb-1 border-b border-darktheme-500">
-            Edit your Product
-          </div>
-          <div className="flex w-full my-3 justify-center">
-            <Button
-              variant="contained"
-              color="secondary"
-              classes={{ root: classes.saveDetails }}
-              startIcon={<SaveIcon />}
-              onClick={() => this.saveProfileChanges()}
-            >
-              Save changes
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              classes={{ root: classes.saveDetails }}
-              startIcon={<SettingsBackupRestoreIcon />}
-              onClick={() => this.resetProfileDetails()}
-            >
-              Restore changes
-            </Button>
-          </div>
-          <Input
-            label="Product Title"
-            classes={classes}
-            value={values.title}
-            error={errors.title}
-            onChange={(event) =>
-              this.handleInputChange("title", event.target.value)
-            }
-            handleBlur={(event) => this.handleBlur("title", event.target.value)}
-          />
-          <Input
-            label="Product Description"
-            multiline={true}
-            rows={3}
-            rowsMax={5}
-            classes={classes}
-            value={values.description}
-            error={errors.description}
-            onChange={(event) =>
-              this.handleInputChange("description", event.target.value)
-            }
-            handleBlur={(event) =>
-              this.handleBlur("description", event.target.value)
-            }
-          />
-
-          <div className="flex justify-between mb:justify-start flex-wrap">
-            <div className="w-24 mb:mr-16">
-              <Input
-                label="Quantity"
-                classes={classes}
-                value={values.quantity}
-                error={errors.quantity}
-                onChange={(event) =>
-                  this.handleInputChange("quantity", event.target.value)
-                }
-                handleBlur={(event) =>
-                  this.handleBlur("quantity", event.target.value)
-                }
-                placeholder={"0"}
-              />
+    if (
+      product.product?.product?.owner._id &&
+      product.product?.product?.owner._id !== user.user.id
+    )
+      return (
+        <PageNotFound message="You are not authorised to edit this product!" />
+      );
+    else if (product.product?.product?.owner._id)
+      return (
+        <>
+          <div className="p-4">
+            <div className="text-3xl text-center text-darktheme-300 pb-1 border-b border-darktheme-500">
+              Edit your Product
             </div>
-            <div className="w-32 mb:mr-16">
-              <Input
-                Icon={AttachMoneyRoundedIcon}
-                label="Price"
-                classes={classes}
-                value={values.price}
-                error={errors.price}
-                onChange={(event) =>
-                  this.handleInputChange("price", event.target.value)
-                }
-                handleBlur={(event) =>
-                  this.handleBlur("price", event.target.value)
-                }
-                placeholder={"0"}
-              />
-            </div>
-            <div className="flex-grow">
-              <Input
-                label="Tags"
-                chipped={true}
-                classes={classes}
-                value={values.tags}
-                error={errors.tags}
-                info="Tags will help user find your product. Spaces separate tags."
-                handleAddChip={(chip) => this.handleAddChip(chip)}
-                handleDeleteChip={(chip, index) =>
-                  this.handleDeleteChip(chip, index)
-                }
-                handleBlur={() => this.handleBlur("tags", values.tags)}
-              />
-            </div>
-          </div>
-          <div className="px-6 w-full flex flex-col mb:flex-row mt-4 mb:mt-0">
-            <input
-              accept="image/*"
-              className={classes.input}
-              id="productImages"
-              multiple
-              type="file"
-              onChange={(event) => this.onChange(event)}
-            />
-            <label htmlFor="productImages">
+            <div className="flex w-full my-3 justify-center">
               <Button
                 variant="contained"
-                classes={{ root: classes.upload }}
-                component="span"
-                startIcon={<BackupIcon fontSize="large" />}
-                endIcon={imageRendering && <AutorenewIcon />}
+                color="secondary"
+                classes={{ root: classes.saveDetails }}
+                startIcon={<SaveIcon />}
+                onClick={() => this.saveProfileChanges()}
               >
-                Upload
+                Save changes
               </Button>
-            </label>
-            <div className="mb-1 mb:mb-0 text-xs mb:text-sm font-sans text-darktheme-200">
-              Your images will show up below. You can click on an image to
-              delete it.
+              <Button
+                variant="contained"
+                color="primary"
+                classes={{ root: classes.saveDetails }}
+                startIcon={<SettingsBackupRestoreIcon />}
+                onClick={() => this.resetProfileDetails()}
+              >
+                Restore changes
+              </Button>
+            </div>
+            <Input
+              label="Product Title"
+              classes={classes}
+              value={values.title}
+              error={errors.title}
+              onChange={(event) =>
+                this.handleInputChange("title", event.target.value)
+              }
+              handleBlur={(event) =>
+                this.handleBlur("title", event.target.value)
+              }
+            />
+            <Input
+              label="Product Description"
+              multiline={true}
+              rows={3}
+              rowsMax={5}
+              classes={classes}
+              value={values.description}
+              error={errors.description}
+              onChange={(event) =>
+                this.handleInputChange("description", event.target.value)
+              }
+              handleBlur={(event) =>
+                this.handleBlur("description", event.target.value)
+              }
+            />
+
+            <div className="flex justify-between mb:justify-start flex-wrap">
+              <div className="w-24 mb:mr-16">
+                <Input
+                  label="Quantity"
+                  classes={classes}
+                  value={values.quantity}
+                  error={errors.quantity}
+                  onChange={(event) =>
+                    this.handleInputChange("quantity", event.target.value)
+                  }
+                  handleBlur={(event) =>
+                    this.handleBlur("quantity", event.target.value)
+                  }
+                  placeholder={"0"}
+                />
+              </div>
+              <div className="w-32 mb:mr-16">
+                <Input
+                  Icon={AttachMoneyRoundedIcon}
+                  label="Price"
+                  classes={classes}
+                  value={values.price}
+                  error={errors.price}
+                  onChange={(event) =>
+                    this.handleInputChange("price", event.target.value)
+                  }
+                  handleBlur={(event) =>
+                    this.handleBlur("price", event.target.value)
+                  }
+                  placeholder={"0"}
+                />
+              </div>
+              <div className="flex-grow">
+                <Input
+                  label="Tags"
+                  chipped={true}
+                  classes={classes}
+                  value={values.tags}
+                  error={errors.tags}
+                  info="Tags will help user find your product. Spaces separate tags."
+                  handleAddChip={(chip) => this.handleAddChip(chip)}
+                  handleDeleteChip={(chip, index) =>
+                    this.handleDeleteChip(chip, index)
+                  }
+                  handleBlur={() => this.handleBlur("tags", values.tags)}
+                />
+              </div>
+            </div>
+            <div className="px-6 w-full flex flex-col mb:flex-row mt-4 mb:mt-0">
+              <input
+                accept="image/*"
+                className={classes.input}
+                id="productImages"
+                multiple
+                type="file"
+                onChange={(event) => this.onChange(event)}
+              />
+              <label htmlFor="productImages">
+                <Button
+                  variant="contained"
+                  classes={{ root: classes.upload }}
+                  component="span"
+                  startIcon={<BackupIcon fontSize="large" />}
+                  endIcon={imageRendering && <AutorenewIcon />}
+                >
+                  Upload
+                </Button>
+              </label>
+              <div className="mb-1 mb:mb-0 text-xs mb:text-sm font-sans text-darktheme-200">
+                Your images will show up below. You can click on an image to
+                delete it.
+              </div>
+            </div>
+            <div className={classes.dragaAndDropContainer}>
+              <DragAndDrop
+                handleDrop={(files) => this.getDraggedFiles(files)}
+                dropped={images.length > 0}
+                reading={imageRendering}
+              >
+                <div className="mx-auto w-full grid grid-cols-2 md:grid-cols-4 sm:grid-cols-3 gap-6">
+                  {images.map((image, i) => {
+                    return (
+                      <UploadImageCard
+                        key={i}
+                        file={null}
+                        image={image}
+                        deleteImage={() => this.handleDeleteImage(i)}
+                      />
+                    );
+                  })}
+                </div>
+              </DragAndDrop>
             </div>
           </div>
-          <div className={classes.dragaAndDropContainer}>
-            <DragAndDrop
-              handleDrop={(files) => this.getDraggedFiles(files)}
-              dropped={images.length > 0}
-              reading={imageRendering}
-            >
-              <div className="mx-auto w-full grid grid-cols-2 md:grid-cols-4 sm:grid-cols-3 gap-6">
-                {images.map((image, i) => {
-                  return (
-                    <UploadImageCard
-                      key={i}
-                      file={null}
-                      image={image}
-                      deleteImage={() => this.handleDeleteImage(i)}
-                    />
-                  );
-                })}
-              </div>
-            </DragAndDrop>
-          </div>
-        </div>
-        <Snackbar
-          open={this.state.showAlert}
-          autoHideDuration={6000}
-          onClose={() => this.setState({ showAlert: false })}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        >
-          <Alert
-            variant="filled"
+          <Snackbar
+            open={this.state.showAlert}
+            autoHideDuration={6000}
             onClose={() => this.setState({ showAlert: false })}
-            severity={this.state.severity}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
           >
-            {this.state.alert}
-          </Alert>
-        </Snackbar>
-        {this.state.loading && <Loading />}
-        <NavigationPrompt when={this.state.changed}></NavigationPrompt>
-      </>
-    );
+            <Alert
+              variant="filled"
+              onClose={() => this.setState({ showAlert: false })}
+              severity={this.state.severity}
+            >
+              {this.state.alert}
+            </Alert>
+          </Snackbar>
+          {this.state.loading && <Loading />}
+          <NavigationPrompt when={this.state.changed}></NavigationPrompt>
+        </>
+      );
+    else return <></>;
   }
 }
 
 const mapStateToProps = (state) => {
   return {
     product: state.product,
+    user: state.user,
   };
 };
 

@@ -1,9 +1,9 @@
 import axios from "axios";
 import { ADD_ORDER, CLEAR_ORDER_ACTION } from "../ACTION_TYPES";
 
-export async function addOrderHistory(paymentID, orderID) {
+export async function addOrderHistory(paymentID, orderID, address) {
   const request = await axios
-    .post("/api/orderHistory/add", { paymentID, orderID })
+    .post("/api/orderHistory/add", { paymentID, orderID, address })
     .then((response) => response.data);
   console.log(request);
 

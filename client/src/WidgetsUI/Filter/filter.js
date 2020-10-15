@@ -235,166 +235,174 @@ const Filter = (props) => {
   return (
     <>
       <ClickAwayListener onClickAway={() => setfilterOpen(false)}>
-        <div className="filterContainer flex flex-col items-end">
-          <Bounce right when={filterOpen} collapse unmountOnExit duration={700}>
-            <div className="rounded-lg mb-1 p-2 flex flex-col bg-darktheme-800 items-center justify-start">
-              <div className="flex justify-between items-center w-full px-1">
-                <div className="text-darktheme-100 text-base">Rating</div>
-                <div className="flex-grow flex justify-end px-4 box-border">
-                  {getStarIcon()}
-                </div>
-                <Slider
-                  value={rating}
-                  onChange={(event, newValue) => {
-                    setRating(newValue);
-                  }}
-                  valueLabelDisplay="auto"
-                  min={1}
-                  max={5}
-                  marks={true}
-                  classes={{ root: classes.root }}
-                />
-              </div>
-              <div className="flex justify-between items-center px-1">
-                <div className="text-darktheme-100 text-base mr-4">
-                  Price Range
-                </div>
-                <div className="flex items-center">
-                  {getPriceField(minPriceOptions, 0)}
-                  <div className="text-4xl text-darktheme-200 mx-2 -mt-1">
-                    ~
+        <div className="filterContainer flex flex-col items-end justify-start">
+          <div>
+            <Bounce right when={filterOpen} unmountOnExit duration={700}>
+              <div
+                className={`rounded-lg ${
+                  filterOpen === true ? " flex flex-col" : "hidden"
+                } mb-1 p-2 bg-darktheme-800 items-center justify-start`}
+              >
+                <div className="flex justify-between items-center w-full px-1">
+                  <div className="text-darktheme-100 text-base">Rating</div>
+                  <div className="flex-grow flex justify-end px-4 box-border">
+                    {getStarIcon()}
                   </div>
-                  {getPriceField(maxPriceOptions, 1)}
-                </div>
-              </div>
-              <div className="flex justify-between items-center w-full px-1 my-1">
-                <div className="text-darktheme-100 text-base">Sort By</div>
-                <TextField
-                  select
-                  value={sortby}
-                  onChange={(event) => setSortBy(event.target.value)}
-                  variant="outlined"
-                  SelectProps={{
-                    classes: {
-                      root: classes.sort,
-                      icon: classes.icon,
-                      iconOpen: classes.iconOpen,
-                    },
-                    MenuProps: {
-                      classes: {
-                        paper: classes.sortMenu,
-                      },
-                      disableScrollLock: true,
-                      disablePortal: true,
-                      anchorOrigin: {
-                        vertical: "center",
-                        horizontal: "left",
-                      },
-                      transformOrigin: {
-                        vertical: "center",
-                        horizontal: "right",
-                      },
-                      getContentAnchorEl: null,
-                    },
-                  }}
-                >
-                  {sortByValues.map((method, i) => (
-                    <MenuItem
-                      value={i}
-                      key={i}
-                      classes={{
-                        root: classes.sortMenuItem,
-                        selected: classes.selectedSort,
-                      }}
-                    >
-                      {method}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </div>
-              <div className="flex justify-between items-center w-full px-1">
-                <div className="text-darktheme-100 text-base">Order</div>
-                <div className="flex justify-between items-center text-base text-white">
-                  Low to High
-                  <Switch
-                    checked={order === "desc" ? true : false}
-                    onChange={(event) => {
-                      event.target.checked === false
-                        ? setOrder("asc")
-                        : setOrder("desc");
+                  <Slider
+                    value={rating}
+                    onChange={(event, newValue) => {
+                      setRating(newValue);
                     }}
-                    classes={{
-                      switchBase: classes.switchBase,
-                      checked: classes.checked,
-                      track: classes.track,
-                    }}
+                    valueLabelDisplay="auto"
+                    min={1}
+                    max={5}
+                    marks={true}
+                    classes={{ root: classes.root }}
                   />
-                  High to Low
+                </div>
+                <div className="flex justify-between items-center px-1">
+                  <div className="text-darktheme-100 text-base mr-4">
+                    Price Range
+                  </div>
+                  <div className="flex items-center">
+                    {getPriceField(minPriceOptions, 0)}
+                    <div className="text-4xl text-darktheme-200 mx-2 -mt-1">
+                      ~
+                    </div>
+                    {getPriceField(maxPriceOptions, 1)}
+                  </div>
+                </div>
+                <div className="flex justify-between items-center w-full px-1 my-1">
+                  <div className="text-darktheme-100 text-base">Sort By</div>
+                  <TextField
+                    select
+                    value={sortby}
+                    onChange={(event) => setSortBy(event.target.value)}
+                    variant="outlined"
+                    SelectProps={{
+                      classes: {
+                        root: classes.sort,
+                        icon: classes.icon,
+                        iconOpen: classes.iconOpen,
+                      },
+                      MenuProps: {
+                        classes: {
+                          paper: classes.sortMenu,
+                        },
+                        disableScrollLock: true,
+                        disablePortal: true,
+                        anchorOrigin: {
+                          vertical: "center",
+                          horizontal: "left",
+                        },
+                        transformOrigin: {
+                          vertical: "center",
+                          horizontal: "right",
+                        },
+                        getContentAnchorEl: null,
+                      },
+                    }}
+                  >
+                    {sortByValues.map((method, i) => (
+                      <MenuItem
+                        value={i}
+                        key={i}
+                        classes={{
+                          root: classes.sortMenuItem,
+                          selected: classes.selectedSort,
+                        }}
+                      >
+                        {method}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </div>
+                <div className="flex justify-between items-center w-full px-1">
+                  <div className="text-darktheme-100 text-base">Order</div>
+                  <div className="flex justify-between items-center text-base text-white">
+                    Low to High
+                    <Switch
+                      checked={order === "desc" ? true : false}
+                      onChange={(event) => {
+                        event.target.checked === false
+                          ? setOrder("asc")
+                          : setOrder("desc");
+                      }}
+                      classes={{
+                        switchBase: classes.switchBase,
+                        checked: classes.checked,
+                        track: classes.track,
+                      }}
+                    />
+                    High to Low
+                  </div>
+                </div>
+                <div className="flex justify-evenly w-full my-3">
+                  <Button
+                    variant="contained"
+                    size="small"
+                    classes={{ root: classes.buttonApply }}
+                    onClick={() => {
+                      setfilterOpen(false);
+                      props.applyFilters({
+                        rating,
+                        price,
+                        sortby,
+                        order,
+                      });
+                    }}
+                  >
+                    Apply
+                  </Button>
+                  <Button
+                    variant="contained"
+                    classes={{ root: classes.buttonClear }}
+                    size="small"
+                    onClick={setDefault}
+                  >
+                    Clear
+                  </Button>
                 </div>
               </div>
-              <div className="flex justify-evenly w-full my-3">
-                <Button
-                  variant="contained"
-                  size="small"
-                  classes={{ root: classes.buttonApply }}
-                  onClick={() => {
-                    setfilterOpen(false);
-                    props.applyFilters({
-                      rating,
-                      price,
-                      sortby,
-                      order,
-                    });
-                  }}
-                >
-                  Apply
-                </Button>
-                <Button
-                  variant="contained"
-                  classes={{ root: classes.buttonClear }}
-                  size="small"
-                  onClick={setDefault}
-                >
-                  Clear
-                </Button>
+            </Bounce>
+          </div>
+          <div>
+            <Tooltip title="Apply Filters" placement="left" arrow>
+              <div className="rounded-full overflow-hidden">
+                <Fab color="primary" onClick={() => setfilterOpen(!filterOpen)}>
+                  {filterOpen === false ? (
+                    <svg
+                      className="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="w-6 h-6"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
+                </Fab>
               </div>
-            </div>
-          </Bounce>
-          <Tooltip title="Apply Filters" placement="left" arrow>
-            <div className="rounded-full overflow-hidden">
-              <Fab color="primary" onClick={() => setfilterOpen(!filterOpen)}>
-                {filterOpen === false ? (
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    className="w-6 h-6"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                )}
-              </Fab>
-            </div>
-          </Tooltip>
+            </Tooltip>
+          </div>
         </div>
       </ClickAwayListener>
     </>

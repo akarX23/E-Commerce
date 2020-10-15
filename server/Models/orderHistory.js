@@ -9,11 +9,19 @@ const orderHistorySchema = mongoose.Schema({
   },
   entries: [
     {
-      items: [],
+      items: [
+        {
+          quantity: { type: Number },
+          totalPrice: { type: Number },
+          product: {},
+          _id: false,
+        },
+      ],
       _id: false,
       createdAt: { type: Date, default: Date.now },
       paymentID: String,
       orderID: String,
+      address: {},
     },
   ],
 });

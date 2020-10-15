@@ -18,11 +18,15 @@ import Button from "@material-ui/core/Button";
 import ShoppingBasketOutlinedIcon from "@material-ui/icons/ShoppingBasketOutlined";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
 
 import PageNotFound from "../../WidgetsUI/PageNotFound/pageNotFound";
 import Loading from "../../WidgetsUI/Loading/loading";
 import Payment from "../Payment/payment";
 import CartItem from "../../WidgetsUI/CartItem/cartitem";
+import Address from "../../WidgetsUI/Address/address";
 
 const styles = (theme) => ({
   checkout: {
@@ -36,6 +40,28 @@ const styles = (theme) => ({
     width: "150px",
     transition: "all 0.5s linear",
   },
+  addressDialogue: {
+    backgroundColor: "#343A40",
+  },
+  link: {
+    color: "#4299e1",
+    "&:hover": {
+      textDecoration: "underline !important",
+      color: "#4299e1",
+    },
+  },
+  addressSubmitControls: {
+    color: "#4fd1c5",
+    fontSize: "14px",
+    fontWeight: 600,
+    letterSpacing: "2px",
+    outline: "none !important",
+    border: "none !important",
+    marginRight: "20px",
+    "&:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.05) !important",
+    },
+  },
 });
 
 class Cart extends Component {
@@ -46,23 +72,32 @@ class Cart extends Component {
     severity: "",
     quantity: [],
     showPayment: false,
+    selectAddress: false,
+    addressTosend: {
+      index: 0,
+      address: {},
+    },
   };
 
   componentWillMount() {
-    let quantity = [];
-    this.props.cart.cartItems.items.forEach((item) =>
-      quantity.push(item.quantity)
+    this.setState(
+      {
+        loading: true,
+        addressTosend: {
+          index: 0,
+          address: { ...this.props.user.user.address[0] },
+        },
+      },
+      () => this.props.cartProductList()
     );
-    this.setState({ loading: true, quantity: [...quantity] });
-    this.props.cartProductList();
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
     let showAlert = false,
       alert = "",
       severity = this.state.severity,
       quantity = [];
-    console.log(nextProps);
 
     if (nextProps.cart.cartItems) {
       if (nextProps.cart.cartActions?.success === false) {
@@ -99,6 +134,7 @@ class Cart extends Component {
   componentWillUnmount() {
     this.props.clearCartActions();
     this.props.clearOrderAction();
+    this.props.clearCart();
   }
 
   changeQuantityRequest = (id, quantity, price) => {
@@ -128,7 +164,7 @@ class Cart extends Component {
       return;
     }
 
-    this.setState({ showPayment: true });
+    this.setState({ selectAddress: true });
   };
 
   deleteCartItem = (id) => {
@@ -162,10 +198,91 @@ class Cart extends Component {
           showPayment: false,
         },
         () =>
-          this.props.addOrderHistory(details.status.id, details.status.order_id)
+          this.props.addOrderHistory(
+            details.status.id,
+            details.status.order_id,
+            this.state.addressTosend.address
+          )
       );
     }
   };
+
+  onCheck = (checked, i) => {
+    this.setState({
+      addressTosend: {
+        index: i,
+        address: { ...this.props.user.user.address[i] },
+      },
+    });
+  };
+
+  closeAddressDialogue() {
+    this.setState({ selectAddress: false });
+  }
+
+  renderAddressDialogue() {
+    const { selectAddress, addressTosend } = this.state;
+    const { classes, user } = this.props;
+
+    return (
+      <Dialog
+        open={selectAddress}
+        classes={{ paper: classes.addressDialogue }}
+        fullWidth={true}
+        maxWidth={"sm"}
+        onClose={() => this.setState({ selectAddress: false })}
+      >
+        {user.user.address.length === 0 ? (
+          <div className="text-xl p-3 text-darktheme-300">
+            You don't have any saved addresses.{" "}
+            <a href="/user/myprofile" className={classes.link}>
+              Click here
+            </a>{" "}
+            to add an address and place an order!
+          </div>
+        ) : (
+          <div className="flex flex-col">
+            <div className="text-lg text-darktheme-200 p-2 box-border pb-1 w-full border-b border-darktheme-400">
+              Choose an address or add a new one{" "}
+              <a href="/user/myprofile" className={classes.link}>
+                here
+              </a>
+            </div>
+            <DialogContent>
+              {user.user.address.map((address, i) => {
+                return (
+                  <Address
+                    key={i}
+                    details={address}
+                    readOnly={true}
+                    checkable={true}
+                    checked={addressTosend.index === i}
+                    onCheck={(checked) => this.onCheck(checked, i)}
+                  />
+                );
+              })}
+            </DialogContent>
+          </div>
+        )}
+        <DialogActions>
+          <Button
+            classes={{ root: classes.addressSubmitControls }}
+            onClick={() =>
+              this.setState({ showPayment: true, selectAddress: false })
+            }
+          >
+            Proceed To Pay
+          </Button>
+          <Button
+            classes={{ root: classes.addressSubmitControls }}
+            onClick={() => this.setState({ selectAddress: false })}
+          >
+            go back
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
 
   render() {
     const {
@@ -180,7 +297,7 @@ class Cart extends Component {
 
     return (
       <>
-        {cart.cartItems && (
+        {cart.cartItems?.items && (
           <div className="p-2">
             <div className="mb-8 pb-1 w-full border-b text-3xl text-darktheme-100 border-darktheme-400">
               Your Cart
@@ -205,7 +322,7 @@ class Cart extends Component {
                   <div className="mt-3" key={i}>
                     <CartItem
                       {...item}
-                      quantity={quantity[i]}
+                      quantity={quantity[i] ? quantity[i] : 0}
                       changeQuantity={(id, quantity, price) =>
                         this.changeQuantityRequest(id, quantity, price)
                       }
@@ -243,6 +360,7 @@ class Cart extends Component {
             {alert}
           </Alert>
         </Snackbar>
+        {this.renderAddressDialogue()}
       </>
     );
   }
@@ -252,6 +370,7 @@ const mapStateToProps = (state) => {
   return {
     cart: state.cart,
     orderHistory: state.orderhistory,
+    user: state.user,
   };
 };
 

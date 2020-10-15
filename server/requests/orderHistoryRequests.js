@@ -8,7 +8,7 @@ module.exports = function (app) {
   app.post("/api/orderHistory/add", auth, (req, res) => {
     OrderHistory.find({ owner: req.user._id }, (err, histories) => {
       let history = histories[0];
-      const { paymentID, orderID } = req.body;
+      const { paymentID, orderID, address } = req.body;
 
       if (err) {
         return res.status(200).json({ historyAdded: false, err });
@@ -24,7 +24,7 @@ module.exports = function (app) {
           items.push({
             quantity: item.quantity,
             totalPrice: item.totalPrice,
-            product: { ...item.prdouct },
+            product: { ...item.product },
           });
         });
 
@@ -32,6 +32,7 @@ module.exports = function (app) {
           items: [...items],
           paymentID,
           orderID,
+          address,
         });
 
         cart.products = [];

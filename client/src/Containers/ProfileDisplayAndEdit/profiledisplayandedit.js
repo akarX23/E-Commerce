@@ -140,6 +140,7 @@ class ProfileDisplayAndEdit extends Component {
     showAlert: false,
     severity: "",
     addAddress: false,
+    savedAlert: false,
   };
 
   componentWillMount() {
@@ -160,7 +161,7 @@ class ProfileDisplayAndEdit extends Component {
       if (nextProps.user.update && nextProps.user.update === true) {
         user = { ...nextProps.user.user };
         alert = "Profile Updated!";
-        showAlert = true;
+        showAlert = this.state.savedAlert;
         severity = "success";
         changed = false;
       } else if (nextProps.user.update && nextProps.user.update === false) {
@@ -184,12 +185,15 @@ class ProfileDisplayAndEdit extends Component {
         showAlert,
         severity,
         changed,
+        savedAlert: false,
       });
     }
   }
 
   handleDeleteImage = () => {
-    this.setState({ image: null, file: null, changed: true });
+    this.setState({ image: null, file: null, changed: true }, () =>
+      this.sendUserDetails(true)
+    );
   };
 
   handleInputChange = (inputName, value) => {
@@ -211,13 +215,18 @@ class ProfileDisplayAndEdit extends Component {
   handleBlur = (inputName, value) => {
     let newErrors = { ...this.state.errors };
     newErrors[inputName] = this.validateInputs(inputName, value);
-    this.setState({
-      errors: { ...newErrors },
-      values: {
-        ...this.state.values,
-        [inputName]: value.trim(),
+    this.setState(
+      {
+        errors: { ...newErrors },
+        values: {
+          ...this.state.values,
+          [inputName]: value.trim(),
+        },
       },
-    });
+      () => {
+        if (newErrors[inputName] === "") this.sendUserDetails();
+      }
+    );
   };
 
   validateInputs = (inputName, value) => {
@@ -234,13 +243,16 @@ class ProfileDisplayAndEdit extends Component {
     let addresses = [...this.state.values.address];
     addresses = addresses.filter((address, index) => index !== i);
 
-    this.setState({
-      values: { ...this.state.values, address: [...addresses] },
-      showAlert: true,
-      alert: "Address Deleted",
-      severity: "success",
-      changed: true,
-    });
+    this.setState(
+      {
+        values: { ...this.state.values, address: [...addresses] },
+        showAlert: true,
+        alert: "Address Deleted",
+        severity: "success",
+        changed: true,
+      },
+      () => this.sendUserDetails()
+    );
   };
 
   handleSaveAddress = (address, i, newEntry) => {
@@ -249,10 +261,13 @@ class ProfileDisplayAndEdit extends Component {
     if (newEntry === true) newAddress.push({ ...address });
     else newAddress[i] = { ...address };
 
-    this.setState({
-      values: { ...this.state.values, address: [...newAddress] },
-      changed: true,
-    });
+    this.setState(
+      {
+        values: { ...this.state.values, address: [...newAddress] },
+        changed: true,
+      },
+      () => this.sendUserDetails()
+    );
   };
 
   renderAddressComponent = () => {
@@ -299,7 +314,7 @@ class ProfileDisplayAndEdit extends Component {
     );
   };
 
-  sendUserDetails = () => {
+  sendUserDetails = (loading = false, image = null) => {
     let newErrors = { ...this.state.errors };
     let allValid = true;
     let error = "";
@@ -312,12 +327,18 @@ class ProfileDisplayAndEdit extends Component {
 
     if (allValid === true) {
       if (this.state.changed === true) {
-        this.setState({ loading: true, errors: { ...newErrors } });
-        this.props.updateUser(this.state.values, this.state.image);
+        this.setState(
+          { loading, errors: { ...newErrors }, savedAlert: loading },
+          () =>
+            this.props.updateUser(
+              this.state.values,
+              image ? image : this.state.image
+            )
+        );
       } else
         this.setState({
           alert: "Profile Updated!",
-          showAlert: true,
+          showAlert: loading,
           severity: "success",
           errors: { ...newErrors },
         });
@@ -343,7 +364,7 @@ class ProfileDisplayAndEdit extends Component {
               variant="contained"
               classes={{ root: classes.saveButtonMobile }}
               startIcon={<SaveIcon />}
-              onClick={() => this.sendUserDetails()}
+              onClick={() => this.sendUserDetails(true)}
             >
               Save profile
             </Button>
@@ -360,7 +381,11 @@ class ProfileDisplayAndEdit extends Component {
             <UserImageUpload
               image={this.state.image}
               file={null}
-              onChangeImage={(image) => this.setState({ image, changed: true })}
+              onChangeImage={(image) =>
+                this.setState({ changed: true }, () =>
+                  this.sendUserDetails(true, image)
+                )
+              }
             />
 
             <ViewFullImage
@@ -458,7 +483,7 @@ class ProfileDisplayAndEdit extends Component {
               variant="contained"
               classes={{ root: classes.saveButton }}
               startIcon={<SaveIcon />}
-              onClick={() => this.sendUserDetails()}
+              onClick={() => this.sendUserDetails(true)}
             >
               Save profile
             </Button>
@@ -495,7 +520,7 @@ class ProfileDisplayAndEdit extends Component {
           closeDialogue={() => this.setState({ addAddress: false })}
           onSaveAddress={(address) => this.handleSaveAddress(address, 0, true)}
         />
-        <NavigationPrompt when={this.state.changed}></NavigationPrompt>
+        {/* <NavigationPrompt when={this.state.changed}></NavigationPrompt> */}
       </>
     );
   }

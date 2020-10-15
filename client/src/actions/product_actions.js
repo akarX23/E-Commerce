@@ -7,6 +7,8 @@ import {
   ADD_PRODUCT,
   USER_PRODUCT_LIST,
   EDIT_PRODUCT,
+  CLEAR_REVIEW_ACTIONS,
+  CLEAR_PRODUCT,
 } from "../ACTION_TYPES";
 import axios from "axios";
 
@@ -89,6 +91,12 @@ export async function deleteReview(id) {
   return {
     type: DELETE_REVIEW,
     payload: request,
+  };
+}
+
+export function clearReviewActions() {
+  return {
+    type: CLEAR_REVIEW_ACTIONS,
   };
 }
 
@@ -188,4 +196,8 @@ export async function deleteProducts(products) {
     type: USER_PRODUCT_LIST,
     payload: { ...deleteRequest, ...newProducts },
   };
+}
+
+export function clearProduct() {
+  return { type: CLEAR_PRODUCT };
 }

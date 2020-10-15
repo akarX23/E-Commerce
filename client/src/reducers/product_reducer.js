@@ -7,6 +7,8 @@ import {
   ADD_PRODUCT,
   USER_PRODUCT_LIST,
   EDIT_PRODUCT,
+  CLEAR_REVIEW_ACTIONS,
+  CLEAR_PRODUCT,
 } from "../ACTION_TYPES";
 
 export default (state = {}, { type, payload }) => {
@@ -19,6 +21,8 @@ export default (state = {}, { type, payload }) => {
       return { ...state, review: payload };
     case DELETE_REVIEW:
       return { ...state, review: payload };
+    case CLEAR_REVIEW_ACTIONS:
+      return { ...state, review: null };
     case UPDATE_LIKES:
       return { ...state, review: payload };
     case ADD_PRODUCT:
@@ -27,6 +31,8 @@ export default (state = {}, { type, payload }) => {
       return { ...state, userProducts: payload };
     case EDIT_PRODUCT:
       return { ...state, product: { ...payload, found: true } };
+    case CLEAR_PRODUCT:
+      return { ...state, product: null };
     default:
       return state;
   }
