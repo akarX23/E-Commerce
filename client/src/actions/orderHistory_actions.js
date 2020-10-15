@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ADD_ORDER, CLEAR_ORDER_ACTION } from "../ACTION_TYPES";
+import { ADD_ORDER, CLEAR_ORDER_ACTION, GET_ORDERS } from "../ACTION_TYPES";
 
 export async function addOrderHistory(paymentID, orderID, address) {
   const request = await axios
@@ -16,5 +16,16 @@ export async function addOrderHistory(paymentID, orderID, address) {
 export function clearOrderAction() {
   return {
     type: CLEAR_ORDER_ACTION,
+  };
+}
+
+export async function getOrderHistory() {
+  const request = await axios
+    .get("/api/orderHistory/history")
+    .then((response) => response.data);
+
+  return {
+    type: GET_ORDERS,
+    payload: request,
   };
 }

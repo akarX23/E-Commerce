@@ -79,6 +79,7 @@ const UserCard = ({
           <img
             src={imageURL ? imageURL : userImage}
             className=" object-cover object-center w-full h-full"
+            alt="User-Card"
           />
         </div>
         <div className="w-full p-3 -mb-1 flex flex-col bg-darktheme-900">

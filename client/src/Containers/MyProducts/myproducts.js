@@ -174,7 +174,6 @@ class MyProduct extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.product.userProducts) {
       let checked = [],
-        productList = [],
         options = [],
         numberOfProducts = 0,
         tags = [],
@@ -200,7 +199,6 @@ class MyProduct extends Component {
           severity = "error";
         }
 
-        productList = [...nextProps.product.userProducts.products];
         options = [...options, ...tags];
         options = [...new Set(options)];
       } else if (nextProps.product.userProducts.list === false) {

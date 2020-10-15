@@ -75,6 +75,7 @@ const ViewFullImage = ({ closeImage, image, openState, open }) => {
                   <img
                     src={image}
                     className="object-cover object-center w-full h-full"
+                    alt="full-image"
                   />
                 </div>
               </ClickAwayListener>

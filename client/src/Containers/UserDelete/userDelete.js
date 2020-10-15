@@ -77,7 +77,6 @@ class UserDelete extends Component {
         {this.state.loading && <Loading />}
         <Snackbar
           open={this.state.showAlert}
-          open={this.state.showAlert}
           autoHideDuration={5000}
           onClose={() => this.setState({ showAlert: false })}
           anchorOrigin={{ vertical: "top", horizontal: "center" }}

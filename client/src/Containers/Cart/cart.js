@@ -93,7 +93,6 @@ class Cart extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     let showAlert = false,
       alert = "",
       severity = this.state.severity,

@@ -195,21 +195,22 @@ const CartItem = ({
     return (
       <div className={`w-full h-full`}>
         <a href={`/product/${product._id}`}>
-        <Carousel
-          interval={2000}
-          controls={false}
-          indicators={false}
-          pause={false}
-        >
-          {product.imageURLs.map((url, i) => (
-            <Carousel.Item key={i}>
-              <img
-                src={url}
-                className={`object-cover object-center w-full h-full ${classes.imageCarousel}`}
-              />
-            </Carousel.Item>
-          ))}
-        </Carousel>
+          <Carousel
+            interval={2000}
+            controls={false}
+            indicators={false}
+            pause={false}
+          >
+            {product.imageURLs.map((url, i) => (
+              <Carousel.Item key={i}>
+                <img
+                  src={url}
+                  className={`object-cover object-center w-full h-full ${classes.imageCarousel}`}
+                  alt="Cart-Item"
+                />
+              </Carousel.Item>
+            ))}
+          </Carousel>
         </a>
       </div>
     );

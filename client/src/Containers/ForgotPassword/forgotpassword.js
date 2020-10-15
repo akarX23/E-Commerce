@@ -122,7 +122,7 @@ class ForgotPassword extends Component {
 
   render() {
     const { classes } = this.props;
-    const { loading, email, error } = this.state;
+    const { email, error } = this.state;
 
     return (
       <>

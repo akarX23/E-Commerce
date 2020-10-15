@@ -49,16 +49,17 @@ module.exports = function (app) {
         });
       });
     });
+  });
 
-    ///GET///
+  ///GET///
 
-    app.get("/api/orderHistory/history", (req, res) => {
-      let id = req.query.id;
-      OrderHistory.findOne({ ownerId: id }, (err, order) => {
-        if (err || !order)
-          return res.status(400).json({ orderHistory: false, err });
-        res.status(200).json({ orderHistory: true, history: order.entries });
-      });
+  app.get("/api/orderHistory/history", auth, (req, res) => {
+    let id = req.user._id;
+
+    OrderHistory.find({ owner: id }, (err, orders) => {
+      let order = orders[0];
+      if (err) return res.status(200).json({ orderHistory: false, err });
+      res.status(200).json({ orderHistory: true, history: order });
     });
   });
 };

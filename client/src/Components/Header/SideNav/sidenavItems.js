@@ -12,10 +12,7 @@ import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import LocalMallIcon from "@material-ui/icons/LocalMall";
 import StoreSharpIcon from "@material-ui/icons/StoreSharp";
-import ListAltIcon from "@material-ui/icons/ListAlt";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import AddIcon from "@material-ui/icons/Add";
 import ContactSupportIcon from "@material-ui/icons/ContactSupport";
 

@@ -41,3 +41,4 @@ export const CLEAR_CART = "clear_cart";
 //ORDER HISTORY ACTION TYPES
 export const ADD_ORDER = "add_order";
 export const CLEAR_ORDER_ACTION = "clear_order_action";
+export const GET_ORDERS = "get_orders";

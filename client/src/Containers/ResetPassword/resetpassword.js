@@ -47,12 +47,6 @@ const styles = (theme) => ({
     border: "none !important",
     marginRight: "-5px",
   },
-  submit: {
-    outline: "none !important",
-    border: "none !important",
-    width: "140px",
-    marginTop: "20px",
-  },
   resetTrueIcon: {
     color: "green",
     fontSize: 50,
@@ -284,8 +278,6 @@ class ResetPassword extends Component {
   };
 
   render() {
-    const { classes } = this.props;
-
     return (
       <>
         <div className="fixed inset-0 flex justify-center items-center">

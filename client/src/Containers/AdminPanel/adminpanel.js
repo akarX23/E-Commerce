@@ -42,7 +42,6 @@ const styles = (theme) => ({
   },
   sort: {
     color: "white",
-    padding: "6px",
     paddingLeft: "13px",
     backgroundColor: "#202428 !important",
     width: "70px",
