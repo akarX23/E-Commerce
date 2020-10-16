@@ -62,4 +62,28 @@ module.exports = function (app) {
       res.status(200).json({ orderHistory: true, history: order });
     });
   });
+
+  app.get("/api/orderHistory/historyItem", auth, (req, res) => {
+    const { payid } = req.query;
+    let id = req.user._id;
+
+    OrderHistory.find({ owner: id }, (err, orders) => {
+      let order = orders[0];
+      if (err) return res.status(200).json({ orderHistory: false, err });
+
+      let itemToBeFound = {},
+        found = false;
+      order.entries.forEach((item) => {
+        if (item.paymentID === payid) {
+          itemToBeFound = { ...item._doc };
+          found = true;
+        }
+      });
+
+      return res.status(200).json({
+        found,
+        historyItem: { ...itemToBeFound },
+      });
+    });
+  });
 };

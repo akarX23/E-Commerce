@@ -42,3 +42,4 @@ export const CLEAR_CART = "clear_cart";
 export const ADD_ORDER = "add_order";
 export const CLEAR_ORDER_ACTION = "clear_order_action";
 export const GET_ORDERS = "get_orders";
+export const GET_HISTORY_ITEM = "get_history_item";

@@ -1,4 +1,9 @@
-import { ADD_ORDER, CLEAR_ORDER_ACTION, GET_ORDERS } from "../ACTION_TYPES";
+import {
+  ADD_ORDER,
+  CLEAR_ORDER_ACTION,
+  GET_ORDERS,
+  GET_HISTORY_ITEM,
+} from "../ACTION_TYPES";
 
 export default (state = {}, { type, payload }) => {
   switch (type) {
@@ -16,6 +21,9 @@ export default (state = {}, { type, payload }) => {
     }
     case GET_ORDERS: {
       return { ...state, orders: payload };
+    }
+    case GET_HISTORY_ITEM: {
+      return { ...state, historyItem: payload };
     }
     default:
       return state;

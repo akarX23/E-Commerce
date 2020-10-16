@@ -37,7 +37,7 @@ const Address = ({
   const [openDialogue, setOpenDialogue] = useState(false);
 
   return (
-    <div className="flex w-full items-start pr-3 pb-3 mt-3">
+    <div className="flex w-full items-start pb-3 mt-3">
       {checkable && (
         <div className="h-full">
           <Radio

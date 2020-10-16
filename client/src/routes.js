@@ -21,6 +21,7 @@ import AdminPanel from "./Containers/AdminPanel/adminpanel";
 import UserDelete from "./Containers/UserDelete/userDelete";
 import Cart from "./Containers/Cart/cart";
 import OrderHistory from "./Containers/OrderHistory/orderhistory";
+import HistoryItem from "./Containers/HistoryItem/historyitem";
 
 const Routes = () => {
   return (
@@ -42,6 +43,11 @@ const Routes = () => {
           path="/user/requestverification"
           exact
           component={Auth(RequestVerification)}
+        />
+        <Route
+          path="/user/myorders/:payid"
+          exact
+          component={Auth(HistoryItem, true, false)}
         />
         <Route
           path="/user/myorders"

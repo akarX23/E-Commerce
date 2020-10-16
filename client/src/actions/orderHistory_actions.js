@@ -1,5 +1,10 @@
 import axios from "axios";
-import { ADD_ORDER, CLEAR_ORDER_ACTION, GET_ORDERS } from "../ACTION_TYPES";
+import {
+  ADD_ORDER,
+  CLEAR_ORDER_ACTION,
+  GET_ORDERS,
+  GET_HISTORY_ITEM,
+} from "../ACTION_TYPES";
 
 export async function addOrderHistory(paymentID, orderID, address) {
   const request = await axios
@@ -26,6 +31,17 @@ export async function getOrderHistory() {
 
   return {
     type: GET_ORDERS,
+    payload: request,
+  };
+}
+
+export async function getHistoryItem(payid) {
+  const request = await axios
+    .get(`/api/orderHistory/historyItem?payid=${payid}`)
+    .then((response) => response.data);
+
+  return {
+    type: GET_HISTORY_ITEM,
     payload: request,
   };
 }
