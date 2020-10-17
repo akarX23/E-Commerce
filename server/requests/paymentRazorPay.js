@@ -11,7 +11,7 @@ module.exports = function (app) {
   app.get("/api/order", (req, res) => {
     try {
       const options = {
-        amount: parseFloat(req.query.amount) * 100, // amount == Rs 10
+        amount: parseFloat(req.query.amount) * 100,
         currency: "INR",
         receipt: "receipt#1",
         payment_capture: 0,
@@ -22,6 +22,7 @@ module.exports = function (app) {
           return res.status(500).json({
             success: false,
             message: "Something Went Wrong",
+            err,
           });
         }
         return res.status(200).json({ success: true, order });
@@ -30,6 +31,7 @@ module.exports = function (app) {
       return res.status(500).json({
         success: false,
         message: "Something Went Wrong",
+        err,
       });
     }
   });
