@@ -189,6 +189,7 @@ class SignUpForm extends Component {
     let newerrorMessage = { ...this.state.errorMessage };
     let newValid = { ...this.state.valid };
     let newValue = { ...this.state.values };
+    newValue[inputName] = value;
 
     if (this.state.validate[inputName] === false) {
       if (
@@ -204,7 +205,6 @@ class SignUpForm extends Component {
     } else {
       newerrorMessage[inputName] = "";
       newValid[inputName] = true;
-      newValue[inputName] = value;
 
       if (value === "") {
         newerrorMessage[inputName] = "*This field is required";

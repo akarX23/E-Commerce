@@ -1,5 +1,7 @@
 const User = require("../Models/user");
 const Token = require("../Models/Token");
+const Cart = require("../Models/cart");
+const OrderHistory = require("../Models/orderHistory");
 const { auth } = require("../Middlewares/auth");
 const { sendEmail } = require("../Mail/email");
 module.exports = function (app) {
@@ -226,7 +228,7 @@ module.exports = function (app) {
           found: true,
         });
 
-      const newUser = new User({ ...req.body });
+      const newUser = new User(req.body);
 
       newUser.save((err, user) => {
         if (err)
@@ -234,6 +236,22 @@ module.exports = function (app) {
             userAdded: false,
             err,
           });
+
+        new Cart({ _id: user._id, products: [] }).save((err, doc) => {
+          if (err)
+            return res.status(200).json({
+              success: false,
+              err,
+            });
+        });
+
+        new OrderHistory({ owner: user._id, entries: [] }).save((err, doc) => {
+          if (err)
+            return res.status(200).json({
+              success: false,
+              err,
+            });
+        });
 
         return res.status(200).json({
           success: true,

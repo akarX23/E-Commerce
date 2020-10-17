@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     border: "none !important",
     "&:hover": {
       cursor: "pointer",
+      boxShadow: "0 0 15px #697076",
     },
     textDecoration: "none !important",
   },

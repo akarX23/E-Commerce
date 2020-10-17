@@ -44,8 +44,33 @@ export async function logout() {
 }
 
 export async function signUp(userdata) {
+  let address = [];
+
+  if (
+    userdata.street !== "" ||
+    userdata.city !== "" ||
+    userdata.state !== "" ||
+    userdata.pincode !== ""
+  )
+    address = [
+      {
+        street: userdata.street,
+        city: userdata.city,
+        state: userdata.state,
+        pincode: userdata.pincode,
+      },
+    ];
+  const structuredData = {
+    name: userdata.name,
+    lastname: userdata.lastname,
+    email: userdata.email,
+    password: userdata.password,
+    mobile: userdata.mobile,
+    address,
+  };
+
   const request = await axios
-    .post("/api/user/register", userdata)
+    .post("/api/user/register", structuredData)
     .then((response) => {
       return response.data;
     });

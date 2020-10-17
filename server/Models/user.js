@@ -3,7 +3,7 @@ const Cart = require("../Models/cart");
 const Product = require("../Models/product");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const orderHistory = require("./orderHistory");
+const OrderHistory = require("./orderHistory");
 const Token = require("./Token");
 const { sendEmail } = require("../Mail/email");
 const config = require("../config/config").get(process.env.NODE_ENV);
@@ -115,7 +115,7 @@ userSchema.methods.confirmEmail = function (cb) {
   new Cart({ _id: user._id, products: [] }).save((err, doc) => {
     if (err) return cb(err);
   });
-  new orderHistory({ owner: user._id, entries: [] }).save((err, doc) => {
+  new OrderHistory({ owner: user._id, entries: [] }).save((err, doc) => {
     if (err) return cb(err);
   });
 
@@ -209,14 +209,18 @@ userSchema.methods.deleteUser = function (cb) {
 
   Product.find({}, (err, products) => {
     if (err) return cb(err);
-    console.log(products);
 
     products.forEach((product) => {
-      console.log("Origional" + product);
-      product.userReview = product.userReview.filter(
-        (review) => review.userInfo !== null
-      );
-      console.log("New" + product);
+      product.userReview = product.userReview.filter((review) => {
+        if (!review.userInfo) {
+          product.totalRating -= review.rating;
+          return false;
+        }
+        return true;
+      });
+
+      product.rating = product.totalRating / (product.userReview.length + 1);
+      console.log(product);
       product.save((err) => {
         if (err) return cb(err);
       });
@@ -231,7 +235,7 @@ userSchema.methods.deleteUser = function (cb) {
     if (err) return cb(err);
   });
 
-  orderHistory.findOneAndDelete({ owner: user._id }, (err) => {
+  OrderHistory.findOneAndDelete({ owner: user._id }, (err) => {
     if (err) return cb(err);
   });
 
