@@ -47,7 +47,7 @@ const passwordResetMail = (id, token, url, name) => {
         <body>  
             <h1>Hi ${name}, You requested a reset password for your account.</h1>
             <h3> Click the link below to reset your password.</h3>
-            <a href="http://${url}/user/reset/${id}/${token}"><button>Reset</button></a>
+            <a href="https://${url}/user/reset/${id}/${token}"><button>Reset</button></a>
         </body>
         </html>`;
 };

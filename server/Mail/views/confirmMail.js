@@ -47,7 +47,7 @@ const confirmMail = (id, token, url, name) => {
       <body>
           <h1>Thank you ${name} for registering with B2ME!</h1>
           <h3>Click the button below to to verify your email!</h3>
-          <a href="http://${url}/user/confirm/${id}/${token}"><button>Verify</button></a>
+          <a href="https://${url}/user/confirm/${id}/${token}"><button>Verify</button></a>
       </body>
       </html>`;
 };
