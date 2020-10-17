@@ -2,6 +2,8 @@
 
 @import "tailwindcss/components";
 
+@import "tailwindcss/utilities";
+
 body {
   @apply bg-gray-200;
 }
@@ -67,5 +69,3 @@ a {
   border-radius: 5px;
   border-top-right-radius: 0;
 }
-
-@import "tailwindcss/utilities";

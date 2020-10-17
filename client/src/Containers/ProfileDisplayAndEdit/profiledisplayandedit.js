@@ -22,7 +22,8 @@ import Address from "../../WidgetsUI/Address/address";
 import AdressEditor from "../../WidgetsUI/AdressEditor/addresseditor";
 import PageNotFound from "../../WidgetsUI/PageNotFound/pageNotFound";
 
-import userImg from "../../assets/user_img.png";
+const userImg =
+  "https://res.cloudinary.com/b2me/image/upload/v1602248889/productImages/kjefqctstrnawl9tgsun.png";
 
 const styles = (theme) => ({
   imageContainer: {

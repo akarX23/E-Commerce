@@ -2064,76 +2064,6 @@ video {
   margin-bottom: 0;
 }
 
-body {
-  --bg-opacity: 1;
-  background-color: #edf2f7;
-  background-color: rgba(237, 242, 247, var(--bg-opacity));
-}
-
-#root {
-  width: 100%;
-  height: 100%;
-}
-
-.backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 50%;
-  background: black;
-}
-
-.loading {
-  width: 100px;
-  height: 100px;
-  background-image: linear-gradient(
-    to right,
-    rgb(37, 34, 34),
-    rgb(37, 34, 34),
-    white,
-    #00adb5
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-  font-size: 2.25rem;
-  --text-opacity: 1;
-  color: #A5ACB3;
-  color: rgba(165, 172, 179, var(--text-opacity));
-  font-weight: 800;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  animation: loading 0.7s linear infinite;
-  transform-origin: center;
-}
-
-a {
-  text-decoration: none !important;
-}
-
-*::-webkit-scrollbar {
-  width: 7px;
-}
-
-*::-webkit-scrollbar-thumb {
-  background: rgba(221, 225, 230, 0.5);
-  border-radius: 5px;
-  border-top-right-radius: 0;
-}
-
-*::-webkit-scrollbar-thumb:hover {
-  background: #dde1e6;
-}
-
-*::-webkit-scrollbar-track {
-  background: rgba(49, 51, 53, 0.774);
-  border-radius: 5px;
-  border-top-right-radius: 0;
-}
-
 .space-y-0 > :not(template) ~ :not(template) {
   --space-y-reverse: 0;
   margin-top: calc(0px * calc(1 - var(--space-y-reverse)));
@@ -17398,6 +17328,76 @@ a {
 
 .focus\:animate-bounce:focus {
   animation: bounce 1s infinite;
+}
+
+body {
+  --bg-opacity: 1;
+  background-color: #edf2f7;
+  background-color: rgba(237, 242, 247, var(--bg-opacity));
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 50%;
+  background: black;
+}
+
+.loading {
+  width: 100px;
+  height: 100px;
+  background-image: linear-gradient(
+    to right,
+    rgb(37, 34, 34),
+    rgb(37, 34, 34),
+    white,
+    #00adb5
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+  font-size: 2.25rem;
+  --text-opacity: 1;
+  color: #A5ACB3;
+  color: rgba(165, 172, 179, var(--text-opacity));
+  font-weight: 800;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  animation: loading 0.7s linear infinite;
+  transform-origin: center;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+*::-webkit-scrollbar {
+  width: 7px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(221, 225, 230, 0.5);
+  border-radius: 5px;
+  border-top-right-radius: 0;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #dde1e6;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(49, 51, 53, 0.774);
+  border-radius: 5px;
+  border-top-right-radius: 0;
 }
 
 @media (min-width: 420px) {
