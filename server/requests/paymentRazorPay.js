@@ -1,6 +1,5 @@
 const config = require("../config/config").get(process.env.NODE_ENV);
 const Razorpay = require("razorpay");
-const request = require("request");
 const axios = require("axios");
 
 const instance = new Razorpay({

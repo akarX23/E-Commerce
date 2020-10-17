@@ -7,8 +7,8 @@ const config = {
     URL: process.env.URL,
     CLOUD_URL: process.env.CLOUD_URL,
     PRESET: process.env.PRESET,
-    RAZOR_PAY_KEY_ID: "rzp_test_d3gIhUbFAEGwOd",
-    RAZOR_PAY_KEY_SECRET: "hrN8q4vwJYPVP1PG9avqwpdB",
+    RAZOR_PAY_KEY_ID: process.env.RAZOR_PAY_KEY_ID,
+    RAZOR_PAY_KEY_SECRET: process.env.RAZOR_PAY_KEY_SECRET,
   },
   default: {
     SECRET: "ONLINESHOPSECRET",

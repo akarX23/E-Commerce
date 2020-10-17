@@ -1,6 +1,5 @@
 const Product = require("../Models/product");
 const { auth } = require("../Middlewares/auth");
-const config = require("../config/config").get(process.env.NODE_ENV);
 
 module.exports = function (app) {
   ///POST///
