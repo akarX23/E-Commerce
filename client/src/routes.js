@@ -22,6 +22,8 @@ import UserDelete from "./Containers/UserDelete/userDelete";
 import Cart from "./Containers/Cart/cart";
 import OrderHistory from "./Containers/OrderHistory/orderhistory";
 import HistoryItem from "./Containers/HistoryItem/historyitem";
+import AboutUs from "./Containers/AboutUs/aboutus";
+import ContactUs from "./Containers/ContactUs/contactus";
 
 const Routes = () => {
   return (
@@ -59,6 +61,7 @@ const Routes = () => {
           exact
           component={Auth(MyProducts, true, false)}
         />
+        <Route path="/about" exact component={Auth(AboutUs)} />
         <Route
           path="/user/confirm/:id/:token"
           exact
@@ -74,6 +77,7 @@ const Routes = () => {
           exact
           component={Auth(ProfileDisplayAndEdit, true, false)}
         />
+        <Route path="/contact" exact component={Auth(ContactUs)} />
         <Route path="/admin" exact component={Auth(AdminPanel, true, true)} />
         <Route
           path="/product/edit/:id"

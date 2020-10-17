@@ -31,7 +31,6 @@ const userSchema = mongoose.Schema(
     mobile: {
       type: String,
       required: true,
-      unique: true,
       minlength: 10,
     },
     password: {
@@ -68,17 +67,6 @@ userSchema.pre("save", function (next) {
   let user = this;
 
   if (!user.isModified("password")) return next();
-
-  if (user.isNew) {
-    new Cart({ _id: user._id, products: [] }).save((err, doc) => {
-      if (err) return next(err);
-    });
-    new orderHistory({ ownerId: user._id, entries: [] })
-      .populate("ownerId")
-      .save((err, doc) => {
-        if (err) return next(err);
-      });
-  }
 
   bcrypt.genSalt(salt_i, (err, salt) => {
     if (err) return next(err);
@@ -123,6 +111,13 @@ userSchema.statics.findByToken = function (token, cb) {
 userSchema.methods.confirmEmail = function (cb) {
   let user = this;
   user.validated = true;
+
+  new Cart({ _id: user._id, products: [] }).save((err, doc) => {
+    if (err) return cb(err);
+  });
+  new orderHistory({ owner: user._id, entries: [] }).save((err, doc) => {
+    if (err) return cb(err);
+  });
 
   user.save((err, user) => {
     if (err) return cb(err);
@@ -210,6 +205,23 @@ userSchema.methods.deleteToken = function (cb) {
 
 userSchema.methods.deleteUser = function (cb) {
   let user = this;
+  console.log(user);
+
+  Product.find({}, (err, products) => {
+    if (err) return cb(err);
+    console.log(products);
+
+    products.forEach((product) => {
+      console.log("Origional" + product);
+      product.userReview = product.userReview.filter(
+        (review) => review.userInfo !== null
+      );
+      console.log("New" + product);
+      product.save((err) => {
+        if (err) return cb(err);
+      });
+    });
+  });
 
   Product.deleteMany({ owner: user._id }, (err) => {
     if (err) return cb(err);
@@ -219,7 +231,7 @@ userSchema.methods.deleteUser = function (cb) {
     if (err) return cb(err);
   });
 
-  orderHistory.findOneAndDelete({ ownerId: user._id }, (err) => {
+  orderHistory.findOneAndDelete({ owner: user._id }, (err) => {
     if (err) return cb(err);
   });
 

@@ -25,7 +25,6 @@ class UserDelete extends Component {
   state = { loading: false, showAlert: false };
 
   confirmDelete = () => {
-    console.log(this.props);
     this.setState({ loading: true }, () => {
       this.props.deleteUser(this.props.user.user.id);
     });

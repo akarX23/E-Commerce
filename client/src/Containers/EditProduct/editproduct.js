@@ -113,6 +113,7 @@ class EditProduct extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
     if (nextProps.product.product) {
       if (nextProps.product.product.found === false) return;
       const { product, edited } = nextProps.product.product;
@@ -356,7 +357,7 @@ class EditProduct extends Component {
       return (
         <PageNotFound message="You are not authorised to edit this product!" />
       );
-    else if (product.product?.product?.owner._id)
+    else if (product.product?.product?.owner)
       return (
         <>
           <div className="p-4">
@@ -520,7 +521,7 @@ class EditProduct extends Component {
             </Alert>
           </Snackbar>
           {this.state.loading && <Loading />}
-          <NavigationPrompt when={this.state.changed}></NavigationPrompt>
+          {/* <NavigationPrompt when={this.state.changed}></NavigationPrompt> */}
         </>
       );
     else return <></>;

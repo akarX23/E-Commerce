@@ -59,7 +59,6 @@ class OrderHistory extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     this.setState({ loading: false });
   }
 

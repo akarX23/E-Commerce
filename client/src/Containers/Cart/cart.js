@@ -21,6 +21,7 @@ import Alert from "@material-ui/lab/Alert";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 
 import PageNotFound from "../../WidgetsUI/PageNotFound/pageNotFound";
 import Loading from "../../WidgetsUI/Loading/loading";
@@ -264,14 +265,17 @@ class Cart extends Component {
           </div>
         )}
         <DialogActions>
-          <Button
-            classes={{ root: classes.addressSubmitControls }}
-            onClick={() =>
-              this.setState({ showPayment: true, selectAddress: false })
-            }
-          >
-            Proceed To Pay
-          </Button>
+          {this.props.user.user.address.length > 0 && (
+            <Button
+              classes={{ root: classes.addressSubmitControls }}
+              onClick={() =>
+                this.setState({ showPayment: true, selectAddress: false })
+              }
+            >
+              Proceed To Pay
+            </Button>
+          )}
+
           <Button
             classes={{ root: classes.addressSubmitControls }}
             onClick={() => this.setState({ selectAddress: false })}
@@ -298,15 +302,21 @@ class Cart extends Component {
       <>
         {cart.cartItems?.items && (
           <div className="p-2">
-            <div className="mb-8 pb-1 w-full border-b text-3xl text-darktheme-100 border-darktheme-400">
+            <div className="pb-1 w-full border-b text-3xl text-darktheme-100 border-darktheme-400">
               Your Cart
+            </div>
+            <div className="text-red-600 mb-8 mt-2 font-medium w-full">
+              This site does not require you to make any real payments.
             </div>
             {cart.cartItems.items.length > 0 ? (
               <>
                 <div className={`mt-2 w-full justify-center flex`}>
                   <div className="flex text-2xl text-darktheme-200 mr-10">
                     <div className="mr-2">Total : </div>
-                    <div>{this.getTotalPrice(cart.cartItems.items)}</div>
+                    <div className="flex items-center">
+                      <AttachMoneyIcon />
+                      {this.getTotalPrice(cart.cartItems.items)}
+                    </div>
                   </div>
                   <Button
                     startIcon={<ShoppingBasketOutlinedIcon />}
@@ -339,10 +349,16 @@ class Cart extends Component {
           </div>
         )}
         {showPayment && (
-          <Payment
-            closeModal={() => this.setState({ showPayment: false })}
-            paymentDone={(details) => this.getConfirmPaymentDetails(details)}
-          />
+          <>
+            <div className="w-11/12 break-words text-darktheme-900 text-center z-50 text-lg bg-darktheme-300 fixed left-0 top-0">
+              Just click on net banking and choose any bank to automate your
+              payment
+            </div>
+            <Payment
+              closeModal={() => this.setState({ showPayment: false })}
+              paymentDone={(details) => this.getConfirmPaymentDetails(details)}
+            />
+          </>
         )}
         {loading && <Loading />}
         <Snackbar

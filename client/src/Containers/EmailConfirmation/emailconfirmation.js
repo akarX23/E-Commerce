@@ -125,7 +125,7 @@ class EmailConfirmation extends Component {
             this.props.user.verification.new === true ? (
               <>
                 <div className="text-2xl ml-2 font-semibold sm:text-3xl md:text-4xl my-4 text-darktheme-400">
-                  Hello Ritik ,
+                  Hello {this.props.user.user.name} ,
                 </div>
                 <div className="text-lg text-darktheme-300 font-sans">
                   Your account has been verified. Thank you for joining B2ME!
@@ -181,10 +181,10 @@ class EmailConfirmation extends Component {
             ) : (
               <>
                 <div className="text-2xl ml-2 font-semibold sm:text-3xl md:text-4xl my-4 text-darktheme-400">
-                  Hello Ritik ,
+                  Hello {this.props.user.user.name} ,
                 </div>
                 <div className="text-lg text-darktheme-300 font-sans">
-                  Your account has already been verified. Please Log In.
+                  Your account has already been verified.
                 </div>
                 <div className="w-full text-center mt-2">
                   <HowToRegIcon classes={{ root: classes.icon }} />

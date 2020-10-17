@@ -44,7 +44,7 @@ module.exports = function (app) {
     let id = req.user._id;
     Cart.find({ _id: id }, (err, carts) => {
       let cart = carts[0];
-      if (err || !cart) return res.status(400).json({ list: false, err });
+      if (err || !cart) return res.status(200).json({ list: false, err });
 
       return res.status(200).json({ list: true, items: cart.products });
     });

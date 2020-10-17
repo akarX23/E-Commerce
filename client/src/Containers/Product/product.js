@@ -155,7 +155,7 @@ class Product extends Component {
     rating: 0,
     comment: "",
     ratingHover: 0,
-    reviewList: {},
+    reviewList: [],
     product: {},
     linkCopied: false,
     ratingDialogue: false,

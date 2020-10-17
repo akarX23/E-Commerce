@@ -59,7 +59,6 @@ class HistoryItem extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     this.setState({ loading: false });
   }
 
@@ -72,7 +71,6 @@ class HistoryItem extends Component {
 
   renderTableRow = (item, i) => {
     const { classes } = this.props;
-    console.log(item);
 
     const tableData = [
       { icon: null, text: item.product.title },
@@ -115,7 +113,7 @@ class HistoryItem extends Component {
     return (
       <div className="w-full">
         <table
-          className={`mt-4 text-center w-full table-fixed bg-darktheme-300 border-0`}
+          className={`mt-3 text-center w-full table-fixed bg-darktheme-300 border-0`}
         >
           <thead className="w-full">
             <tr>
@@ -152,7 +150,7 @@ class HistoryItem extends Component {
     return (
       <>
         {item ? (
-          <div className="w-full flex flex-col items-center">
+          <div className="w-full -mt-4 flex flex-col items-center">
             <div className="flex w-full sm:p-5 justify-between smmax:justify-center flex-wrap">
               <div className="w-2/5 smmax:w-4/5">
                 <Input
@@ -199,7 +197,7 @@ class HistoryItem extends Component {
                 />
               </div>
             </div>
-            <div className="w-full pb-1 pl-4 mt-5 border-b border-darktheme-400 text-xl text-darktheme-200">
+            <div className="w-full pb-1 pl-4 mt-3 border-b border-darktheme-400 text-xl text-darktheme-200">
               Items you ordered
             </div>
             <div className="my-2 px-2 text-darktheme-500 text-sm">

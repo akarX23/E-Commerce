@@ -55,6 +55,13 @@ const Comment = ({
   dislikes,
 }) => {
   const classes = useStyles();
+  const userInfoApply =
+    userInfo !== null
+      ? userInfo
+      : {
+          name: "Deleted",
+          lastname: "Deleted",
+        };
 
   return (
     <div className="flex w-full mt-4 items-start justify-start">
@@ -63,14 +70,14 @@ const Comment = ({
           root: classes.avatar,
         }}
       >
-        {userInfo.name[0]}
+        {userInfoApply?.name[0]}
       </Avatar>
       <div className="flex-grow flex flex-col">
         <div className="flex w-full items-baseline justify-between">
           <div className="text-base mr-2 text-darktheme-300 font-serif">
             {userComment === true
               ? "You"
-              : userInfo.name + " " + userInfo.lastname}
+              : userInfoApply.name + " " + userInfoApply.lastname}
           </div>
           <div className="text-sm mr-2 text-darktheme-500">
             {moment(updatedAt).fromNow()}

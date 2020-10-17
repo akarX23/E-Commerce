@@ -145,7 +145,7 @@ class Home extends Component {
     searchPushDown: false,
     searchArray: [],
     rating: [1, 5],
-    priceRange: [0, 9999],
+    priceRange: [0, 999999999999],
     sortby: 0,
     order: "desc",
     searchValues: [],
@@ -282,7 +282,7 @@ class Home extends Component {
       ? priceRange.push(0)
       : priceRange.push(parseInt(filterObject.price[0]));
     filterObject.price[1] === "Max"
-      ? priceRange.push(99999)
+      ? priceRange.push(999999999999999)
       : priceRange.push(parseInt(filterObject.price[1]));
 
     this.setState(
