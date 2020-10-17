@@ -23,8 +23,6 @@ module.exports = function (app) {
             success: false,
             message: "Something Went Wrong",
             err,
-            key_id: config.RAZOR_PAY_KEY_ID,
-            key_secret: config.RAZOR_PAY_KEY_SECRET,
           });
         }
         return res.status(200).json({ success: true, order });
