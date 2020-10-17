@@ -33,7 +33,7 @@
     "redux": "^4.0.5",
     "redux-promise": "^0.6.0",
     "rsuite": "^4.8.1",
-    "scrollmagic": "^2.0.7",
+    "scrollmagic": "^2.0.7"
   },
   "scripts": {
     "start": "npm run watch:css && react-scripts start",
