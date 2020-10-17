@@ -1,10 +1,10 @@
 const mongoose = require("mongoose"); // Erase if already required
-const Cart = require("../Models/cart");
-const Product = require("../Models/product");
+const Cart = require("./cart");
+const Product = require("./product");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const OrderHistory = require("./orderHistory");
-const Token = require("./Token");
+const Token = require("./token");
 const { sendEmail } = require("../Mail/email");
 const config = require("../config/config").get(process.env.NODE_ENV);
 const salt_i = 10;

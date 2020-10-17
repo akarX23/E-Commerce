@@ -1,5 +1,5 @@
 const User = require("../Models/user");
-const Token = require("../Models/Token");
+const Token = require("../Models/yoken");
 const Cart = require("../Models/cart");
 const OrderHistory = require("../Models/orderHistory");
 const { auth } = require("../Middlewares/auth");
