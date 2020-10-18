@@ -235,7 +235,6 @@ class UserList extends Component {
         showAlert = true;
       }
       if (nextProps.users.adminActions) {
-        console.log(nextProps);
         showAlert = true;
         let action = nextProps.users.adminActions;
         if (action.success === false) {
