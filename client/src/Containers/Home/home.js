@@ -337,7 +337,11 @@ class Home extends Component {
                   if (progress === 1) autoComplete = classes.autoCompleteFocus;
                   return (
                     <form
-                      className={`w-full z-30 sm:justify-center justify-end sm:items-stretch sm:flex-row flex-col items-center flex transition-all duration-500 ease-out delay-75 `}
+                      className={`w-full z-30 sm:justify-center justify-end sm:items-stretch sm:flex-row flex-col items-center flex transition-all duration-500 ease-out delay-75 ${
+                        this.state.searchPushDown === true
+                          ? "searchBarPushDown"
+                          : "searchBarPushUp"
+                      }`}
                       onSubmit={(event) => this.handleOnSubmit(event)}
                     >
                       <Search
