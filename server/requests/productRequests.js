@@ -52,7 +52,7 @@ module.exports = function (app) {
 
   app.post("/api/product/product-list", (req, res) => {
     Product.searchFilter(req.body, (err, products) => {
-      if (err) return res.status(400).json({ list: false, err });
+      if (err) return res.status(400).json({ list: false });
 
       const list = products.length === 0 ? false : true;
 
