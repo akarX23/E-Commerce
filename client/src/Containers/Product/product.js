@@ -134,6 +134,11 @@ const styles = (theme) => ({
   },
 });
 
+const url =
+  process.env.NODE_ENV === "production"
+    ? "https://b2me-commerce.herokuapp.com/product"
+    : "http://localhost:3000/product";
+
 const rateHover = {
   0.5: "Useless",
   1: "Useless+",
@@ -520,7 +525,7 @@ class Product extends Component {
                       classes={{ root: classes.linkCopyIcon }}
                       onClick={() => {
                         navigator.clipboard.writeText(
-                          `http://localhost:3000/product/${this.props.queries.id}`
+                          `${url}/${this.props.queries.id}`
                         );
                         this.setState({ linkCopied: true });
                       }}
