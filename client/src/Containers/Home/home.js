@@ -171,38 +171,38 @@ class Home extends Component {
       .addTo(controller)
       .on("enter", () => this.handleOnScroll());
 
-    // new ScrollMagic.Scene({
-    //   triggerElement: this.searchRef.current,
-    // })
-    //   .addTo(controller)
-    //   .on("update", (event) => {
-    //     if (this.state.searchPushDown === true && event.scrollPos < 10) {
-    //       this.setState({ searchPushDown: false });
-    //     }
-    //   });
+    new ScrollMagic.Scene({
+      triggerElement: this.searchRef.current,
+    })
+      .addTo(controller)
+      .on("update", (event) => {
+        if (this.state.searchPushDown === true && event.scrollPos < 10) {
+          this.setState({ searchPushDown: false });
+        }
+      });
 
     gsap.registerPlugin(ScrollToPlugin);
 
-    // window.addEventListener(
-    //   "scroll",
-    //   () => {
-    //     var currentScrollPos = window.pageYOffset;
-    //     if (
-    //       currentScrollPos < prevPos &&
-    //       currentScrollPos > 10 &&
-    //       this.state.searchPushDown === false
-    //     ) {
-    //       this.setState({ searchPushDown: true });
-    //     } else if (
-    //       currentScrollPos > prevPos &&
-    //       this.state.searchPushDown === true
-    //     ) {
-    //       this.setState({ searchPushDown: false });
-    //     }
-    //     prevPos = currentScrollPos;
-    //   },
-    //   { passive: true }
-    // );
+    window.addEventListener(
+      "scroll",
+      () => {
+        var currentScrollPos = window.pageYOffset;
+        if (
+          currentScrollPos < prevPos &&
+          currentScrollPos > 10 &&
+          this.state.searchPushDown === false
+        ) {
+          this.setState({ searchPushDown: true });
+        } else if (
+          currentScrollPos > prevPos &&
+          this.state.searchPushDown === true
+        ) {
+          this.setState({ searchPushDown: false });
+        }
+        prevPos = currentScrollPos;
+      },
+      { passive: true }
+    );
   }
 
   componentWillUnmount() {
@@ -330,48 +330,48 @@ class Home extends Component {
             </Carousel>
           </div>
           {this.props.products.list ? (
-            // <Controller>
-            //   <Scene pin={true} offset={300}>
-            //     {(progress, event) => {
-            // var autoComplete = classes.autoComplete;
-            // if (progress === 1) autoComplete = classes.autoCompleteFocus;
-            // return (
-            <form
-              className={`w-full sm:justify-center justify-end sm:items-stretch sm:flex-row flex-col items-center flex transition-all duration-500 ease-out delay-75 `}
-              onSubmit={(event) => this.handleOnSubmit(event)}
-            >
-              <Search
-                placeholder={
-                  this.props.products.list
-                    ? `Search ${numberOfProducts} products...`
-                    : ""
-                }
-                autoComplete={classes.autoComplete}
-                value={this.state.searchArray}
-                classes={classes}
-                handleValueChange={(searchArray) =>
-                  this.setState({ searchArray })
-                }
-                options={options}
-              />
-              <Button
-                variant="contained"
-                classes={{
-                  root: classes.submit,
+            <Controller>
+              <Scene pin={true} offset={300}>
+                {(progress, event) => {
+                  var autoComplete = classes.autoComplete;
+                  if (progress === 1) autoComplete = classes.autoCompleteFocus;
+                  return (
+                    <form
+                      className={`w-full z-30 sm:justify-center justify-end sm:items-stretch sm:flex-row flex-col items-center flex transition-all duration-500 ease-out delay-75 `}
+                      onSubmit={(event) => this.handleOnSubmit(event)}
+                    >
+                      <Search
+                        placeholder={
+                          this.props.products.list
+                            ? `Search ${numberOfProducts} products...`
+                            : ""
+                        }
+                        autoComplete={autoComplete}
+                        value={this.state.searchArray}
+                        classes={classes}
+                        handleValueChange={(searchArray) =>
+                          this.setState({ searchArray })
+                        }
+                        options={options}
+                      />
+                      <Button
+                        variant="contained"
+                        classes={{
+                          root: classes.submit,
+                        }}
+                        size="small"
+                        type="submit"
+                        onSubmit={(event) => this.handleOnSubmit(event)}
+                      >
+                        Search
+                      </Button>
+                    </form>
+                  );
                 }}
-                size="small"
-                type="submit"
-                onSubmit={(event) => this.handleOnSubmit(event)}
-              >
-                Search
-              </Button>
-            </form>
-          ) : // );
-          //     }}
-          //   </Scene>
-          // </Controller>
-          null}
-          {/* <div ref={this.searchRef}></div> */}
+              </Scene>
+            </Controller>
+          ) : null}
+          <div ref={this.searchRef}></div>
         </div>
         {this.state.searchValues.length > 0 ? (
           <div className="w-11/12 border-b-2 flex border-darktheme-700 mx-auto pb-2 mb-4 text-darktheme-200 text-base">
