@@ -11,16 +11,11 @@ This is an E-Commerce Web App. It includes all the basic functionalities like us
 - Clone the repository.
 - Navigate to the E-Commerce directory in your terminal.
 - Run the following commands.
-
-`npm install --save` This will install dependencies on the server side.
-
-`cd client` This will navigate to the client directory.
-
-`npm install --save` This will install dependencies on the client-side.
-
-`cd ..` Jump back to E-Commerce directory.
-
-`nom run dev` Start the project by running the required scripts on the server and client side. 
+  1. `npm install --save` This will install dependencies on the server side.
+  2. `cd client` This will navigate to the client directory.
+  3. `npm install --save` This will install dependencies on the client-side.
+  5. `cd ..` Jump back to E-Commerce directory.
+  7. `nom run dev` Start the project by running the required scripts on the server and client side. 
 
 ##### Server runs on Port 5000 and Client runs on Port 3000. 
 
