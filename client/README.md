@@ -3,10 +3,20 @@
 - Redux forms the backbone for communicating with the rest API we have built on the back-end. 
 - Whenever we need to get or post to our server we use **redux actions**.
 -  The response from the server is sent to the **redux reducer**. We receive this response as props in our components.
+- All requests and responses are done in JSON format.
 ### Material UI
 - Most of the material UI components have been integrated into this app. 
 - A lot of styling to the material UI is provided by JSS (Css in JavaScript).
 - You can refer to the [Material UI Documentation](https://material-ui.com/getting-started/usage/) for further explanation.
+### Breakpoints
+- CSS breakpoints are used all over the site to make it extremely responsive. 
+ ```
+  mb: "420px",
+  sm: "640px",
+  md: "768px",
+  lg: "1024px",
+  xl: "1280px",
+```
 
 # Structure
 ##### The project is well structured and organised for easy navigation.
@@ -45,14 +55,33 @@ The Auth hoc has just one job. To check with every route if the user has access 
 **How it works**
 - The Auth is a functional hoc. It receives the component we are about to render as a parameter.
 
-`Auth(Composed Class, authUser, authAdmin)`
+- ```Auth(Composed Class, authUser, authAdmin)```
 
 - As soon as some route is visited the Auth is called and an action is passed to redux store to get the auth details of the user. 
-- The store sends a **GET** request to our server and receives a response with the details of the user if he is logged in or just an `isAuth : false`. 
+- The store sends a **GET** request to our server and receives a response with the details of the user if he is logged in or just an 
+
+```{isAuth : false}```. 
+
 - It then checks if the user is an admin or not. 
-- Based on the above authorisation parameters it allows the user if he has access or redirects them to home page. In case the user is logged in but tried to access and admin route he is shown a Authorisation Revoked page.
+- Based on the above authorisation parameters it allows the user if he has access or redirects them to home page. In case the user is logged in but tried to access an admin route he is shown a Authorisation Revoked page.
 
 ##### The Auth hoc is the backbone of the security for our app and therefore very essential.
+
+# Header
+The Header handles a lot of functionalities - from logging in our user to navigating the whole site. I won't go much deep into logging in and sign up as thats mostly a part of the backend.
+
+The sidenav is what I want to talk about.
+- The sidenav is a part of Material UI's Sidenav Component.
+- It's connected to the redux store to get the auth details of the user already stored in the user state of the store because of Auth hoc.
+- There is a separate funcitonal component for sidenav items. This has three lists - no auth, user and for admin. 
+- The sidenav items receives the auth details from sidenav and renders the list it deems fit.
+- The Header passes sidenav props for toggling the log in and log out modals. 
+
+### The Header has a fixed position. The scrolling effect is done by adding a scroll event listener.
+
+Also I have tried to make the header as responsive as possible. 
+
+##### Creating a separate route for log in would have been more conveniant though.
 
 # Dependencies
 
