@@ -117,7 +117,55 @@ Also I have tried to make the header as responsive as possible.
 ##### Creating a separate route for log in would have been more conveniant though.
 
 # Home
+The Home page is the first page as the site opens. As soon as the component is mounted a redux action is called to get a list of all the products from the database. Then a list of options is prepared which contains the titles and tags of the products. The first render then also sends another request to get 6 products based on the default filters. 
 
+## The Home consists of a number of components
+- Caraousel
+- Search
+- Products grid
+- Filter
+
+### Caraousel
+This is a direct implementationn of the **React-Bootstrap Caraousel**. It renders 3 static images.
+
+### Search
+- This is a Widget which calls the autocomplete. Some custom JSS classes and the option list we prepared above is passed as props. This list is then alphabetically sorted for the user to easily find something they are looking for. 
+- The search accepts an array of values which the user can enter by entering spaces or enter. 
+- The search button sends this array and the other search filters to the redux store to get the filtered list of products. 
+- The search bar is intended to always stay on the screen.
+- The search is wrapped around a react-scrollmagic class which controls when the bar should go down or stay up. This changes according to the header appearing animation. 
+
+### Product Grid
+- The product grid is comprised of **Cards** from Material UI. The number of columns in the grid adjust with the screen width.
+- The Card is another Widget that has the product images in a caraousel with the product details. 
+- Each card has an action. Users can add the product to cart or the owners can directly edit the product.
+- Each card is a link which takes the user to the product page.
+- The *Add to cart* button sends as action to redux store with a the product Id which then sends the id to the server and we receive the new cart info in props as response.
+- There is inifinite scrolling integrated into the home page. So more products load as the user scrolls to the bottom. 
+
+This is done by adding a ref at the bottom of the page
+```
+<div ref={this.itemLoading}></div>
+```
+We initialize our scroll listner with scroll magic when the component has mounted
+```
+    new ScrollMagic.Scene({
+      triggerElement: this.itemLoading.current,
+      triggerHook: "onEnter",
+    })
+      .addTo(controller)
+      .on("enter", () => this.handleOnScroll());
+```
+As soon as handleOnScroll is triggered a new request is sent to the server to get more products. We skip the origional item list but append the new items we get from the server in the actions with the already loaded list we pass as an argument to the redux action.
+```
+if (list) response.data.products = [...list, ...response.data.products];
+      return response.data;
+```
+
+# Filter
+The filter is a fixed position widget floating action button (FAB) from Material UI. It's got its own state by using React Hooks useState.
+- The apply button verifies first if all the filters put by the user are valid and then sends the values to the Home and updates the main state.
+- Then a redux action is sent with the updated filters which gets the new product list from the server.
 
 # Dependencies
 
