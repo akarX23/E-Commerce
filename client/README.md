@@ -2,8 +2,13 @@
 ### Redux
 - Redux forms the backbone for communicating with the rest API we have built on the back-end. 
 - Whenever we need to get or post to our server we use **redux actions**.
--  The response from the server is sent to the **redux reducer**. We receive this response as props in our components.
+- The response from the server is sent to the **redux reducer**. We receive this response as props in our components.
 - All requests and responses are done in JSON format.
+- There are mainly 4 states in our app : 
+  - User - contains details of user and the signed in state
+  - products - manages the entire product collection
+  - Cart - contains all the info abt the user's cart
+  - OrderHistory - contains the history of confirmed orders.
 ### Material UI
 - Most of the material UI components have been integrated into this app. 
 - A lot of styling to the material UI is provided by JSS (Css in JavaScript).
@@ -70,12 +75,40 @@ The Auth hoc has just one job. To check with every route if the user has access 
 # Header
 The Header handles a lot of functionalities - from logging in our user to navigating the whole site. I won't go much deep into logging in and sign up as thats mostly a part of the backend.
 
-The sidenav is what I want to talk about.
+### Sidenav
 - The sidenav is a part of Material UI's Sidenav Component.
 - It's connected to the redux store to get the auth details of the user already stored in the user state of the store because of Auth hoc.
 - There is a separate funcitonal component for sidenav items. This has three lists - no auth, user and for admin. 
 - The sidenav items receives the auth details from sidenav and renders the list it deems fit.
 - The Header passes sidenav props for toggling the log in and log out modals. 
+
+### Forms 
+- The forms have their own components. And they use the Input Widget which is custom made without the sue of material UI.
+- The forms have been made to handle all kind of errors. All inputs are controlled.
+- The inputs have their errors updated as they are filled in or blurred. 
+
+#### Log In
+- When the Log In form is submitted, it checks all the inputs for their errors.
+- If they  all check out then the information is sent to the redux store which calls the log in api. 
+- If the log in details match then we get a response like this 
+```
+isAuth : true,
+id : user._id,
+.
+.
+.
+address : user.address
+```
+- If there is problem we get the appropriate response to display the error messages.
+
+#### Sign Up
+- Sign Up sends the user details to the server through an action through the redux store. 
+- The server sends a mail regrading confirmation of the user.
+- If mail is sent we receive `isAuth: false` as a response from the server. 
+- If any error occurs we get appropriate response from the server.
+
+#### Cart
+- The header is also connected by the cart state of redux. It only gets the number of items from the cart and displays it like a badge on the cart icon.
 
 ### The Header has a fixed position. The scrolling effect is done by adding a scroll event listener.
 
