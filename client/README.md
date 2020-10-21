@@ -107,7 +107,7 @@ address : user.address
 - If mail is sent we receive `isAuth: false` as a response from the server. 
 - If any error occurs we get appropriate response from the server.
 
-#### Cart
+### Cart
 - The header is also connected by the cart state of redux. It only gets the number of items from the cart and displays it like a badge on the cart icon.
 
 ### The Header has a fixed position. The scrolling effect is done by adding a scroll event listener.
@@ -115,6 +115,9 @@ address : user.address
 Also I have tried to make the header as responsive as possible. 
 
 ##### Creating a separate route for log in would have been more conveniant though.
+
+# Home
+
 
 # Dependencies
 
