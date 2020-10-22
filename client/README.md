@@ -22,6 +22,8 @@
   lg: "1024px",
   xl: "1280px",
 ```
+### Cloudinary Service
+Cloudinary is a cloud service to sotre our files online. We use that to store user images of products and users. The images we read from the system are sent to cloudinary using their api in a base64 encoded format. We extract the URLs from the response. These url are sent stored in our database.
 
 # Structure
 ##### The project is well structured and organised for easy navigation.
@@ -162,10 +164,65 @@ if (list) response.data.products = [...list, ...response.data.products];
       return response.data;
 ```
 
-# Filter
+### Filter
 The filter is a fixed position widget floating action button (FAB) from Material UI. It's got its own state by using React Hooks useState.
 - The apply button verifies first if all the filters put by the user are valid and then sends the values to the Home and updates the main state.
 - Then a redux action is sent with the updated filters which gets the new product list from the server.
+
+# Product Page
+The product page a query in the url in the form of a param which is accepted in the route
+```
+ <Route path="/product/:id" exact component={Auth(Product)} /> 
+ /prdoduct/5f8c0b13e87fd9001740f631 
+ props.params.id = 5f8c0b13e87fd9001740f631
+``` 
+- As soon as the page loads it sends an action to the redux store with the id we received in the url. 
+- We receive the product details as the response which looks like this
+```
+{
+  _id: productId,
+  price,
+  rating, 
+  totalRating: The sum of all the ratings by users,
+  title,
+  quantity: stock,
+  owner: details of the seller,
+  userReviews: an array of all the comments on this product,
+  imageURLs: an array of images for this product
+}
+```
+- The logged in user's review is filtered from the list of reviews we get from the server.
+
+This mainly consists of three containers 
+- Image Caraousel
+- Details
+- Comment Section
+
+### Image Caraousel
+- Same carousel like home page except that it maps the images from the links in imageURLs from server. This caraousel is controlled.
+- This component is pinned for widths greater than `sm breakpoint`. 
+- Each image has a download button which will enable users to download a particular image.
+
+### Details
+- Prints the details in a flex box format.
+- There is a button to the right of the title which copies the product URL.
+- The quantity is not displayed plainly but its displayed in a stock based format.
+
+### Comment Section
+- It's divided into the My Review section and other reviews section.
+- All comments are a child of the `<Fade></Fade>` component from **React-Reveal** and the comments are widgets where the information are passed as props.
+- The comment widget will have a like and unlike button. By clicking either of them a request is sent to the server through redux initiating the like or dislike action.
+- The rate review button will be sending the review of the user to the server.
+- After every action the whole product gets updated. 
+
+# Edit Product
+The edit product page is quite simple. It makes use of the Input Widget from the Input UI folder. These are the material UI textfields. 
+- The product id is received in the url as params. This is sent to the server through the redux store to get the product details.
+- The styles are written in JSS and passed to these input as props. The errors in the fields are checked as the user types or the input goes out of focus and at the time of saving changes.
+- The file input element is a widget with draggable event listeners. Refer to this [Medium article](https://medium.com/@650egor/simple-drag-and-drop-file-upload-in-react-2cb409d88929) for more info on how this works. I have made some changes to add some effects.
+- Images are parsed in a base64 format through the file reader in java script.
+- The origional state of the changes are stored in the props we receive from the server. So when we click the restore changes button the state of our app is set to the props.
+- After making changes we can click save to send the details to the redux store. The base64 data of images is sent to cloudinary and the urls returned are sent to the server along with other details.
 
 # Dependencies
 
