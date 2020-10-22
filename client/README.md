@@ -72,6 +72,7 @@ The Auth hoc has just one job. To check with every route if the user has access 
 
 - It then checks if the user is an admin or not. 
 - Based on the above authorisation parameters it allows the user if he has access or redirects them to home page. In case the user is logged in but tried to access an admin route he is shown a Authorisation Revoked page.
+- The props received from the react router are passed to the route about to be rendered.
 
 ##### The Auth hoc is the backbone of the security for our app and therefore very essential.
 
@@ -310,6 +311,11 @@ handler: async (response) => {
       return response.data;
     });
 ```
+
+#  Mail Confirmation
+This page is loaded when the user attempts to verify his mail. A token is passed into the url which is sent to the redux store to make the request to the api to verify the token. If the token is verified the user is logged in by changing the user state of redux store. 
+
+The user can then upload an profile image and the profile is saved. 
 
 # Dependencies
 
