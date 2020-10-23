@@ -6,8 +6,29 @@ This is an E-Commerce Web App. It includes all the basic functionalities like us
 ## Required dependencies : 
 - Node JS should be installed. [Install](https://nodejs.org/en/download)
 - JavaScript should be enabled in your browser.
+- MongoDB should be installed. [Download and run installer here](https://www.mongodb.com/try/download/community)
 
-## Steps
+## Start the MongoDB Server
+1. Open File Explorer
+2. Go to C:/Program Files/MongoDB/Server/<version>/bin
+3. Copy this path.
+4. Open command prompt. 
+5. Type `cd /`
+6. Type `cd <paste the path you copied here>`
+7. Hit enter
+  
+*Now we have to create the database folder for mongoDB. You can create a custom folder if you want or use the default one that mongoDB creates. If you create a custom folder please copy the path to that folder.*
+
+8. If you have not created a custom folder then type `mongod.exe` and hit enter.
+9. If you have created a custom folder then type `mongod.exe --dbpath "<paste the path to your folder here>"` and hit enter.
+
+*Open another command prompt. Repeat steps 1 through 7*
+
+10. Type `mongo.exe` and hit enter.
+
+**Out MongoDB server has started!**
+
+## Steps to start the app
 - Clone the repository.
 - Navigate to the E-Commerce directory in your terminal.
 - Run the following commands.
