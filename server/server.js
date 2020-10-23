@@ -19,7 +19,7 @@ app.use(express.static("client/build"));
 
 //CONNECTION TO DATABASE
 mongoose.connect(
-  "mongodb+srv://akarX:ritik@e-commerce.ucyuc.mongodb.net/E-Commerce?retryWrites=true&w=majority",
+  config.DATABASE,
   { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
   (err) => {
     if (err) console.log("Error in DB connection : " + err);
