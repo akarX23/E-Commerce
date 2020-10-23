@@ -10,7 +10,7 @@ This is an E-Commerce Web App. It includes all the basic functionalities like us
 
 ## Start the MongoDB Server
 1. Open File Explorer
-2. Go to C:/Program Files/MongoDB/Server/<version>/bin
+2. Go to C:/Program Files/MongoDB/Server/4.2(or some other version)/bin
 3. Copy this path.
 4. Open command prompt. 
 5. Type `cd /`
