@@ -6,7 +6,7 @@ This is an E-Commerce Web App. It includes all the basic functionalities like us
 ## Required dependencies : 
 - Node JS should be installed. [Install](https://nodejs.org/en/download)
 - JavaScript should be enabled in your browser.
-- MongoDB should be installed. [Download and run installer here](https://www.mongodb.com/try/download/community)
+- MongoDB should be installed. [Download here](https://www.mongodb.com/try/download/community) and run installer.
 
 ## Start the MongoDB Server
 1. Open File Explorer
