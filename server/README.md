@@ -47,7 +47,7 @@ if (!user || user.validated === false)
 Some methods to know in the User Model:
 - `user.generateAuthToken()` uses JWT to sign a token using the user's id in the database and saves that token to the user.
 - `sendEMail` is an import from `/server/Mail/email.js`. This is used to send email confirmation and password reset mails using nodemailer. It uses the html templates defined in the `/server/Mail/views` folder. 
-- The **Pre Save** hook saves the password of the user if its a new user or the password is changed.
+- The **Pre Save** hook encryptes and saves the password of the user if its a new user or the password is changed.
 ```
 userSchema.pre("save", function (next) {
 
