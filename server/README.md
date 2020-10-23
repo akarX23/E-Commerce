@@ -223,9 +223,134 @@ Gets the user details in the body and user id from auth middleware and updates t
 Deletes all the user products and comments as well, the cart and order history of the user from the database.
 
 ## Product Requests
+Some methods to know about in the product model
+- **Pre-Find** hook - Whenever we initiate a find query for a product we populate the products owner field with the user's details who owns it. This is helpful because even if the user has updated their details the product will get populated with the new details. We exclude the password and token while populating. We also have to populate all the reviews of the product with the users who reviewed it.
+- **Pre-save** hook does the same above. But since save executes on a single document we attach the execPopulate function or the populate won't work.
 
+### POST Requests
+#### Add Product
+```
+/api/product/add
+```
+The product details are received in the body. The new user is saved with an owner field which contains the id of the logged in user received from auth middleware.
 
+The new product is saved where the owner field is populated .
 
+#### Add or Update Review
+```
+/api/product/review
+```
+It takes the product id as a query. The review to be added is passed as the body along. We get the user details through the auth middle ware.
+
+The review details are passed to a function in the product model. It adds the review and also updates the rating of the product and returns the new product.
+
+#### Product List
+```
+/api/product/product-list
+```
+It takes the filter parameters as a body
+```
+{
+  searchArray,
+  rating,
+  priceRange,
+  sortby,
+  limit,
+  skip,
+  order,
+}
+```
+These are passed to a static method `searchFilter` to get the items based on user's preference.
+- We first built a regular expression array for the search array items by the user.
+```
+return new RegExp(searchItem, "i");
+```
+- We then form a query based on the regex array we create. This gives us all the products that matches the user search key words.
+- After that we define what parameter should the sorting be done by.
+- Then we finally execute the query giving it various options to filter according to
+```
+query
+    .where("rating") // selecting the rating field
+    .gte(rating[0]) // specifying the minumum rating selected by the user
+    .lte(rating[1]) // specifying the maximum rating selected by the user
+    .where("price") // selecting the price field
+    .gte(priceRange[0]) // specifying the minumum price selected by the user
+    .lte(priceRange[1]) // specifying the maximum price selected by the user
+    .limit(limit) // limiting the number of products to return
+    .skip(skip) // skipping the number of products from the beginning
+    .sort({ [sortParam]: order }) // sorting according to the parameter with the order (Ascending or descending)
+```
+- We return the filtered products back to the call back function.
+
+#### Deleting multiple products
+```
+/api/product/delete
+```
+- We get an array of product ids to delete in the body.
+- We use the `$in` operator for deleting those products whose id matches any id in the array using the deleteMany method of Mongoose.
+
+### Delete Request
+#### Delete Review
+```
+/api/product/deleteReview
+```
+- We get the id of the product in the query.
+- After finding the product we call `product.deleteReview` defined in the model.
+- The review is deleted along with the rating of the product also changed.
+
+## Cart Requests
+Methods to know about in the Cart Model
+- The **Pre-Find and Pre-Save Hooks** are similar as in product model but here the prodcts array is populated with the product details and the `_id` field with the user details.
+### POST Requests
+#### Add Cart Item
+```
+/api/cart/add-item
+```
+The body receives 
+```
+{
+  id, // the id of the product to add
+  quantity, //the quantity the user wants to add.
+  price // the price of the product to add
+}
+```
+- These are passed to the addItem function in the cart model.
+- A search is run for the item. If it's found then modifications are made keeping in account the stock available for the item.
+- If item is not found a new item is added to the beginning of the cart with default values.
+- This function is called when we add the item from home page or the product page.
+
+### GET Requests
+#### Cart Items
+```
+/api/cart/items
+```
+It uses the logged in user's id provided by the auth middle ware to search for the user's cart and return the details.
+
+#### DELETE Requests
+#### Delete Cart Item
+```
+/api/cart/delete-item
+```
+It takes the product's id which is to be deleted as a query. Gets the user's cart and deletes the item. Returns the new cart.
+  
+## Order History Requests
+Methods to know about in the order history model
+- **Pre-find and pre-save hooks** populate the owner field with the user's details that is logged in.
+### POST Requests
+#### Adding a history
+```
+/api/orderHistory/add
+```
+This is called when a payment is successful. All the details are sent as the body
+```
+{ 
+  paymentID, // The payment id generated by razor pay
+  orderID, // The order id generated by razor pay
+  address // address selected by the user where product to be delivered.
+}
+```
+- The cart is searched for the user's cart and all the items are put in the order history and the cart is made empty.
+- The new history is returned.
 
 
 
